@@ -1,0 +1,49 @@
+{
+    "name": "hifumi",
+    "short_name": "hifumi",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#dfe8fa",
+    "description": "A flashcards companion app tailored for Minna no Nihongo Shokyū I & II textbooks.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "screenshots": [
+        {
+            "src": "images/showcase.png",
+            "type": "image/png",
+            "sizes": "1160x600",
+            "form_factor": "wide"
+        },
+        {
+            "src": "images//showcase.png",
+            "type": "image/png",
+            "sizes": "1160x600",
+            "form_factor": "narrow"
+        }
+    ],
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

@@ -1,0 +1,94 @@
+# Build the APKs from the main branch and upload them as artifacts.
+# https://medium.com/@colonal/automating-flutter-builds-and-releases-with-github-actions-77ccf4a1ccdd
+---
+name: "Build - Android"
+
+# Only run when triggered manually
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & Upload
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1 : Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # 2 : Set up Java
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '20'
+      
+      # 3 : Set up Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.1'
+          channel: 'stable'
+
+      # 4 : Set CI=true for release signing configuration ; see `android/app/build.gradle`.
+      - name: Register CI build mode
+        run: echo "CI=true" >> $GITHUB_ENV
+
+      # 5 : Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 6 : Make sure icons are up to date
+      - name: Generate icons
+        run: flutter pub run flutter_launcher_icons
+
+      # 7 : Extract version from pubspec.yaml
+      - name: Extract version from `pubspec.yaml`
+        run: |
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      # 8 : Get and store the short commit hash for this build
+      - name: Get short commit hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      # 9 : Write extracted version and commit hash to `lib/entities/app_info.dart`
+      - name: Write version & commit
+        run: |
+          sed -i "s/missing-version/${{ env.VERSION }}/" lib/entities/app_info.dart
+          sed -i "s/missing-commit/${{ env.COMMIT_HASH }}/" lib/entities/app_info.dart
+
+      # 10 : Decode keystore
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+      # 11 : Create key.properties
+      - name: Create `key.properties`
+        run: |
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=keystore.jks" >> android/key.properties
+
+      # 12 : Build APKs for each abi
+      - name: Build APKs
+        run: flutter build apk --release --split-per-abi
+
+      # 13 : Rename APKs
+      - name: Rename APKs
+        run: |
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/hifumi-arm64-v8a_v${{ env.VERSION }}.apk
+          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk build/app/outputs/flutter-apk/hifumi-armeabi-v7a_v${{ env.VERSION }}.apk
+
+      # 14 : Upload built APKs
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            build/app/outputs/flutter-apk/hifumi-arm64-v8a_v${{ env.VERSION }}.apk
+            build/app/outputs/flutter-apk/hifumi-armeabi-v7a_v${{ env.VERSION }}.apk

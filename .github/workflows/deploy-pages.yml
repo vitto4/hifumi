@@ -1,0 +1,109 @@
+# https://github.com/actions/starter-workflows/blob/main/pages/static.yml
+---
+name: "Deploy to GitHub Pages"
+
+# Only run when triggered manually
+on:
+  workflow_dispatch:
+
+# Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+permissions:
+  # Required for checkout
+  # https://github.com/actions/checkout/issues/1850#issuecomment-2299191024
+  contents: read
+
+  # Required for (Pages) deployment
+  pages: write
+
+  # So uhm, what is this for ?
+  # https://github.com/actions/deploy-pages/issues/329
+  # https://github.com/github/docs/issues/32320
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1 : Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      
+      # 2 : Set up Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.1'
+          channel: 'stable'
+
+      # 3 : Enable web
+      - name: Enable Flutter web 
+        run: flutter config --enable-web
+
+      # 4 : Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5 : Make sure icons are up to date
+      - name: Generate icons
+        run: flutter pub run flutter_launcher_icons
+
+      # 6 : Extract version from pubspec.yaml
+      - name: Extract version from `pubspec.yaml`
+        run: |
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      # 7 : Get and store the short commit hash for this build
+      - name: Get short commit hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      # 8 : Write extracted version and commit hash to `lib/entities/app_info.dart`
+      - name: Write version & commit
+        run: |
+          sed -i "s/missing-version/${{ env.VERSION }}/" lib/entities/app_info.dart
+          sed -i "s/missing-commit/${{ env.COMMIT_HASH }}/" lib/entities/app_info.dart
+
+      # 9 : Setup Pages
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # 10 : Build to be uploaded in the next step
+      - name: Build web
+        run: flutter build web --release --base-href "${{ steps.pages.outputs.base_path }}"
+
+      # 11 : Upload freshly built files, to use in `deploy`
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  # Using a dedicated job, as per https://github.com/actions/deploy-pages/tree/v4/?tab=readme-ov-file#usage
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    # Add a dependency to the build job
+    needs: build
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    steps:
+      # No need to specify the name of the artifacts to deploy, the default is already `"github-pages"`
+      # (which is also the default of `actions/upload-pages-artifact`)
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

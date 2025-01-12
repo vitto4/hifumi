@@ -1,0 +1,49 @@
+# Reduce the size of bundled fonts by creating subsets.
+# See `fonts/tools/fonts_subsetting.py`.
+---
+name: "Fonts Subsetting"
+
+# Only run when triggered manually
+on:
+  workflow_dispatch:
+
+jobs:
+  subsetting:
+    name: Create & Push subsets
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1 : Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # 2 : Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      
+      # 3 : Install dependencies from requirements file
+      - name: Get dependencies
+        run: python -m pip install -r fonts/tools/requirements.txt
+
+      # 4 : Run the python script, will in turn update the font files
+      - name: Generate font subsets
+        run: python fonts/tools/fonts_subsetting.py
+      
+      # 5 : Prepare git for the next step
+      - name: Configure git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      # 6 : Commit and push changes to the main branch
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "perf(fonts): update font subsets"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

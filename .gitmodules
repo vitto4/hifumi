@@ -1,0 +1,3 @@
+[submodule "assets/dataset"]
+	path = assets/dataset
+	url = https://github.com/vitto4/MinnaNoDS
