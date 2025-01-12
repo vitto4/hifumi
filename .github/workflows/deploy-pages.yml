@@ -80,7 +80,7 @@ jobs:
 
       # 10 : Build to be uploaded in the next step
       - name: Build web
-        run: flutter build web --release --base-href "${{ steps.pages.outputs.base_path }}"
+        run: flutter build web --release --base-href "${{ steps.pages.outputs.base_path }}/"
 
       # 11 : Upload freshly built files, to use in `deploy`
       - name: Upload artifact
