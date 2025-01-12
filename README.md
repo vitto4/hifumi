@@ -63,7 +63,7 @@ It also packs additional quality of life features, such as being able to create 
 
 The [web app](https://vitto4.github.com/hifumi) requires no particular installation.
 
-A prebuilt version is also offered in the [releases](). It can be used locally by running something like `python3 -m http.server` in the root of the folder.
+A prebuilt version is also offered in the [releases](https://github.com/vitto4/hifumi/releases). It can be used locally by running something like `python3 -m http.server` in the root of the folder.
 
 #### Android
 
