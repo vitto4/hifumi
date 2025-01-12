@@ -17,8 +17,8 @@ class Defaults {
 
   static const bool ONBOARDING = true;
   static const List<String> DECK_CONTENTS = [];
-  static const List<String> CARD_FRONT_ELEMENTS = ["4"];
-  static const List<String> CARD_BACK_ELEMENTS = ["1", "2"];
+  static const List<String> CARD_FRONT_ELEMENTS = ["1", "2"];
+  static const List<String> CARD_BACK_ELEMENTS = ["4"];
   static const DSLanguage LANGUAGE = DSLanguage.en;
   static const Edition BOOK_ONE_EDITION = Edition.second;
   static const Edition BOOK_TWO_EDITION = Edition.second;
