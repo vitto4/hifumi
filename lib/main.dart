@@ -12,6 +12,11 @@ void main() => runApp(
           fontFamily: "Varela Round",
           brightness: Brightness.light,
           scaffoldBackgroundColor: LightTheme.base,
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              for (final platform in TargetPlatform.values) platform: const ZoomPageTransitionsBuilder(),
+            },
+          ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
