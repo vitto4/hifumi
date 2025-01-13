@@ -78,11 +78,25 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      # 10 : Build to be uploaded in the next step
+      # 10 : Insert OpenGraph tags with correct domain into `web/index.html`
+      - name: Insert OpenGraph tags
+        run: |
+          DOMAIN="${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}"
+          TAGS=$(cat << EOF
+              <meta property="og:title" content="hifumi" />
+              <meta property="og:type" content="website" />
+              <meta property="og:url" content="$DOMAIN/" />
+              <meta property="og:image" content="$DOMAIN/icons/Icon-512.png" />
+              <meta property="og:description" content="A flashcards companion app tailored for Minna no Nihongo Shokyū I & II textbooks." />
+          EOF
+          )
+          awk -v tags="$TAGS" '/<!-- OpenGraph meta tags here -->/{$0=tags} 1' web/index.html > temp.html && mv temp.html web/index.html
+
+      # 11 : Build to be uploaded in the next step
       - name: Build web
         run: flutter build web --release --base-href "${{ steps.pages.outputs.base_path }}/"
 
-      # 11 : Upload freshly built files, to use in `deploy`
+      # 12 : Upload freshly built files, to use in `deploy`
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
