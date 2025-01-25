@@ -348,21 +348,9 @@ class StorageInterface {
     this._sp.setInt(K.REVIEW_ORDER, order.code);
   }
 
-  /// Remove all [Word] that aren't from [readEdition] in [wordList].
-  List<Word> pruneWordListToEdition(DSInterface ds, List<Word> wordList) {
-    final Edition editionBookOne = this.readEdition(Book.one);
-    final Edition editionBookTwo = this.readEdition(Book.two);
-
-    return wordList
-        .where(
-          (word) => (word.id[DSKeyring.ID_INDEX_LESSON] <= 25) ? word.edition.contains(editionBookOne) : word.edition.contains(editionBookTwo),
-        )
-        .toList();
-  }
-
   /// Read the [LessonScore] for a single [lessonNumber].
   LessonScore singleLessonScore(DSInterface ds, LessonNumber lessonNumber) {
-    List<Word> wordPool = this.pruneWordListToEdition(ds, ds.getLessonAllWords(lessonNumber));
+    List<Word> wordPool = ds.getLessonAllWords(lessonNumber, pruneEditions: true);
 
     int masteredCount = 0;
     int scorePoints = 0;

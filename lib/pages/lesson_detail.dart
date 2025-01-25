@@ -30,7 +30,7 @@ class LessonDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LessonScore lessonScore = st.singleLessonScore(ds, lesson);
-    final List<Word> wordList = st.pruneWordListToEdition(ds, ds.getLessonAllWords(lesson));
+    final List<Word> wordList = ds.getLessonAllWords(lesson, pruneEditions: true);
     List<WordTile> wordTileList = [];
 
     /// Build all the [WordTile] we need.

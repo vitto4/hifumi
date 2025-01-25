@@ -1,6 +1,7 @@
 import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:hifumi/entities/@edition.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/seasoning/funky_text.dart";
 import "package:hifumi/widgets/seasoning/app_logo.dart";
@@ -88,7 +89,10 @@ class _LoadingState extends State<Loading> {
     /* ------------------------------ Word dataset ----------------------------- */
     _consoleKey.currentState?.printMessage("Loading dataset");
 
-    final DSInterface ds = DSInterface();
+    final DSInterface ds = DSInterface(
+      bookOneEdition: st.readEdition(Book.one),
+      bookTwoEdition: st.readEdition(Book.two),
+    );
     await ds.init();
 
     /* --------------------------------- Checkup -------------------------------- */

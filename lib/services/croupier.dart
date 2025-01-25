@@ -94,7 +94,7 @@ List<List<CardElement>> cardElementBuilder(DSInterface ds, UserPrefs userPrefere
 List<Flashcard> dealCardsFromLessons(StorageInterface st, DSInterface ds, List<LessonNumber> lessons, int cardCount) {
   final random = Random();
   final UserPrefs userPreferences = st.readUserPrefs();
-  final List<Word> wordPool = st.pruneWordListToEdition(ds, ds.bakeWordPoolFromLessons(lessons, wordCount: cardCount));
+  final List<Word> wordPool = ds.bakeWordPoolFromLessons(lessons, wordCount: cardCount, pruneEditions: true);
   final List<Color> colorList = (st.readHighContrastMode() ? D.CARD_COLORS_HIGH_CONTRAST : D.CARD_COLORS);
 
   List<Flashcard> output = [];
@@ -131,11 +131,10 @@ List<WordID> pruneIDListToMistakes(StorageInterface st, List<WordID> idList) {
 }
 
 /// Build a set of [Flashcard] from a list of [WordID].
-/// [pruneEdition] will have all words not belonging to the selected edition removed.
-List<Flashcard> dealCardsFromIDs(StorageInterface st, DSInterface ds, List<WordID> idList, {bool shuffle = false, bool pruneEdition = false}) {
+List<Flashcard> dealCardsFromIDs(StorageInterface st, DSInterface ds, List<WordID> idList, {bool shuffle = false}) {
   final random = Random();
   final UserPrefs userPreferences = st.readUserPrefs();
-  final List<Word> wordPool = (pruneEdition) ? st.pruneWordListToEdition(ds, ds.bakeWordPoolFromID(idList)) : ds.bakeWordPoolFromID(idList);
+  final List<Word> wordPool = ds.bakeWordPoolFromID(idList);
   final List<Color> colorList = (st.readHighContrastMode() ? D.CARD_COLORS_HIGH_CONTRAST : D.CARD_COLORS);
 
   List<Flashcard> output = [];
@@ -167,7 +166,8 @@ List<Flashcard> dealCardsFromIDs(StorageInterface st, DSInterface ds, List<WordI
 /// Build a set of [Flashcard] from selected [lessons], but remove mastered words, and if applicable trim down to [cardCount].
 /// Will be shuffled.
 List<Flashcard> dealCardsFromMistakes(StorageInterface st, DSInterface ds, List<LessonNumber> lessons, int cardCount) {
-  List<WordID> idList = ds.bakeWordIDListFromLessons(lessons);
+  // When doing a quiz, we don't want words from other editions showing up, hence `pruneEdition: true`
+  List<WordID> idList = ds.bakeWordIDListFromLessons(lessons, pruneEditions: true);
 
   List<WordID> idListPruned = pruneIDListToMistakes(st, idList);
 
@@ -175,15 +175,14 @@ List<Flashcard> dealCardsFromMistakes(StorageInterface st, DSInterface ds, List<
   // Shuffles `idListPruned` and slices it if it contains more than `cardCount` IDs.
   List<WordID> idListPrunedSliced = DSInterface.stirGentlyThenDice(idListPruned, cardCount);
 
-  // When doing a quiz, we don't want words from other editions showing up, hence `pruneEdition: true`
-  return dealCardsFromIDs(st, ds, idListPrunedSliced, pruneEdition: true);
+  return dealCardsFromIDs(st, ds, idListPrunedSliced);
 }
 
 /// Build a set of [Flashcard] from selected [deck].
 List<Flashcard> dealCardsFromDeck(StorageInterface st, DSInterface ds, Deck deck, {bool shuffle = false}) {
   List<WordID> idList = st.readDeck(deck);
 
-  // When doing a review, it's fine for words from other editions to show up if they're in a deck, hence `pruneEdition: false`
+  // When doing a review, it's fine for words from other editions to show up if they're in a deck.
   return dealCardsFromIDs(st, ds, idList, shuffle: shuffle);
 }
 

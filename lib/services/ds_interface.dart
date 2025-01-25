@@ -17,7 +17,14 @@ class DSInterface {
   late final List<WordID> _allWordIDs;
   late final List<WordYAML> _allWords;
 
-  DSInterface();
+  /// User-selected editions at loading time.
+  final Edition bookOneEdition;
+  final Edition bookTwoEdition;
+
+  DSInterface({
+    required this.bookOneEdition,
+    required this.bookTwoEdition,
+  });
 
   /// Wake it up gently.
   Future<void> init() async {
@@ -29,7 +36,7 @@ class DSInterface {
     this._allLessonNumbers = this._getLessonNumbers;
     this._allWordIDs = this._getAllWordIDs;
     this._allWords = this._getAllWords;
-    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words.");
+    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words. (editions : ${this.bookOneEdition}, ${this.bookTwoEdition})");
   }
 
   /* ------------------------------------ . ----------------------------------- */
@@ -86,33 +93,46 @@ class DSInterface {
     );
   }
 
+  /// Remove all [Word]s that aren't from selected [Edition]s in [wordList].
+  List<Word> pruneToEditions(List<Word> wordList) {
+    return wordList
+        .where(
+          (word) =>
+              (word.id[DSKeyring.ID_INDEX_LESSON] <= 25) ? word.edition.contains(this.bookOneEdition) : word.edition.contains(this.bookTwoEdition),
+        )
+        .toList();
+  }
+
   /// Get a list of all the words lesson n°[lessonNumber].
-  List<Word> getLessonAllWords(LessonNumber lessonNumber) {
+  List<Word> getLessonAllWords(LessonNumber lessonNumber, {bool pruneEditions = false}) {
     List<WordYAML> outputYAML = [];
     outputYAML.addAll(this.dataset[this._lessonKeyFromNumber(lessonNumber)].cast<WordYAML>());
 
-    return <Word>[
+    List<Word> wordList = [
       for (WordYAML wordYAML in outputYAML)
         Word(
           wordYAML: wordYAML,
           supportedLanguages: this.getSupportedLanguages,
         )
     ];
+    if (pruneEditions) wordList = this.pruneToEditions(wordList);
+
+    return wordList;
   }
 
   /// Creates a pool of (all) words from selected [lessons].
-  List<Word> _getPoolFromLesson(List<LessonNumber> lessons) {
+  List<Word> _getPoolFromLesson(List<LessonNumber> lessons, {bool pruneEditions = false}) {
     List<Word> output = [];
     for (var lessonNumber in lessons) {
-      output.addAll(this.getLessonAllWords(lessonNumber));
+      output.addAll(this.getLessonAllWords(lessonNumber, pruneEditions: pruneEditions));
     }
     return output;
   }
 
   /// Creates a list of all the words' IDs from selected [lessons].
-  List<WordID> bakeWordIDListFromLessons(List<LessonNumber> lessons) {
+  List<WordID> bakeWordIDListFromLessons(List<LessonNumber> lessons, {bool pruneEditions = false}) {
     return <WordID>[
-      for (LessonNumber number in lessons) ...(getLessonAllWords(number).map<WordID>((word) => word.id)),
+      for (LessonNumber number in lessons) ...(getLessonAllWords(number, pruneEditions: pruneEditions).map<WordID>((word) => word.id)),
     ];
   }
 
@@ -131,20 +151,14 @@ class DSInterface {
   /// Final step of the recipe, combines [_getPoolFromLesson] and [stirGentlyThenDice] to create a random pool of [wordCount] words from [lessons].
   ///
   /// Season as desired, and serve immediately.
-  List<Word> bakeWordPoolFromLessons(List<LessonNumber> lessons, {int wordCount = 0}) {
-    List<Word> pool = this._getPoolFromLesson(lessons);
+  List<Word> bakeWordPoolFromLessons(List<LessonNumber> lessons, {int wordCount = 0, bool pruneEditions = false}) {
+    List<Word> pool = this._getPoolFromLesson(lessons, pruneEditions: pruneEditions);
     return DSInterface.stirGentlyThenDice(pool, wordCount);
   }
 
   /// Same as [bakeWordPoolFromLessons] minus the random aspect, since we're specifically looking for words with [WordID] in [idList] so we don't have to draw them at random.
   List<Word> bakeWordPoolFromID(List<WordID> idList) {
-    List<Word> output = [];
-
-    for (int i = 0; i < idList.length; i++) {
-      output.add(this.fetchWordByID(idList[i]));
-    }
-
-    return output;
+    return <Word>[for (int i = 0; i < idList.length; i++) this.fetchWordByID(idList[i])];
   }
 
   /// Returns currently supported languages in the dataset.
