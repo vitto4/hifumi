@@ -17,7 +17,7 @@ class DSInterface {
   late final List<WordID> _allWordIDs;
   late final List<WordYAML> _allWords;
 
-  /// User-selected editions at loading time.
+  /// User-selected editions at load time.
   final Edition bookOneEdition;
   final Edition bookTwoEdition;
 
@@ -36,7 +36,7 @@ class DSInterface {
     this._allLessonNumbers = this._getLessonNumbers;
     this._allWordIDs = this._getAllWordIDs;
     this._allWords = this._getAllWords;
-    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words. (editions : ${this.bookOneEdition}, ${this.bookTwoEdition})");
+    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words. (${this.bookOneEdition}, ${this.bookTwoEdition})");
   }
 
   /* ------------------------------------ . ----------------------------------- */

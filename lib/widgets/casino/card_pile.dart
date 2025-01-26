@@ -20,8 +20,9 @@ class CardPile extends StatefulWidget {
   final List<Flashcard> cardList;
 
   /// Called when the card on top of the pile changes.
-  /// Is called with the index of the corresponding card in [cardList].
-  final Function(int) onChange;
+  /// Is called with the new [Flashcard] and the new progress for the progress bar to display.
+  /// The first argument may also be null when all cards have been swiped away.
+  final Function(Flashcard?, double) onChange;
 
   /// Are we doing a review ?
   /// We need to know this because it influences on what happens when a card is discarded.
@@ -42,6 +43,7 @@ class CardPile extends StatefulWidget {
 class _CardPileState extends State<CardPile> {
   late final CorrectSide correctSide;
   late final Deck? deck;
+  late List<Flashcard> _cardList;
 
   late List<Swipeable> pile;
 
@@ -53,6 +55,17 @@ class _CardPileState extends State<CardPile> {
   /// `true` when the threshold on the [correctSide] is crossed.
   bool maskCorrect = false;
 
+  @override
+  void initState() {
+    super.initState();
+    correctSide = widget.st.readCorrectSide();
+    _cardList = widget.cardList;
+
+    /// Assign [deck] if this is a review with auto-remove enabled. Else make it null.
+    /// This is because if auto-remove is enabled, we may have to remove cards from said deck.
+    deck = (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview())) ? widget.st.readTargetDeckReview() : null;
+  }
+
   /// I don't think the way I implemented it is standard practice, but the gist is that I use a [ValueKey] unique to each element
   /// of the pile (i.e. cards), and since it's a single-valued function that depends on [resetCount], it will force flutter to
   /// build new widgets with new states each time [resetCount] changes.
@@ -61,23 +74,13 @@ class _CardPileState extends State<CardPile> {
       resetCount += 1;
     });
     currentCardIndex = 0;
-    widget.onChange.call(currentCardIndex);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    correctSide = widget.st.readCorrectSide();
-
-    /// Assign [deck] if this is a review with auto-remove enabled. Else make it null.
-    /// This is because if auto-remove is enabled, we may have to remove cards from said deck.
-    deck = (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview())) ? widget.st.readTargetDeckReview() : null;
+    widget.onChange.call(_cardList[currentCardIndex], currentCardIndex / _cardList.length);
   }
 
   /// Discard the flashcard, for a correct answer.
   void discardCorrect(Flashcard card) {
     if (deck is Deck) {
-      widget.st.removeFromDeck(widget.cardList[currentCardIndex].id, deck!);
+      widget.st.removeFromDeck(_cardList[currentCardIndex].id, deck!);
     } else {
       widget.st.writeWordScore(card.id, true);
     }
@@ -86,7 +89,7 @@ class _CardPileState extends State<CardPile> {
       maskCorrect = true;
       crossed = false;
     });
-    widget.onChange.call(currentCardIndex);
+    widget.onChange.call(_cardList.elementAtOrNull(currentCardIndex), currentCardIndex / _cardList.length);
   }
 
   /// Discard the flashcard, for an incorrect answer.
@@ -102,7 +105,7 @@ class _CardPileState extends State<CardPile> {
       maskCorrect = false;
       crossed = false;
     });
-    widget.onChange.call(currentCardIndex);
+    widget.onChange.call(_cardList.elementAtOrNull(currentCardIndex), currentCardIndex / _cardList.length);
   }
 
   /// Could be named `onThresholdCorrectCrossed`.
@@ -304,7 +307,7 @@ class _CardPileState extends State<CardPile> {
             ),
           ),
         ),
-        ..._buildPile(widget.cardList, cardPileAlignment),
+        ..._buildPile(_cardList, cardPileAlignment),
       ],
     );
   }
