@@ -3,15 +3,19 @@ import "package:hifumi/entities/light_theme.dart";
 import "package:hifumi/entities/font_sizes.dart";
 import "package:hifumi/widgets/archipelago/island_container.dart";
 
+enum SecondButtonType { restart, clearDeck }
+
 /// A tiny reward for whosoever can make it to the end of a quiz.
 class QuizEndCard extends StatelessWidget {
-  final bool displayRestartButton;
-  final Function restartFunction;
+  final bool displaySecondButton;
+  final SecondButtonType? secondButtonType;
+  final Function? onSecondButton;
 
   const QuizEndCard({
     Key? key,
-    required this.displayRestartButton,
-    required this.restartFunction,
+    required this.displaySecondButton,
+    this.secondButtonType,
+    this.onSecondButton,
   }) : super(key: key);
 
   static const double _width = 200.0;
@@ -61,19 +65,19 @@ class QuizEndCard extends StatelessWidget {
                 ),
               ),
             ),
-            (displayRestartButton)
+            (displaySecondButton)
                 ? Align(
                     alignment: const Alignment(.0, -.3),
                     child: TextButton.icon(
                       style: ButtonStyle(
                         padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0)),
                       ),
-                      icon: const Icon(
-                        Icons.restart_alt,
+                      icon: Icon(
+                        (secondButtonType == SecondButtonType.restart) ? Icons.restart_alt : Icons.delete,
                         color: LightTheme.textColorDimmer,
                       ),
-                      label: const Text(
-                        "RESTART",
+                      label: Text(
+                        (secondButtonType == SecondButtonType.restart) ? "RESTART" : "RESET DECK",
                         style: TextStyle(
                           color: LightTheme.textColorDimmer,
                           fontWeight: FontWeight.bold,
@@ -82,13 +86,13 @@ class QuizEndCard extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        restartFunction.call();
+                        onSecondButton?.call();
                       },
                     ),
                   )
                 : Container(),
             Align(
-              alignment: (displayRestartButton) ? const Alignment(.0, .2) : Alignment.center,
+              alignment: (displaySecondButton) ? const Alignment(.0, .2) : Alignment.center,
               child: TextButton.icon(
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0)),

@@ -117,13 +117,15 @@ class _QuizPageState extends State<QuizPage> {
       );
     }
 
-    currentCard = _flashcards[0];
+    /// For now we can't know what the current card is.
+    /// (we may be in endless mode, in which case it probably won't be `_flashcards[0]`)
+    currentCard = null;
 
     deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
   }
 
   /// Jisho FTW c:
-  void openJisho(List<Flashcard> cardList) async {
+  void openJisho() async {
     // Safety check, do not attempt to open Jisho if we reached the end of the quiz
     if (currentCard is Flashcard) {
       final Uri url = Uri.parse(currentCard!.jishoURL);
@@ -185,7 +187,7 @@ class _QuizPageState extends State<QuizPage> {
               (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview())) ? null : handleDeckButton(targetDeckInsert);
               return KeyEventResult.handled;
             case LogicalKeyboardKey.arrowDown:
-              openJisho(_flashcards);
+              openJisho();
               return KeyEventResult.handled;
             case _:
               return KeyEventResult.ignored;
@@ -205,7 +207,7 @@ class _QuizPageState extends State<QuizPage> {
                   child: Container(),
                 ),
                 QuizComboButton(
-                  onPrimaryLeft: () => openJisho(_flashcards),
+                  onPrimaryLeft: () => openJisho(),
                   onPrimaryRight: () => handleDeckButton(targetDeckInsert),
                   onSecondaryRight: () => tray
                       .showTrayDialog(
