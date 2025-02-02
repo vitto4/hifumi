@@ -50,6 +50,8 @@ List<T> randomSubset<T>(Set<T> set_, int length) {
 /// Pile of flashcards displayed when taking a quiz.
 /// When one is swiped away, it is not removed from the pile, it just remains offscreen.
 /// Except not really, it will only stay as long as [D.RENDER_DEPTH_START] allows for it.
+///
+/// See also [_CardPileState]
 class CardPile extends StatefulWidget {
   final StorageInterface st;
 
@@ -77,6 +79,26 @@ class CardPile extends StatefulWidget {
   State<CardPile> createState() => _CardPileState();
 }
 
+/// Summary :
+///   All cards on display are stored in a buffer [_cardBuffer] of fixed size.
+///   When a card is swiped away, a new card is generated and added to the end of the buffer.
+///   The card on top of the pile is a fixed position around the middle of the buffer (see [topCardIndex]).
+///   To keep track of which card is which (needed to preserve states) even when there are two identical cards in the pile,
+///   a buffer [_syncedBuffer] is used.
+///
+///   * In normal mode, the [_cardBuffer] is just a sliding window [currentWindow] of [widget.cardList],
+///     that slides with [masterListCurrentIndex] as the user progresses through the pile.
+///   * In endless mode, works by keeping a set [_cardSet] of all possible flashcards (so initially just a copy of [widget.cardList]).
+///     When a card is swiped away, it may or may not be removed from [_cardSet].
+///     Either way, a new card is generated on the fly from [_cardSet] and added to the end of the buffer.
+///
+/// Example :
+///   When not in performance mode, [renderDepthStart] is `2` and [renderDepthEnd] is `3`.
+///   The [_cardBuffer] will look something like :
+///     `[topCard (already discarded), topCard (already discarded), currentCard, nextCard, nextCard, nextCard]`
+///
+///   When the end of the pile draws near, `null` values are progressively added to the [_cardBuffer], until it reaches its final state :
+///     `[topCard (already discarded), topCard (already discarded), null, null, null, null]`
 class _CardPileState extends State<CardPile> {
   late final CorrectSide correctSide;
 
