@@ -53,8 +53,11 @@ class _QuizPageState extends State<QuizPage> {
   /// Gotta hand it to the flutter team, they do an amazing job at documenting their framework !
   late FocusNode _node;
 
-  /// This, on the contrary of [targetDeckInsert], is pretty self-explanatory.
-  int currentCardIndex = 0;
+  /// Completion percentage of the quiz.
+  double quizProgress = .0;
+
+  /// The current [Flashcard] being displayed.
+  late Flashcard? currentCard;
 
   @override
   void initState() {
@@ -114,17 +117,18 @@ class _QuizPageState extends State<QuizPage> {
       );
     }
 
-    deckButtonAddOrRemove = !isInDeck(
-      _flashcards,
-      targetDeckInsert,
-    );
+    /// For now we can't know what the current card is.
+    /// (we may be in endless mode, in which case it probably won't be `_flashcards[0]`)
+    currentCard = null;
+
+    deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
   }
 
   /// Jisho FTW c:
-  void openJisho(List<Flashcard> cardList) async {
+  void openJisho() async {
     // Safety check, do not attempt to open Jisho if we reached the end of the quiz
-    if (currentCardIndex < cardList.length) {
-      final Uri url = Uri.parse(cardList[currentCardIndex].jishoURL);
+    if (currentCard is Flashcard) {
+      final Uri url = Uri.parse(currentCard!.jishoURL);
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       }
@@ -133,15 +137,15 @@ class _QuizPageState extends State<QuizPage> {
 
   /// Does the card currently on top of the deck represent a word that is in [deck] ?
   /// If yes, we may want to do something (turn the add to deck button red for example)
-  bool isInDeck(List<Flashcard> cardList, Deck deck) {
-    return (currentCardIndex < cardList.length)
-        ? widget.st.isInDeck(cardList[currentCardIndex].id, deck)
+  bool isInDeck(Deck deck) {
+    return (currentCard is Flashcard)
+        ? widget.st.isInDeck(currentCard!.id, deck)
         : false; // If we have already reached the end of the quiz, return false
   }
 
   /// This name is wayy too long, gives me VBA flashbacks ww
-  void updateDeckButtonAddOrRemove(List<Flashcard> cardList, Deck deck) {
-    if (currentCardIndex < cardList.length && widget.st.isInDeck(cardList[currentCardIndex].id, deck)) {
+  void updateDeckButtonAddOrRemove(Deck deck) {
+    if (currentCard is Flashcard && widget.st.isInDeck(currentCard!.id, deck)) {
       setState(() {
         deckButtonAddOrRemove = false;
       });
@@ -153,17 +157,17 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   /// What should happen when someone presses the add to/remove from deck button.
-  void handleDeckButton(List<Flashcard> cardList, Deck targetDeckInsert) {
-    if (currentCardIndex < cardList.length) {
-      if (widget.st.isInDeck(cardList[currentCardIndex].id, targetDeckInsert)) {
+  void handleDeckButton(Deck targetDeckInsert) {
+    if (currentCard is Flashcard) {
+      if (widget.st.isInDeck(currentCard!.id, targetDeckInsert)) {
         // If the word is in selected deck, remove it
-        widget.st.removeFromDeck(cardList[currentCardIndex].id, targetDeckInsert);
+        widget.st.removeFromDeck(currentCard!.id, targetDeckInsert);
         setState(() {
           deckButtonAddOrRemove = true;
         });
       } else {
         // Else, add it to the deck
-        widget.st.addToDeck(cardList[currentCardIndex].id, targetDeckInsert);
+        widget.st.addToDeck(currentCard!.id, targetDeckInsert);
         setState(() {
           deckButtonAddOrRemove = false;
         });
@@ -179,13 +183,11 @@ class _QuizPageState extends State<QuizPage> {
         if (event is KeyDownEvent && event is! KeyRepeatEvent) {
           switch (event.logicalKey) {
             case LogicalKeyboardKey.arrowUp:
-              // Don't do anything if we're in auto remove mode
-              (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview()))
-                  ? null
-                  : handleDeckButton(_flashcards, targetDeckInsert);
+              // Don't do anything if we're in endless mode
+              (widget.review && widget.st.readReviewEndlessMode()) ? null : handleDeckButton(targetDeckInsert);
               return KeyEventResult.handled;
             case LogicalKeyboardKey.arrowDown:
-              openJisho(_flashcards);
+              openJisho();
               return KeyEventResult.handled;
             case _:
               return KeyEventResult.ignored;
@@ -200,13 +202,13 @@ class _QuizPageState extends State<QuizPage> {
           SafeArea(
             child: Column(
               children: <Widget>[
-                QuizTopBar(percentage: currentCardIndex / _flashcards.length, source: quizSource),
+                QuizTopBar(percentage: quizProgress, source: quizSource),
                 Expanded(
                   child: Container(),
                 ),
                 QuizComboButton(
-                  onPrimaryLeft: () => openJisho(_flashcards),
-                  onPrimaryRight: () => handleDeckButton(_flashcards, targetDeckInsert),
+                  onPrimaryLeft: () => openJisho(),
+                  onPrimaryRight: () => handleDeckButton(targetDeckInsert),
                   onSecondaryRight: () => tray
                       .showTrayDialog(
                     context: context,
@@ -220,12 +222,12 @@ class _QuizPageState extends State<QuizPage> {
                         targetDeckInsert = widget.st.readTargetDeckInsert();
                       },
                     );
-                    updateDeckButtonAddOrRemove(_flashcards, targetDeckInsert);
+                    updateDeckButtonAddOrRemove(targetDeckInsert);
                   }),
                   selectedDeck: targetDeckInsert,
                   rightEnabled: deckButtonAddOrRemove,
                   config: (widget.review)
-                      ? (widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview()))
+                      ? (widget.st.readReviewEndlessMode())
                           ? ComboButtonConfig.onlyLeft
                           : ComboButtonConfig.standardWOnlyRemove
                       : ComboButtonConfig.standard,
@@ -239,11 +241,12 @@ class _QuizPageState extends State<QuizPage> {
               st: widget.st,
               cardList: _flashcards,
               review: widget.review,
-              onChange: (cardIndex) {
+              onChange: (card, progress) {
                 // Setting the state because we want the stateless progress bar to update.
                 setState(() {
-                  currentCardIndex = cardIndex;
-                  deckButtonAddOrRemove = !isInDeck(_flashcards, targetDeckInsert);
+                  currentCard = card;
+                  quizProgress = progress;
+                  deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
                 });
               },
             ),

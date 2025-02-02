@@ -30,6 +30,7 @@ class Defaults {
   static const CorrectSide CORRECT_SIDE = CorrectSide.r;
   static const Deck SEL_DECK_REVIEW = Deck.one;
   static const Deck SEL_DECK_INSERT = Deck.one;
+  static const bool ENDLESS = false;
   static const bool AUTOREMOVE = false;
   static const bool PERFORMANCE_MODE = false;
   static const bool HIGH_CONTRAST_MODE = false;
