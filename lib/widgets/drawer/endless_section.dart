@@ -92,7 +92,7 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
       backgroundColor: LightTheme.base,
       borderColor: LightTheme.baseAccent,
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 15.0, 30.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 15.0, 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -108,26 +108,26 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                 height: 10.0,
               ),
               const Text.rich(TextSpan(
-                text: "In endless mode, cards from the selected deck are ",
+                text: "Each word from the deck is ",
                 style: TextStyle(color: LightTheme.textColor),
                 children: <InlineSpan>[
                   TextSpan(
                     text: "endlessly",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: " presented until a correct answer is provided for each and every one. Incorrect answers "),
+                  TextSpan(text: " presented until a correct answer is given. Incorrect answers "),
                   TextSpan(
-                    text: "will not",
+                    text: "does not",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                    text: " decrease the word's score.\nAdditional feature ",
+                    text: " decrease the word's score.\n",
                   ),
                   TextSpan(
-                    text: "auto-remove",
+                    text: "Auto-remove",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: LightTheme.blue,
+                      // color: LightTheme.blue,
                     ),
                   ),
                   TextSpan(
@@ -145,26 +145,7 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                         child: FaIcon(FontAwesomeIcons.shieldHalved, color: LightTheme.textColorDim, size: FontSizes.base)),
                   ),
                   TextSpan(
-                    text: ").\n",
-                  ),
-                  WidgetSpan(
-                    child: SizedBox(
-                      height: 2 * FontSizes.base,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "Note —",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: LightTheme.blue,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                        " This is intended to help you quickly memorise exactly what you need and without having to worry about making mistakes. Once you reach the end of the quiz, you're all set !",
-                    style: TextStyle(
-                      color: LightTheme.textColorDim,
-                    ),
+                    text: ").",
                   ),
                 ],
               )),
@@ -222,6 +203,28 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                         child: autoremoveButtonContents,
                       ),
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Text.rich(TextSpan(
+                style: TextStyle(color: LightTheme.textColor),
+                children: <InlineSpan>[
+                  TextSpan(
+                    text: "Note —",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: LightTheme.blue,
+                    ),
+                  ),
+                  TextSpan(
+                    text:
+                        " This is intended to help you quickly memorise exactly what you need and without having to worry about making mistakes. Once you reach the end of the quiz, you're all set !",
+                    style: TextStyle(
+                      color: LightTheme.textColorDim,
+                    ),
+                  ),
+                ],
+              )),
             ],
           )),
     );
