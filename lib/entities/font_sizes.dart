@@ -2,6 +2,7 @@ class FontSizes {
   const FontSizes._();
 
   static const double small = 12.0;
+  static const double smallNitpick = 13.0;
   static const double base = 14.0;
   static const double nitpick = 15.0;
   static const double medium = 16.0;

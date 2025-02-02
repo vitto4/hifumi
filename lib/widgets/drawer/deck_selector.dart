@@ -185,12 +185,15 @@ class _DeckTileState extends State<DeckTile> {
                     color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer),
               ),
               const Spacer(),
-              Text(
-                widget.wordCount.toString(),
-                style: TextStyle(
-                    fontSize: FontSizes.base,
-                    fontWeight: FontWeight.bold,
-                    color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer),
+              Padding(
+                padding: const EdgeInsets.only(top: 3.0),
+                child: Text(
+                  widget.wordCount.toString(),
+                  style: TextStyle(
+                      fontSize: FontSizes.base,
+                      fontWeight: FontWeight.bold,
+                      color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer),
+                ),
               ),
               SizedBox(
                 width: 15.0,
@@ -217,12 +220,12 @@ class _DeckTileState extends State<DeckTile> {
                     ///
                     /// In the end plain text works just fine.
                     child: Text(
-                      "RESET",
+                      "CLEAR",
                       style: TextStyle(
                         color: widget.isSelected ? LightTheme.blue : LightTheme.red,
                         fontWeight: FontWeight.bold,
-                        fontSize: FontSizes.base,
-                        letterSpacing: .5,
+                        fontSize: FontSizes.smallNitpick,
+                        letterSpacing: .4,
                       ),
                     ),
                   ),

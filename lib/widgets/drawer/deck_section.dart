@@ -42,7 +42,7 @@ class DeckSection extends StatelessWidget {
                   ),
                   children: <InlineSpan>[
                     TextSpan(
-                      text: "reset button",
+                      text: "clear button",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(text: " twice to clear all words from the corresponding deck."),
