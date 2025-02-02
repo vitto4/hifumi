@@ -24,9 +24,8 @@ class Keyring {
   static const String CORRECT_SIDE = "correctSide";
   static const String TARGET_DECK_REVIEW = "targetDeckReview";
   static const String TARGET_DECK_INSERT = "targetDeckInsert";
-  static const String DECK_ONE_AUTOREMOVE = "deckOneAutoremove";
-  static const String DECK_TWO_AUTOREMOVE = "deckTwoAutoremove";
-  static const String DECK_THREE_AUTOREMOVE = "deckThreeAutoremove";
+  static const String ENDLESS = "endlessMode";
+  static const String AUTOREMOVE = "endlessAutoremove";
   static const String PERFORMANCE_MODE = "performanceMode";
   static const String HIGH_CONTRAST_MODE = "highContrastMode";
 }

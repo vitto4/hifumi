@@ -77,7 +77,7 @@ class QuizEndCard extends StatelessWidget {
                         color: LightTheme.textColorDimmer,
                       ),
                       label: Text(
-                        (secondButtonType == SecondButtonType.restart) ? "RESTART" : "RESET DECK",
+                        (secondButtonType == SecondButtonType.restart) ? "RESTART" : "CLEAR DECK",
                         style: TextStyle(
                           color: LightTheme.textColorDimmer,
                           fontWeight: FontWeight.bold,

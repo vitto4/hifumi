@@ -3,7 +3,7 @@ import "package:hifumi/entities/entities_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/archipelago_barrel.dart";
 
-/// Used only when the [FlatIslandContainer] isn't in compact mode.
+/// Used only when the [IslandContainer] isn't in compact mode.
 /// Otherwise, because of [smartExpand] and containers forcing tight constraints, this will be disregarded.
 const double _ORDER_BUTTON_WIDTH = 190.0;
 

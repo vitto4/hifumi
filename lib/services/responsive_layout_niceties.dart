@@ -140,8 +140,8 @@ bool getDeckModeSegmentedSelectorCompactMode(BuildContext context) {
   return (getScreenDimensions(context).width < 560) ? true : false;
 }
 
-bool getAutoRemoveSelectorCompactMode(BuildContext context) {
-  return (getScreenDimensions(context).width < 650) ? true : false;
+bool getEndlessSelectorCompactMode(BuildContext context) {
+  return (getScreenDimensions(context).width < 570) ? true : false;
 }
 
 double getScrollDelayHeight(BuildContext context) {

@@ -27,19 +27,24 @@ extension Window<T> on List<T> {
 
 /// Returns a random subset of [set_] with [length] elements.
 ///
-/// If [length] is greater than the length of [set_], returns the whole set and additional (random) elements.
+/// If [length] is greater than the length of [set_], returns the whole set and additional elements from the set (in order).
 /// (in which case repetitions are allowed)
 List<T> randomSubset<T>(Set<T> set_, int length) {
   Random random = Random();
   List<T> result = set_.toList()..shuffle(random);
 
-  return result
-      .take(length)
-      .followedBy(List.generate(
-        max(0, length - set_.length),
-        (_) => set_.elementAt(random.nextInt(set_.length)),
-      ))
-      .toList();
+  if (length > set_.length) {
+    return set_
+        .followedBy(
+          List.generate(
+            length - set_.length,
+            (int i) => set_.elementAt(i % (set_.length)),
+          ),
+        )
+        .toList();
+  } else {
+    return result.take(length).toList();
+  }
 }
 
 /// Pile of flashcards displayed when taking a quiz.
@@ -120,7 +125,7 @@ class _CardPileState extends State<CardPile> {
 
     /// Assign [endlessDeck] if this is a review in endless mode. Else make it null.
     /// This is because when endless mode is enabled, we may have to remove cards from said deck.
-    endlessDeck = (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview())) ? widget.st.readTargetDeckReview() : null;
+    endlessDeck = (widget.review && widget.st.readReviewEndlessMode()) ? widget.st.readTargetDeckReview() : null;
 
     // If we are in endless mode
     if (endlessDeck is Deck) {
@@ -129,14 +134,19 @@ class _CardPileState extends State<CardPile> {
       _cardBuffer =
           CircularBuffer<Flashcard?>.of(randomSubset(_cardSet, renderDepthEnd + 1).cast<Flashcard?>(), renderDepthStart + renderDepthEnd + 1);
       // Check if auto-remove mode is enabled
-      autoRemove = widget.st.readDeckAutoRemove(endlessDeck!);
+      autoRemove = widget.st.readEndlessAutoRemove();
     } else {
       // Set the fixed length of the buffer, and populate it with the first cards to be displayed
       _cardBuffer = CircularBuffer<Flashcard?>.of(widget.cardList.window(0, renderDepthStart, renderDepthEnd), renderDepthStart + renderDepthEnd + 1);
+      // Make sure the initial length of [_cardBuffer] is the same as when in endless mode (i.e. active card + elements, either cards or null)
+      // Will make the whole thing easier to work with
+      for (int i = 0; i < max(0, renderDepthEnd + 1 - widget.cardList.window(0, renderDepthStart, renderDepthEnd).length); i++) {
+        _cardBuffer.add(null);
+      }
     }
 
     // Also generate the [_syncedBuffer], while keeping it of the same length as [_cardBuffer]
-    _syncedBuffer = CircularBuffer<int>.of(List.generate(renderDepthEnd + 1, (i) => i), renderDepthStart + renderDepthEnd + 1);
+    _syncedBuffer = CircularBuffer<int>.of(List.generate(_cardBuffer.length, (i) => i), renderDepthStart + renderDepthEnd + 1);
 
     // Ping the quiz page with the [currentCard] so it knows what's displayed
     WidgetsBinding.instance.addPostFrameCallback((_) => widget.onChange.call(currentCard, currentProgress));
@@ -144,7 +154,9 @@ class _CardPileState extends State<CardPile> {
 
   /// Index of the card displayed on top of the pile.
   /// It is constant, except when the [_cardBuffer] has yet to be filled.
-  int get topCardIndex => (_cardBuffer.isFilled) ? renderDepthStart : _cardBuffer.length - renderDepthEnd - 1;
+  int get topCardIndex => (_cardBuffer.isFilled)
+      ? renderDepthStart
+      : max(0, _cardBuffer.length - renderDepthEnd - 1); // It shouldn't be negative anyway if we're in endless mode
 
   /// In normal mode, the window of [widget.cardList] containing all cards to be rendered at the moment.
   List<Flashcard> get currentWindow => widget.cardList.window(masterListCurrentIndex, renderDepthStart, renderDepthEnd);
@@ -163,9 +175,17 @@ class _CardPileState extends State<CardPile> {
   double get currentProgress =>
       (endlessDeck is! Deck) ? masterListCurrentIndex / widget.cardList.length : 1 - _cardSet.length / widget.cardList.length;
 
-  /// In endless mode, corresponds to the three [_nextCards].
+  /// In endless mode, corresponds to the [_nextCards].
   /// Used when [generateNextCard], to try and not have the same card back to back in the pile.
-  Set<Flashcard?> get currentExclusionSet => _cardBuffer.sublist(topCardIndex + 1, topCardIndex + 1 + renderDepthEnd).toSet();
+  ///
+  /// * When the length of [_cardSet] becomes too small to completely fill [renderDepthEnd] (i.e. less than or equal to [renderDepthEnd]),
+  ///   only the last `n` [_nextCards] are excluded, where `n` is one less than there are cards in `_cardSet`.
+  ///   This is so that [currentAllowedSubset] returns only one card, being the farthest one from [currentCard].
+  Set<Flashcard?> get currentExclusionSet => (_cardSet.length <= renderDepthEnd)
+      ? _cardBuffer.sublist(min(_cardBuffer.length - (_cardSet.length - 1), _cardBuffer.length)).toSet()
+      : _cardBuffer
+          .sublist(topCardIndex + 1, topCardIndex + 1 + renderDepthEnd)
+          .toSet(); // `topCardIndex + 1 + renderDepthEnd` is exactly the same as `_cardBuffer.length`
 
   /// In endless mode, the allowed subset to draw cards from when [generateNextCard].
   /// See [currentExclusionSet].
@@ -173,7 +193,7 @@ class _CardPileState extends State<CardPile> {
 
   /// Clears matching cards from the buffer and regenerates new ones from a given starting index.
   /// Effectively shifts non-matching cards to the beginning and fills the remaining positions with randomly selected cards.
-  void clearAndRegenerate(CircularBuffer<Flashcard?> buffer, Flashcard? toBeCleared, int startIndex) {
+  void clearAndReplace(CircularBuffer<Flashcard?> buffer, Flashcard? toBeCleared, int startIndex) {
     int totalLength = buffer.length - startIndex;
 
     // List from [startIndex] to end of buffer
@@ -199,10 +219,13 @@ class _CardPileState extends State<CardPile> {
   }
 
   /// Generates the next card and inserts it into the [_cardBuffer].
-  /// * In endless mode, the card is drawn from either [currentAllowedSubset] or [_cardSet]
-  /// * In normal mode, the card is obtained from [widget.cardList] using [windowPeak]
+  /// * In endless mode, the card is drawn from either [currentAllowedSubset] or [_cardSet].
+  ///   In that case, it stops being random when `_cardSet.length <= renderDepthEnd + 1`.
+  ///   This is so that the user doesn't get the same card multiple times in a row.
+  /// * In normal mode, the card is obtained from [widget.cardList] using [windowPeak].
   void generateNextCard() {
     if (endlessDeck is Deck) {
+      // Checking just to be sure, the allowed set should never be empty because of the new logic in [currentExclusionSet] so this should be removed eventually
       Set<Flashcard> workingSet = (currentAllowedSubset.isEmpty) ? _cardSet : currentAllowedSubset;
       Flashcard? card = (workingSet.isNotEmpty) ? workingSet.elementAt(Random().nextInt(workingSet.length)) : null;
       _cardBuffer.add(card);
@@ -211,6 +234,7 @@ class _CardPileState extends State<CardPile> {
     }
 
     /// Keep the buffer in sync. We'll cheat a little bit and use [masterListCurrentIndex] to make sure we add the right [int].
+    /// This works only because we fill the end of [_cardBuffer] over a length [renderDepthEnd] with [null] if necessary.
     _syncedBuffer.add((masterListCurrentIndex + renderDepthEnd + 1) % (renderDepthStart + renderDepthEnd + 1));
   }
 
@@ -248,11 +272,15 @@ class _CardPileState extends State<CardPile> {
     if (endlessDeck is Deck) {
       // If we're in endless mode, remove the card from [_cardSet]
       _cardSet.remove(currentCard);
+      // Remove it from the deck as well if auto-remove is enabled
+      if (autoRemove)
+        widget.st
+            .removeFromDeck(currentCard?.id ?? [0, 0], endlessDeck!); // Hacky fallback here but it should work and it feels nicer than plain old `!`
       // And remove all its (potential) copies currently rendered as [_nextCards]
-      clearAndRegenerate(_cardBuffer, currentCard, topCardIndex + 1);
+      clearAndReplace(_cardBuffer, currentCard, topCardIndex + 1);
     } else {
       // If we're in normal mode, nothing more to do than update the card's score
-      widget.st.writeWordScore(currentCard!.id, true);
+      widget.st.writeWordScore(currentCard?.id ?? [0, 0], true);
     }
 
     // Insert the next card into the buffer
@@ -272,7 +300,7 @@ class _CardPileState extends State<CardPile> {
       // Nothing is done as of right now.
       // I'll leave it like this for ̶f̶u̶t̶u̶r̶e̶ ̶u̶s̶e forever, hopefully it's optimized away by the compiler.
     } else {
-      widget.st.writeWordScore(currentCard!.id, false);
+      widget.st.writeWordScore(currentCard?.id ?? [0, 0], false);
     }
 
     // Insert the next card into the buffer
@@ -481,7 +509,7 @@ class _CardPileState extends State<CardPile> {
           alignment: cardPileAlignment,
           child: PleaseScaleMe(
             child: QuizEndCard(
-              displaySecondButton: !widget.review || (endlessDeck is Deck),
+              displaySecondButton: !widget.review || (endlessDeck is Deck && !autoRemove),
               onSecondButton: (endlessDeck is Deck)
                   ? () {
                       widget.st.clearDeck(endlessDeck!);

@@ -36,7 +36,7 @@ class DSInterface {
     this._allLessonNumbers = this._getLessonNumbers;
     this._allWordIDs = this._getAllWordIDs;
     this._allWords = this._getAllWords;
-    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words. (${this.bookOneEdition}, ${this.bookTwoEdition})");
+    print("[Loading] Dataset initialized with ${this._allWordIDs.length} words (1: ${this.bookOneEdition}, 2: ${this.bookTwoEdition}).");
   }
 
   /* ------------------------------------ . ----------------------------------- */

@@ -59,7 +59,7 @@ class StorageInterface {
 
   Future<void> init() async {
     this._sp = await SharedPreferences.getInstance();
-    print("[Loading] Shared preferences initialized !");
+    print("[Loading] Shared preferences initialized.");
   }
 
   /* ---------------------------------- Utils --------------------------------- */
@@ -263,14 +263,24 @@ class StorageInterface {
     this._sp.setStringList(deck.key, []);
   }
 
-  /// Is the auto-remove feature enabled on [deck] ?
-  bool readDeckAutoRemove(Deck deck) {
-    return this._sp.getBool(deck.autoremoveKey) ?? D.AUTOREMOVE;
+  /// Is endless mode enabled for reviews ?
+  bool readReviewEndlessMode() {
+    return this._sp.getBool(K.ENDLESS) ?? D.ENDLESS;
   }
 
-  /// Enable or disable auto-remove feature on [deck].
-  void writeDeckAutoRemove(Deck deck, bool value) {
-    this._sp.setBool(deck.autoremoveKey, value);
+  /// Enable or disable endless mode for reviews.
+  void writeReviewEndlessMode(bool value) {
+    this._sp.setBool(K.ENDLESS, value);
+  }
+
+  /// Is the auto-remove feature enabled for endless mode ?
+  bool readEndlessAutoRemove() {
+    return this._sp.getBool(K.AUTOREMOVE) ?? D.AUTOREMOVE;
+  }
+
+  /// Enable or disable auto-remove feature for endless mode.
+  void writeEndlessAutoRemove(bool value) {
+    this._sp.setBool(K.AUTOREMOVE, value);
   }
 
   /// Add [lesson] to the (stored) list of selected lessons (in the main menu).
@@ -703,7 +713,19 @@ class StorageInterface {
 
           /// Must be : [bool]
           /// !>> delete entry
-          case K.DECK_ONE_AUTOREMOVE || K.DECK_TWO_AUTOREMOVE || K.DECK_THREE_AUTOREMOVE:
+          case K.ENDLESS:
+            {
+              fix() {
+                removeFn(key);
+                // print("removed $key : $value");
+              }
+
+              if (value is! bool) fix.call();
+            }
+
+          /// Must be : [bool]
+          /// !>> delete entry
+          case K.AUTOREMOVE:
             {
               fix() {
                 removeFn(key);

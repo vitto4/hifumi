@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hifumi/services/storage_interface.dart";
-import "package:hifumi/widgets/drawer/auto_remove_section.dart";
+import "package:hifumi/widgets/drawer/endless_section.dart";
 import "package:hifumi/widgets/drawer/review_explanation_section.dart";
 import "package:hifumi/widgets/drawer/word_filter_section.dart";
 import "package:hifumi/widgets/drawer/word_count_section.dart";
@@ -66,7 +66,7 @@ class ReviewQuickSettings extends StatelessWidget {
         const SizedBox(
           height: 20.0,
         ),
-        AutoRemoveSection(st: st),
+        EndlessModeSection(st: st),
         const SizedBox(
           height: 20.0,
         ),

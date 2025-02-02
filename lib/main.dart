@@ -3,8 +3,8 @@ import "package:hifumi/entities/light_theme.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/pages/pages_barrel.dart";
 
-/// Hello there ! If you've decided to read the code for this app, I'll be your guide throughout your journey.
-/// This will be unpleasant at times, but worry not, I'll be there to make you even more confused. You're welcome.
+/// Hello there ! If you've decided to read the code for this app, I'll be your guide throughout this journey.
+/// It will be unpleasant at times, but worry not, I'll be there to make you even more confused. You're welcome (:
 void main() => runApp(
       MaterialApp(
         title: "hifumi",

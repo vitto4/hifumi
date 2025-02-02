@@ -183,8 +183,8 @@ class _QuizPageState extends State<QuizPage> {
         if (event is KeyDownEvent && event is! KeyRepeatEvent) {
           switch (event.logicalKey) {
             case LogicalKeyboardKey.arrowUp:
-              // Don't do anything if we're in auto remove mode
-              (widget.review && widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview())) ? null : handleDeckButton(targetDeckInsert);
+              // Don't do anything if we're in endless mode
+              (widget.review && widget.st.readReviewEndlessMode()) ? null : handleDeckButton(targetDeckInsert);
               return KeyEventResult.handled;
             case LogicalKeyboardKey.arrowDown:
               openJisho();
@@ -227,7 +227,7 @@ class _QuizPageState extends State<QuizPage> {
                   selectedDeck: targetDeckInsert,
                   rightEnabled: deckButtonAddOrRemove,
                   config: (widget.review)
-                      ? (widget.st.readDeckAutoRemove(widget.st.readTargetDeckReview()))
+                      ? (widget.st.readReviewEndlessMode())
                           ? ComboButtonConfig.onlyLeft
                           : ComboButtonConfig.standardWOnlyRemove
                       : ComboButtonConfig.standard,
