@@ -50,6 +50,7 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
     return _Scaffold(
       one: DeckTile(
         deck: Deck.one,
+        cardCount: widget.st.readDeck(Deck.one).length,
         selectedBackgroundColor: LightTheme.blueLighter,
         selectedBorderColor: LightTheme.blueLight,
         selectedTextColor: LightTheme.blue,
@@ -65,6 +66,7 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
       ),
       two: DeckTile(
         deck: Deck.two,
+        cardCount: widget.st.readDeck(Deck.two).length,
         selectedBackgroundColor: LightTheme.blueLighter,
         selectedBorderColor: LightTheme.blueLight,
         selectedTextColor: LightTheme.blue,
@@ -80,6 +82,7 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
       ),
       three: DeckTile(
         deck: Deck.three,
+        cardCount: widget.st.readDeck(Deck.three).length,
         selectedBackgroundColor: LightTheme.blueLighter,
         selectedBorderColor: LightTheme.blueLight,
         selectedTextColor: LightTheme.blue,
@@ -131,15 +134,16 @@ class _Scaffold extends StatelessWidget {
 /// Tile used to select a deck. Includes a reset button that requires double-tap confirmation.
 class DeckTile extends StatefulWidget {
   final Deck deck;
+  final int cardCount;
 
   final Color selectedBackgroundColor;
   final Color selectedBorderColor;
   final Color selectedTextColor;
 
   final bool isSelected;
+  final bool showClearButton;
   final Function onTapped;
   final Function onReset;
-  final bool showClearButton;
 
   const DeckTile({
     Key? key,
@@ -151,6 +155,7 @@ class DeckTile extends StatefulWidget {
     required this.onTapped,
     required this.onReset,
     required this.showClearButton,
+    required this.cardCount,
   }) : super(key: key);
 
   @override
@@ -180,6 +185,16 @@ class _DeckTileState extends State<DeckTile> {
                     color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer),
               ),
               const Spacer(),
+              Text(
+                widget.cardCount.toString(),
+                style: TextStyle(
+                    fontSize: FontSizes.base,
+                    fontWeight: FontWeight.bold,
+                    color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer),
+              ),
+              SizedBox(
+                width: 15.0,
+              ),
               if (widget.showClearButton)
                 IslandDoubleTapButton(
                   timerDuration: const Duration(seconds: 3),
