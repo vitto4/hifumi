@@ -335,7 +335,7 @@ class _SettingsState extends State<Settings> {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
                       builder: (BuildContext context) => const LicensePage(
-                        applicationVersion: AppInfo.version,
+                        applicationVersion: "${AppInfo.version}+${AppInfo.commitHash}",
                         applicationIcon: AppLogo(),
                         applicationLegalese: "Released under ${AppInfo.license}",
                       ),

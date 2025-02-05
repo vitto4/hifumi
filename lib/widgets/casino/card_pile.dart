@@ -537,7 +537,7 @@ class _CardPileState extends State<CardPile> {
                       widget.st.clearDeck(endlessDeck!);
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackToast.bar(text: "Deck ${endlessDeck!.display} reset successfully", confused: false),
+                        SnackToast.bar(text: "Deck ${endlessDeck!.display} cleared successfully", confused: false),
                       );
                     }
                   : reset,

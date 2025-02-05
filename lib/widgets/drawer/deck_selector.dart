@@ -39,7 +39,7 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
     widget.st.clearDeck.call(deck);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackToast.bar(text: "Deck ${deck.display} reset successfully", confused: false),
+      SnackToast.bar(text: "Deck ${deck.display} cleared successfully", confused: false),
     );
   }
 
