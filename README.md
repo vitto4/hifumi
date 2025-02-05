@@ -154,7 +154,6 @@ I might have got a little carried away when deciding on folder names, so here's 
 
   (fancy reaching out ? claim your [Free OSINT Technique™](https://cheatsheet.haax.fr/open-source-intelligence-osint/platforms-hunting/github/#finding-user-e-mail))
 - The *dataset* from which all words are sourced lives on GitHub as a separate project : [`MinnaNoDS`](https://github.com/vitto4/MinnaNoDS).
-- The *hifumi* logotype uses the splendid [ふわりとくるり](https://flopdesign.booth.pm/items/6409294) font by **フロップデザイン** ; they have so many great typefaces can't recommend enough !
 - Files starting with an `@` symbol are definitions of basic concepts and building blocks for the app.
   I wanted them grouped together. It may not be pretty, but it works c:
 - To save on asset size, fonts have been subsetted.
