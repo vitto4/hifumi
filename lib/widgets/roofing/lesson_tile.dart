@@ -92,7 +92,10 @@ class LessonTileState extends State<LessonTile> {
   void displayWordList() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LessonDetail(lesson: widget.lesson, ds: widget.ds, st: widget.st)),
+      MaterialPageRoute(
+        builder: (context) => LessonDetail(lesson: widget.lesson, ds: widget.ds, st: widget.st),
+        barrierDismissible: true,
+      ),
     ).then((_) {
       updateScore();
     });

@@ -3,8 +3,8 @@ import "package:hifumi/entities/light_theme.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/pages/pages_barrel.dart";
 
-/// Hello there ! If you've decided to read the code for this app, I'll be your guide throughout this journey.
-/// It will be unpleasant at times, but worry not, I'll be there to make you even more confused. You're welcome (:
+/// Hello there ! Looks like you've decided to read through the code for this app, so let me be your guide on this journey.
+/// It will be unpleasant at times, but worry not, I'll be there to perplex you even further. You're welcome (:
 void main() => runApp(
       MaterialApp(
         title: "hifumi",
@@ -55,17 +55,22 @@ void main() => runApp(
                       ));
             case '/quiz':
               return MaterialPageRoute(
-                  builder: (context) => QuizPage(
-                        st: (settings.arguments as Map)["st"] as StorageInterface,
-                        ds: (settings.arguments as Map)["ds"] as DSInterface,
-                        review: (settings.arguments as Map)["review"] as bool,
-                      ));
+                builder: (context) => QuizPage(
+                  st: (settings.arguments as Map)["st"] as StorageInterface,
+                  ds: (settings.arguments as Map)["ds"] as DSInterface,
+                  review: (settings.arguments as Map)["review"] as bool,
+                ),
+              );
             case '/settings':
               return MaterialPageRoute(
-                  builder: (context) => Settings(
-                        st: (settings.arguments as Map)["st"] as StorageInterface,
-                        ds: (settings.arguments as Map)["ds"] as DSInterface,
-                      ));
+                builder: (context) => Settings(
+                  st: (settings.arguments as Map)["st"] as StorageInterface,
+                  ds: (settings.arguments as Map)["ds"] as DSInterface,
+                ),
+                // This page may be dismissed by pressing `Esc`
+                // See https://github.com/flutter/flutter/issues/132138
+                barrierDismissible: true,
+              );
             default:
               return MaterialPageRoute(builder: (context) => const Loading());
           }

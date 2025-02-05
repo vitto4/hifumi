@@ -179,6 +179,7 @@ class _SettingsState extends State<Settings> {
                           Navigator.of(context).pop();
                         },
                       ),
+                      barrierDismissible: true,
                     ),
                   );
                 },
@@ -202,6 +203,7 @@ class _SettingsState extends State<Settings> {
                           Navigator.of(context).pop();
                         },
                       ),
+                      barrierDismissible: true,
                     ),
                   );
                 },
@@ -220,6 +222,7 @@ class _SettingsState extends State<Settings> {
                           Navigator.of(context).pushNamedAndRemoveUntil("/", (Route<dynamic> _) => false);
                         },
                       ),
+                      barrierDismissible: true,
                     ),
                   );
                 },
@@ -339,6 +342,7 @@ class _SettingsState extends State<Settings> {
                         applicationIcon: AppLogo(),
                         applicationLegalese: "Released under ${AppInfo.license}",
                       ),
+                      barrierDismissible: true,
                     ),
                   );
                 },
@@ -352,6 +356,7 @@ class _SettingsState extends State<Settings> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => const Credits(),
+                      barrierDismissible: true,
                     ),
                   );
                 },
