@@ -156,7 +156,7 @@ class _HomeState extends State<Home> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackToast.bar(
-          text: "Deck ${targetDeck.display} is empty.",
+          text: "Deck ${targetDeck.display} is empty",
         ),
       );
     }
