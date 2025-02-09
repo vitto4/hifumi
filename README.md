@@ -1,7 +1,7 @@
 <div align="center">
-  <a href="https://vitto4.github.com/hifumi">
+  <picture>
     <img alt="hifumi" src="./assets/logo.svg?raw=true" width="350px" height="auto">
-  </a>
+  </picture>
 </div>
 
 <p align="center">
