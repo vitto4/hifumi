@@ -1,6 +1,4 @@
 import "dart:math";
-import "dart:ui";
-import "package:flutter/material.dart";
 import "package:hifumi/entities/entities_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/casino/card_element.dart";
@@ -92,21 +90,14 @@ List<List<CardElement>> cardElementBuilder(DSInterface ds, UserPrefs userPrefere
 ///
 /// (it's mildly annoying how I can't figure out a way to arrange the function's code in a way that doesn't look bad haha)
 List<Flashcard> dealCardsFromLessons(StorageInterface st, DSInterface ds, List<LessonNumber> lessons, int cardCount) {
-  final random = Random();
   final UserPrefs userPreferences = st.readUserPrefs();
   final List<Word> wordPool = ds.bakeWordPoolFromLessons(lessons, wordCount: cardCount, pruneEditions: true);
-  final List<Color> colorList = (st.readHighContrastMode() ? D.CARD_COLORS_HIGH_CONTRAST : D.CARD_COLORS);
-
   List<Flashcard> output = [];
 
   for (Word word in wordPool) {
     final List<List<CardElement>> elements = cardElementBuilder(ds, userPreferences, word);
     output.add(
       Flashcard(
-        color: colorList[random.nextInt(colorList.length)],
-        angle: D.CARD_ANGLES[random.nextInt(D.CARD_ANGLES.length)],
-        positionOffset: Offset((random.nextInt(D.CARD_OFFSET_MAX - D.CARD_OFFSET_MIN) - D.CARD_OFFSET_MAX).toDouble(),
-            (random.nextInt(D.CARD_OFFSET_MAX - D.CARD_OFFSET_MIN) - D.CARD_OFFSET_MAX).toDouble()),
         id: word.id,
         jishoURL: "https://jisho.org/search/${word.kanji}",
         frontContent: elements[0],
@@ -135,20 +126,12 @@ List<Flashcard> dealCardsFromIDs(StorageInterface st, DSInterface ds, List<WordI
   final random = Random();
   final UserPrefs userPreferences = st.readUserPrefs();
   final List<Word> wordPool = ds.bakeWordPoolFromID(idList);
-  final List<Color> colorList = (st.readHighContrastMode() ? D.CARD_COLORS_HIGH_CONTRAST : D.CARD_COLORS);
-
   List<Flashcard> output = [];
 
   for (var word in wordPool) {
     final List<List<CardElement>> elements = cardElementBuilder(ds, userPreferences, word);
     output.add(
       Flashcard(
-        color: colorList[random.nextInt(colorList.length)],
-        angle: D.CARD_ANGLES[random.nextInt(D.CARD_ANGLES.length)],
-        positionOffset: Offset(
-          (random.nextInt(D.CARD_OFFSET_MAX - D.CARD_OFFSET_MIN) - D.CARD_OFFSET_MAX).toDouble(),
-          random.nextInt((D.CARD_OFFSET_MAX - D.CARD_OFFSET_MIN) - D.CARD_OFFSET_MAX).toDouble(),
-        ),
         id: word.id,
         jishoURL: "https://jisho.org/search/${word.kanji}",
         frontContent: elements[0],

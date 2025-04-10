@@ -51,7 +51,7 @@ class _DeckOrderSectionState extends State<DeckOrderSection> {
               height: 10.0,
             ),
             const Text(
-              "Order in which words will be drawn from the deck.",
+              "Order in which words will be drawn from the deck.\nDoes not apply to endless mode.",
               style: TextStyle(
                 color: LightTheme.textColor,
                 fontSize: FontSizes.base,

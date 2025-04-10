@@ -89,8 +89,8 @@ class Defaults {
 
   /// Same as above, but with only those that contrast well with white (text).
   static const List<Color> CARD_COLORS_HIGH_CONTRAST = [
-    Color.fromARGB(255, 117, 50, 231),
     Color.fromARGB(255, 61, 119, 221),
+    Color.fromARGB(255, 117, 50, 231),
     Color.fromARGB(255, 45, 119, 112),
     Color.fromARGB(255, 150, 41, 88),
     Color.fromARGB(255, 125, 137, 53), // « Mossy Forest Tree Stump » @colornames.org
