@@ -147,7 +147,7 @@ I might have got a little carried away when deciding on folder names, so here's 
 
 ## 🔖 Notes
 
-- I have come to the realisation that UI/UX design is very much not easy (ᴗ.ᴗ). Thus, I've « borrowed » the design language from a suspiciously intimidating Owl. <br>
+- I have come to the realisation that UI/UX design is very much not easy (ᴗ.ᴗ). Thus, I've « borrowed » the design language from a suspiciously intimidating owl. <br>
   > Dear Duo, <br>
   > Please don't come for me, I did my lesson today, and if the borrowing isn't fine I'll happily comply ! <br>
   > Thankies :3

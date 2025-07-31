@@ -39,9 +39,9 @@ void main() => runApp(
           /// (escaping bugs for extra good luck)
           /// (yes, we're doing dad jokes here)
           switch (settings.name) {
-            case "/":
+            case '/':
               return MaterialPageRoute(builder: (context) => const Loading());
-            case "/onboarding":
+            case '/onboarding':
               return MaterialPageRoute(
                   builder: (context) => OnboardingPage(
                         st: (settings.arguments as Map)["st"] as StorageInterface,

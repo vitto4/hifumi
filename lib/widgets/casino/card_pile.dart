@@ -67,7 +67,7 @@ class CardPile extends StatefulWidget {
 ///   * In normal mode, the [_cardBuffer] is just a sliding window [currentWindow] of [widget.cardList],
 ///     that slides with [masterListCurrentIndex] as the user progresses through the pile.
 ///   * In endless mode, works by keeping a set [_cooledCardSet] of all possible flashcards (so initially just a copy of [widget.cardList]).
-///     When a card is swiped away, it may or may not be removed from [_cooledCardSet].
+///     When a card is swiped away, it may or may not be removed from [_cooledCardSet] (this is user-controlled).
 ///     Either way, a new card is generated on the fly from [_cooledCardSet] and added to the end of the buffer.
 ///
 /// Example :
