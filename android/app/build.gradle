@@ -22,7 +22,8 @@ def isCI = System.getenv('CI') != null
 android {
     namespace = "org.hifumi.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion "28.2.13676358"                  // See : https://github.com/flutter/flutter/issues/139427#issuecomment-2859804111
+                                                // TODO When fixed, switch back to `flutter.ndkVersion`
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

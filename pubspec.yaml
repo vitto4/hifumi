@@ -21,7 +21,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.1.0
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,17 +34,17 @@ dependencies:
     sdk: flutter
 
   yaml: ^3.1.2
-  shared_preferences: ^2.2.1
-  url_launcher: ^6.1.14
-  file_picker: ^8.1.6                 # https://github.com/miguelpruivo/flutter_file_picker/issues/1643#issuecomment-2546108629
-  file_saver: ^0.2.14
-  flutter_svg: ^2.0.10+1
+  shared_preferences: ^2.5.3
+  url_launcher: ^6.3.2
+  file_picker: ^10.2.1                # https://github.com/miguelpruivo/flutter_file_picker/issues/1643#issuecomment-2546108629
+  file_saver: ^0.3.1
+  flutter_svg: ^2.2.0
   chiclet: ^1.2.0                     # Buttons
   flip_card: ^0.7.0                   # Flashcards flip animation
   modal_bottom_sheet: ^3.0.0          # Sheet dialogs
   flutter_settings_ui: ^3.0.0         # Settings menu
   font_awesome_flutter: ^10.7.0       # GitHub icon
-  assorted_layout_widgets: ^10.0.4    # GlobalValueKey
+  assorted_layout_widgets: ^11.0.0    # GlobalValueKey
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -60,8 +60,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
-  flutter_launcher_icons: ^0.14.2     # Generate app icons
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4     # Generate app icons
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
