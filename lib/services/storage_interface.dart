@@ -822,13 +822,13 @@ class StorageInterface {
         ? await FileSaver.instance.saveFile(
             name: "data",
             bytes: bytes,
-            ext: "json",
+            fileExtension: "json",
             mimeType: MimeType.json,
           )
         : await FileSaver.instance.saveAs(
             name: "data",
             bytes: bytes,
-            ext: "json",
+            fileExtension: "json",
             mimeType: MimeType.json,
           );
   }

@@ -132,7 +132,9 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
     final Offset unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
     final double unitVelocity = unitsPerSecond.distance;
 
-    const SpringDescription spring = SpringDescription(mass: 30.0, stiffness: 1.0, damping: 1.0);
+    // Breaking changes in Flutter 3.32, previous values were m = 30.0 ; (c,k) = 1.0.
+    // See : https://docs.flutter.dev/release/breaking-changes/spring-description-underdamped
+    const SpringDescription spring = SpringDescription(mass: 1.0, stiffness: 225.0, damping: 30.0);
 
     final simulation = SpringSimulation(
       spring,
