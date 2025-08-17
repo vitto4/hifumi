@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
-import "package:hifumi/services/responsive_layout_niceties.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
+import "package:hifumi/services/responsive_breakpoints.dart";
 import "package:chiclet/chiclet.dart";
 
 enum ComboButtonConfig {
@@ -36,43 +36,43 @@ class ComboButtonScaffold extends StatelessWidget {
 
     return switch (config) {
       ComboButtonConfig.standard || ComboButtonConfig.standardWOnlyRemove => Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-            Expanded(
-              flex: buttonsFlex,
-              child: this.leftButton,
-            ),
-            Expanded(
-              flex: getMainMenuComboButtonCompactMode(context) ? 2 : 1,
-              child: Container(),
-            ),
-            Expanded(
-              flex: buttonsFlex,
-              child: this.rightButton,
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-          ],
-        ),
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+          Expanded(
+            flex: buttonsFlex,
+            child: this.leftButton,
+          ),
+          Expanded(
+            flex: getMainMenuComboButtonCompactMode(context) ? 2 : 1,
+            child: Container(),
+          ),
+          Expanded(
+            flex: buttonsFlex,
+            child: this.rightButton,
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+        ],
+      ),
       ComboButtonConfig.onlyLeft => Row(
-          children: <Widget>[
-            const Spacer(
-              flex: 1,
-            ),
-            Expanded(
-              flex: 3,
-              child: this.leftButton,
-            ),
-            const Spacer(
-              flex: 1,
-            ),
-          ],
-        ),
+        children: <Widget>[
+          const Spacer(
+            flex: 1,
+          ),
+          Expanded(
+            flex: 3,
+            child: this.leftButton,
+          ),
+          const Spacer(
+            flex: 1,
+          ),
+        ],
+      ),
     };
   }
 }
@@ -104,8 +104,8 @@ class QuizComboButton extends StatelessWidget {
     final textRight = (compact)
         ? "Deck"
         : (rightEnabled)
-            ? "Add to deck"
-            : "Remove from deck";
+        ? "Add to deck"
+        : "Remove from deck";
 
     return FractionallySizedBox(
       widthFactor: .91,

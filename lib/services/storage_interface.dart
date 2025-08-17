@@ -3,9 +3,9 @@ import "dart:math";
 import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/ds_interface.dart";
-import "package:hifumi/widgets/archipelago/island_text_checkbox.dart";
+import "package:hifumi/pages/home/quick_settings_quiz/whole_selection_button_state.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:file_picker/file_picker.dart";
 import "package:file_saver/file_saver.dart";
@@ -93,7 +93,8 @@ class StorageInterface {
   /// Writes a value of [value] to [e] in [shared_preferences]. Used for card front or back preferences.
   void writeFlashcardPrefs(FlashcardElementType e, bool front, bool value) {
     List<String> currentList = List.from(
-        this._sp.getStringList(front ? K.CARD_FRONT_ELEMENTS : K.CARD_BACK_ELEMENTS) ?? (front ? D.CARD_FRONT_ELEMENTS : D.CARD_BACK_ELEMENTS));
+      this._sp.getStringList(front ? K.CARD_FRONT_ELEMENTS : K.CARD_BACK_ELEMENTS) ?? (front ? D.CARD_FRONT_ELEMENTS : D.CARD_BACK_ELEMENTS),
+    );
 
     if (value) {
       currentList.add(e.code.toString());
@@ -141,11 +142,11 @@ class StorageInterface {
     int currentValue = this._sp.getInt(id.toKey) ?? D.WORD_SCORE;
     currentValue = (success)
         ? (currentValue < D.WORD_SCORE_MAX)
-            ? currentValue + 1
-            : currentValue
+              ? currentValue + 1
+              : currentValue
         : (currentValue > D.WORD_SCORE_MIN)
-            ? currentValue - 1
-            : currentValue;
+        ? currentValue - 1
+        : currentValue;
 
     this._sp.setInt(id.toKey, currentValue);
   }
@@ -167,7 +168,8 @@ class StorageInterface {
       Book.one => K.BOOK_ONE_EDITION,
       Book.two => K.BOOK_TWO_EDITION,
     };
-    int code = this._sp.getInt(key) ??
+    int code =
+        this._sp.getInt(key) ??
         switch (book) {
           Book.one => D.BOOK_ONE_EDITION.code,
           Book.two => D.BOOK_TWO_EDITION.code,

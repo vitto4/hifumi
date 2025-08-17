@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/widgets/settings/language_picker.dart";
-import "package:hifumi/widgets/settings/edition_picker.dart";
+import "package:hifumi/pages/settings/language_picker.dart";
+import "package:hifumi/pages/settings/edition_picker.dart";
 
 /// As implied, show this to the user on the first run.
 /// For now it's only displaying a [LanguagePicker] and [EditionPicker].
@@ -33,21 +33,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
       },
       child: switch (step) {
         1 => EditionPicker(
-            key: UniqueKey(),
-            st: this.widget.st,
-            onDone: () {
-              this.widget.st.writeOnboarding(false);
-              Navigator.pushReplacementNamed(context, "/");
-            }),
+          key: UniqueKey(),
+          st: this.widget.st,
+          onDone: () {
+            this.widget.st.writeOnboarding(false);
+            Navigator.pushReplacementNamed(context, "/");
+          },
+        ),
         0 || _ => LanguagePicker(
-            key: UniqueKey(),
-            st: this.widget.st,
-            ds: this.widget.ds,
-            onDone: () {
-              setState(() {
-                step = 1;
-              });
-            }),
+          key: UniqueKey(),
+          st: this.widget.st,
+          ds: this.widget.ds,
+          onDone: () {
+            setState(() {
+              step = 1;
+            });
+          },
+        ),
       },
     );
   }

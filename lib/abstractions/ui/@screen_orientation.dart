@@ -1,0 +1,1 @@
+enum ScreenOrientation { portrait, landscape }

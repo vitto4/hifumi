@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/widgets/drawer/deck_insert_section.dart";
-import "package:hifumi/widgets/drawer/tray_dialog.dart" as tray;
+import "package:hifumi/pages/quiz/deck_insert_section.dart";
+import "package:hifumi/widgets/tray_dialog.dart" as tray;
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/widgets/topping/quiz_top_bar.dart";
-import "package:hifumi/widgets/casino/card_pile.dart";
+import "package:hifumi/pages/quiz/quiz_top_bar.dart";
+import "package:hifumi/pages/quiz/card_pile.dart";
 import "package:hifumi/widgets/combo_button.dart";
 import "package:url_launcher/url_launcher.dart";
 
@@ -197,62 +197,63 @@ class _QuizPageState extends State<QuizPage> {
         }
       },
       child: Scaffold(
-          body: Stack(
-        children: <Widget>[
-          SafeArea(
-            child: Column(
-              children: <Widget>[
-                QuizTopBar(percentage: quizProgress, source: quizSource),
-                Expanded(
-                  child: Container(),
-                ),
-                QuizComboButton(
-                  onPrimaryLeft: () => openJisho(),
-                  onPrimaryRight: () => handleDeckButton(targetDeckInsert),
-                  onSecondaryRight: () => tray
-                      .showTrayDialog(
-                    context: context,
-                    backgroundColor: LightTheme.base,
-                    pillColor: LightTheme.darkAccent,
-                    child: DeckInsertSection(st: widget.st),
-                  )
-                      .then((_) {
-                    setState(
-                      () {
-                        targetDeckInsert = widget.st.readTargetDeckInsert();
-                      },
-                    );
-                    updateDeckButtonAddOrRemove(targetDeckInsert);
-                  }),
-                  selectedDeck: targetDeckInsert,
-                  rightEnabled: deckButtonAddOrRemove,
-                  config: (widget.review)
-                      ? (widget.st.readReviewEndlessMode())
-                          ? ComboButtonConfig.onlyLeft
-                          : ComboButtonConfig.standardWOnlyRemove
-                      : ComboButtonConfig.standard,
-                ),
-                const SizedBox(height: 26.0),
-              ],
+        body: Stack(
+          children: <Widget>[
+            SafeArea(
+              child: Column(
+                children: <Widget>[
+                  QuizTopBar(percentage: quizProgress, source: quizSource),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  QuizComboButton(
+                    onPrimaryLeft: () => openJisho(),
+                    onPrimaryRight: () => handleDeckButton(targetDeckInsert),
+                    onSecondaryRight: () => tray
+                        .showTrayDialog(
+                          context: context,
+                          backgroundColor: LightTheme.base,
+                          pillColor: LightTheme.darkAccent,
+                          child: DeckInsertSection(st: widget.st),
+                        )
+                        .then((_) {
+                          setState(
+                            () {
+                              targetDeckInsert = widget.st.readTargetDeckInsert();
+                            },
+                          );
+                          updateDeckButtonAddOrRemove(targetDeckInsert);
+                        }),
+                    selectedDeck: targetDeckInsert,
+                    rightEnabled: deckButtonAddOrRemove,
+                    config: (widget.review)
+                        ? (widget.st.readReviewEndlessMode())
+                              ? ComboButtonConfig.onlyLeft
+                              : ComboButtonConfig.standardWOnlyRemove
+                        : ComboButtonConfig.standard,
+                  ),
+                  const SizedBox(height: 26.0),
+                ],
+              ),
             ),
-          ),
-          SafeArea(
-            child: CardPile(
-              st: widget.st,
-              cardList: _flashcards,
-              review: widget.review,
-              onChange: (card, progress) {
-                // Setting the state because we want the stateless progress bar to update.
-                setState(() {
-                  currentCard = card;
-                  quizProgress = progress;
-                  deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
-                });
-              },
+            SafeArea(
+              child: CardPile(
+                st: widget.st,
+                cardList: _flashcards,
+                review: widget.review,
+                onChange: (card, progress) {
+                  // Setting the state because we want the stateless progress bar to update.
+                  setState(() {
+                    currentCard = card;
+                    quizProgress = progress;
+                    deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
+                  });
+                },
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 }

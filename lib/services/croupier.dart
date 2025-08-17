@@ -1,9 +1,8 @@
 import "dart:math";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/widgets/casino/card_element.dart";
-
-enum Symbols { latin, japanese }
+import "package:hifumi/abstractions/@symbols.dart";
+import "package:hifumi/pages/quiz/card_pile/card_element.dart";
 
 /// ! TW : spaghetti code.
 ///
@@ -18,69 +17,85 @@ List<List<CardElement>> cardElementBuilder(DSInterface ds, UserPrefs userPrefere
   /* ------------------------------- CARD FRONT ------------------------------- */
 
   if (userPreferences.cardFrontKanji) {
-    output[0].add(CardElement(
-      title: "Kanji",
-      text: word.kanji,
-      fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
-      symbols: Symbols.japanese,
-    ));
+    output[0].add(
+      CardElement(
+        title: "Kanji",
+        text: word.kanji,
+        fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
+        symbols: Symbols.japanese,
+      ),
+    );
   }
   if (userPreferences.cardFrontKana) {
-    output[0].add(CardElement(
-      title: "Kana",
-      text: word.kana,
-      fontSize: fontSizeHandler(Symbols.japanese, word.kana.length),
-      symbols: Symbols.japanese,
-    ));
+    output[0].add(
+      CardElement(
+        title: "Kana",
+        text: word.kana,
+        fontSize: fontSizeHandler(Symbols.japanese, word.kana.length),
+        symbols: Symbols.japanese,
+      ),
+    );
   }
   if (userPreferences.cardFrontRomaji) {
-    output[0].add(CardElement(
-      title: "Rōmaji",
-      text: word.romaji,
-      fontSize: fontSizeHandler(Symbols.latin, word.romaji.length) + 2,
-    ));
+    output[0].add(
+      CardElement(
+        title: "Rōmaji",
+        text: word.romaji,
+        fontSize: fontSizeHandler(Symbols.latin, word.romaji.length) + 2,
+      ),
+    );
   }
   if (userPreferences.cardFrontMeaning) {
     final String meaning = (word.meaning)[language]!; // Shouldn't cause problems, thanks to the check we did earlier on `language`
-    output[0].add(CardElement(
-      title: "Meaning",
-      text: meaning,
-      fontSize: fontSizeHandler(Symbols.latin, meaning.length),
-    ));
+    output[0].add(
+      CardElement(
+        title: "Meaning",
+        text: meaning,
+        fontSize: fontSizeHandler(Symbols.latin, meaning.length),
+      ),
+    );
   }
 
   /* -------------------------------- CARD BACK ------------------------------- */
 
   if (userPreferences.cardBackKanji) {
-    output[1].add(CardElement(
-      title: "Kanji",
-      text: word.kanji,
-      fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
-      symbols: Symbols.japanese,
-    ));
+    output[1].add(
+      CardElement(
+        title: "Kanji",
+        text: word.kanji,
+        fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
+        symbols: Symbols.japanese,
+      ),
+    );
   }
   if (userPreferences.cardBackKana) {
-    output[1].add(CardElement(
-      title: "Kana",
-      text: word.kana,
-      fontSize: fontSizeHandler(Symbols.japanese, word.kana.length),
-      symbols: Symbols.japanese,
-    ));
+    output[1].add(
+      CardElement(
+        title: "Kana",
+        text: word.kana,
+        fontSize: fontSizeHandler(Symbols.japanese, word.kana.length),
+        symbols: Symbols.japanese,
+      ),
+    );
   }
   if (userPreferences.cardBackRomaji) {
-    output[1].add(CardElement(
-      title: "Rōmaji",
-      text: word.romaji,
-      fontSize: fontSizeHandler(Symbols.latin, word.romaji.length) + 2,
-    ));
+    output[1].add(
+      CardElement(
+        title: "Rōmaji",
+        text: word.romaji,
+        fontSize: fontSizeHandler(Symbols.latin, word.romaji.length) + 2,
+      ),
+    );
   }
   if (userPreferences.cardBackMeaning) {
     final String meaning = (word.meaning)[language]!;
-    output[1].add(CardElement(
-      title: "Meaning",
-      text: meaning,
-      fontSize: fontSizeHandler(Symbols.latin, meaning.length),
-    ));
+    output[1].add(
+      CardElement(
+        title: "Meaning",
+        text: meaning,
+        fontSize: fontSizeHandler(Symbols.latin, meaning.length),
+      ),
+    );
   }
   return output;
 }
@@ -182,15 +197,17 @@ const double _kFontSizeJapaneseLong = 16.0;
 /// Adjusts font size based on text length.
 double fontSizeHandler(Symbols type, int length) {
   return switch (type) {
-    Symbols.latin => (length < 50)
-        ? _kFontSizeLatinShort
-        : (length > 100)
-            ? _kFontSizeLatinLong
-            : _kFontSizeLatinMedium,
-    Symbols.japanese => (length < 11)
-        ? _kFontSizeJapaneseShort
-        : (length > 15)
-            ? _kFontSizeJapaneseLong
-            : _kFontSizeJapaneseMedium,
+    Symbols.latin =>
+      (length < 50)
+          ? _kFontSizeLatinShort
+          : (length > 100)
+          ? _kFontSizeLatinLong
+          : _kFontSizeLatinMedium,
+    Symbols.japanese =>
+      (length < 11)
+          ? _kFontSizeJapaneseShort
+          : (length > 15)
+          ? _kFontSizeJapaneseLong
+          : _kFontSizeJapaneseMedium,
   };
 }

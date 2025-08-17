@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:hifumi/entities/light_theme.dart";
+import "package:hifumi/abstractions/ui/themes.dart";
 
 const double _PROGRESS_BAR_LR_PADDING = 15.0;
 

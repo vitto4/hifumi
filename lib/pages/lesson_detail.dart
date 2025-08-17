@@ -1,12 +1,13 @@
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
+import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_double_tap_button.dart";
 import "package:hifumi/widgets/seasoning/scroll_to_top_button.dart";
 import "package:hifumi/widgets/seasoning/text_separator.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/widgets/topping/word_list_top_bar.dart";
-import "package:hifumi/widgets/roofing/word_tile.dart";
+import "package:hifumi/pages/lesson_detail/word_list_top_bar.dart";
+import "package:hifumi/pages/lesson_detail/word_tile.dart";
 
 const double _WORD_TILE_GRID_MAIN_AXIS_SPACING = 7.0;
 const double _WORD_TILE_GRID_CROSS_AXIS_SPACING = 12.0;
@@ -269,7 +270,8 @@ class WordTilesGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = getScreenDimensions(context).width;
-    double aspectRatio = screenWidth /
+    double aspectRatio =
+        screenWidth /
         (crossAxisCount *
             WORD_TILE_HEIGHT); // Super duper advanced math that will keep the height of the tiles constant no matter the crossAxisCount >:)
 

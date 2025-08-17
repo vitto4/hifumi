@@ -1,6 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/pages/settings.dart";
 import "package:flutter_settings_ui/flutter_settings_ui.dart";
 import "package:url_launcher/url_launcher.dart";

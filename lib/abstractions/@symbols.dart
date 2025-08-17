@@ -1,0 +1,1 @@
+enum Symbols { latin, japanese }

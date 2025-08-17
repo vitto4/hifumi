@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:hifumi/entities/app_info.dart";
+import "package:hifumi/abstractions/app_info.dart";
 import "package:flutter_svg/flutter_svg.dart";
 
 /// It's showtime for the ✨ epic logo ✨ I've managed to craft !

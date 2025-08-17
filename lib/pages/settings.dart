@@ -1,13 +1,13 @@
 import "dart:async";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/seasoning/app_logo.dart";
-import "package:hifumi/widgets/settings/edition_picker.dart";
-import "package:hifumi/widgets/settings/language_picker.dart";
+import "package:hifumi/pages/settings/edition_picker.dart";
+import "package:hifumi/pages/settings/language_picker.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/widgets/settings/side_picker.dart";
+import "package:hifumi/pages/settings/side_picker.dart";
 import "package:hifumi/pages/credits.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:flutter_settings_ui/flutter_settings_ui.dart";
@@ -362,7 +362,7 @@ class _SettingsState extends State<Settings> {
                 },
               ),
             ],
-          )
+          ),
         ],
       ),
     );

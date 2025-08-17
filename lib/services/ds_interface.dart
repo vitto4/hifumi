@@ -2,7 +2,7 @@ import "dart:convert";
 import "dart:math";
 import "package:flutter/services.dart" show rootBundle;
 import "package:flutter/foundation.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:yaml/yaml.dart";
 
 /// Everything dataset-related is handled here.
@@ -43,9 +43,11 @@ class DSInterface {
 
   /// Get the list of YAML keys for lessons.
   /// Something like `["lesson-01", "lesson-02", ...]`.
-  List<String> get _getAllLessonKeys => List<String>.from((this.dataset[DSKeyring.LESSONS] as List<dynamic>).map(
-        (lesson) => lesson[DSKeyring.LESSON_KEY] as String,
-      ));
+  List<String> get _getAllLessonKeys => List<String>.from(
+    (this.dataset[DSKeyring.LESSONS] as List<dynamic>).map(
+      (lesson) => lesson[DSKeyring.LESSON_KEY] as String,
+    ),
+  );
 
   /// Fetches all available lessons from the dataset, and returns their [LessonNumber] as a list.
   List<LessonNumber> get _getLessonNumbers {
@@ -57,8 +59,7 @@ class DSInterface {
   List<LessonNumber> get lessonNumbers => this._allLessonNumbers;
 
   /// One hour ! A whole hour has gone into getting this type cast to work =(
-  List<WordID> get _getAllWordIDs => this
-      ._allLessonKeys
+  List<WordID> get _getAllWordIDs => this._allLessonKeys
       .expand(
         (key) => (this.dataset[key] as List<dynamic>).map((word) => (word[DSKeyring.WORD_ID] as List<dynamic>).cast<int>()),
       )
@@ -80,11 +81,12 @@ class DSInterface {
 
   /// Fetches a word using its [WordID]. Will handle the conversion from [WordYAML] to [Word].
   Word fetchWordByID(WordID idToFetch) {
-    WordYAML wordYAML = this
-        ._allWords
-        .where((word) =>
-            word[DSKeyring.WORD_ID][DSKeyring.ID_INDEX_LESSON] == idToFetch[DSKeyring.ID_INDEX_LESSON] &&
-            word[DSKeyring.WORD_ID][DSKeyring.ID_INDEX_WORD] == idToFetch[DSKeyring.ID_INDEX_WORD])
+    WordYAML wordYAML = this._allWords
+        .where(
+          (word) =>
+              word[DSKeyring.WORD_ID][DSKeyring.ID_INDEX_LESSON] == idToFetch[DSKeyring.ID_INDEX_LESSON] &&
+              word[DSKeyring.WORD_ID][DSKeyring.ID_INDEX_WORD] == idToFetch[DSKeyring.ID_INDEX_WORD],
+        )
         .elementAt(0); // We want a map, not an iterable. There should be only one match so we take the first one anyway.
 
     return Word(
@@ -113,7 +115,7 @@ class DSInterface {
         Word(
           wordYAML: wordYAML,
           supportedLanguages: this.getSupportedLanguages,
-        )
+        ),
     ];
     if (pruneEditions) wordList = this.pruneToEditions(wordList);
 

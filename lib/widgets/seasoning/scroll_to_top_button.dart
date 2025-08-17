@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:hifumi/entities/light_theme.dart";
+import "package:hifumi/abstractions/ui/themes.dart";
 import "package:hifumi/widgets/seasoning/click_me.dart";
 
 /// Remember to be lazy, why scroll when you can have a button for this ?
