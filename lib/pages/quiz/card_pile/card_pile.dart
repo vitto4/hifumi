@@ -291,7 +291,7 @@ class _CardPileState extends State<CardPile> {
       if (_autoRemove)
         widget.st.removeFromDeck(
           currentCard?.id ?? [0, 0],
-          _endlessDeck!,
+          _endlessDeck,
         ); // Hacky fallback here but it should work and it feels nicer than plain old `!`
       // And remove all its (potential) copies currently rendered as [_nextCards]
       _clearAndReplace(_cardBuffer, currentCard, topCardIndex + 1);
@@ -528,10 +528,10 @@ class _CardPileState extends State<CardPile> {
               displaySecondButton: !widget.review || (_endlessDeck is Deck && !_autoRemove),
               onSecondButton: (_endlessDeck is Deck)
                   ? () {
-                      widget.st.clearDeck(_endlessDeck!);
+                      widget.st.clearDeck(_endlessDeck);
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackToast.bar(text: "Deck ${_endlessDeck!.display} cleared successfully", confused: false),
+                        SnackToast.bar(text: "Deck ${_endlessDeck.display} cleared successfully", confused: false),
                       );
                     }
                   : _reset,

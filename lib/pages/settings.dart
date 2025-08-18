@@ -33,8 +33,6 @@ class _SettingsState extends State<Settings> {
   final Color _activeSwitchColor = LightTheme.blueBorder;
   // Used to preserve state without having to read the language from shared [shared_preferences] when the user stays on this page.
   late DSLanguage _selectedLanguage;
-  late Edition _selectedEditionBookOne;
-  late Edition _selectedEditionBookTwo;
   late CorrectSide _selectedCorrectSide;
   late bool _performance;
   late bool _contrast;
@@ -44,8 +42,6 @@ class _SettingsState extends State<Settings> {
     super.initState();
     _settingsFields = widget.st.readUserPrefs();
     _selectedLanguage = _settingsFields.language;
-    _selectedEditionBookOne = _settingsFields.editionBookOne;
-    _selectedEditionBookTwo = _settingsFields.editionBookTwo;
     _selectedCorrectSide = _settingsFields.correctSide;
     _performance = _settingsFields.performance;
     _contrast = _settingsFields.contrast;

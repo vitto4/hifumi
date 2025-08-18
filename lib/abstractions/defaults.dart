@@ -15,26 +15,30 @@ class Defaults {
   /// Default values for various things used in various places for various purposes throughout the code.
   /// Also, in no particular order.
 
-  static const bool ONBOARDING = true;
-  static const List<String> DECK_CONTENTS = [];
-  static const List<String> CARD_FRONT_ELEMENTS = ["1", "2"];
-  static const List<String> CARD_BACK_ELEMENTS = ["4"];
-  static const DSLanguage LANGUAGE = DSLanguage.en;
-  static const Edition BOOK_ONE_EDITION = Edition.second;
-  static const Edition BOOK_TWO_EDITION = Edition.second;
-  static const List<String> SELECTED_LESSONS = [];
-  static const bool QUIZ_DRAW_WHOLE_SELECTION = false;
-  static const int QUIZ_WORD_COUNT = 20;
-  static const QuizWordFilter QUIZ_WORD_FILTER = QuizWordFilter.none;
-  static const ReviewOrder REVIEW_ORDER = ReviewOrder.insertion;
-  static const CorrectSide CORRECT_SIDE = CorrectSide.r;
-  static const Deck SEL_DECK_REVIEW = Deck.one;
-  static const Deck SEL_DECK_INSERT = Deck.one;
-  static const bool ENDLESS = false;
-  static const bool AUTOREMOVE = false;
-  static const bool PERFORMANCE_MODE = false;
-  static const bool HIGH_CONTRAST_MODE = false;
-  static const int WORD_SCORE = D.WORD_SCORE_MIN;
+  // dart format off
+
+  static const bool             ONBOARDING                  = true;
+  static const List<String>     DECK_CONTENTS               = [];
+  static const List<String>     CARD_FRONT_ELEMENTS         = ["1", "2"];
+  static const List<String>     CARD_BACK_ELEMENTS          = ["4"];
+  static const DSLanguage       LANGUAGE                    = DSLanguage.en;
+  static const Edition          BOOK_ONE_EDITION            = Edition.second;
+  static const Edition          BOOK_TWO_EDITION            = Edition.second;
+  static const List<String>     SELECTED_LESSONS            = [];
+  static const bool             QUIZ_DRAW_WHOLE_SELECTION   = false;
+  static const int              QUIZ_WORD_COUNT             = 20;
+  static const QuizWordFilter   QUIZ_WORD_FILTER            = QuizWordFilter.none;
+  static const ReviewOrder      REVIEW_ORDER                = ReviewOrder.insertion;
+  static const CorrectSide      CORRECT_SIDE                = CorrectSide.r;
+  static const Deck             SEL_DECK_REVIEW             = Deck.one;
+  static const Deck             SEL_DECK_INSERT             = Deck.one;
+  static const bool             ENDLESS                     = false;
+  static const bool             AUTOREMOVE                  = false;
+  static const bool             PERFORMANCE_MODE            = false;
+  static const bool             HIGH_CONTRAST_MODE          = false;
+  static const int              WORD_SCORE                  = D.WORD_SCORE_MIN;
+
+  // dart format on
 
   /* -------------------------------------------------------------------------- */
   /*                               SYSTEM DEFAULTS                              */
