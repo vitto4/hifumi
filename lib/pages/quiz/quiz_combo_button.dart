@@ -5,8 +5,8 @@ import "package:chiclet/chiclet.dart";
 
 enum ComboButtonConfig {
   standard,
-  onlyLeft, // i.e. only Jisho
-  standardWOnlyRemove,
+  onlyJisho, // i.e. only Jisho
+  standardWithoutDeckSelector, // on the right button (add/remove from deck)
 }
 
 /// If this breaks, blame the other devs !
@@ -18,12 +18,12 @@ enum ComboButtonConfig {
 ///
 /// A pair of buttons positioned side by side.
 /// See [ComboButtonConfig] for available configurations.
-class ComboButtonScaffold extends StatelessWidget {
+class _Scaffold extends StatelessWidget {
   final Widget leftButton;
   final Widget rightButton;
   final ComboButtonConfig config;
 
-  const ComboButtonScaffold({
+  const _Scaffold({
     Key? key,
     required this.leftButton,
     required this.rightButton,
@@ -35,7 +35,7 @@ class ComboButtonScaffold extends StatelessWidget {
     final int buttonsFlex = getComboButtonScaffoldFlex(context) ? 10 : 3;
 
     return switch (config) {
-      ComboButtonConfig.standard || ComboButtonConfig.standardWOnlyRemove => Row(
+      ComboButtonConfig.standard || ComboButtonConfig.standardWithoutDeckSelector => Row(
         children: <Widget>[
           Expanded(
             flex: 1,
@@ -46,7 +46,7 @@ class ComboButtonScaffold extends StatelessWidget {
             child: this.leftButton,
           ),
           Expanded(
-            flex: getMainMenuComboButtonCompactMode(context) ? 2 : 1,
+            flex: getHomeComboButtonCompactMode(context) ? 2 : 1,
             child: Container(),
           ),
           Expanded(
@@ -59,7 +59,7 @@ class ComboButtonScaffold extends StatelessWidget {
           ),
         ],
       ),
-      ComboButtonConfig.onlyLeft => Row(
+      ComboButtonConfig.onlyJisho => Row(
         children: <Widget>[
           const Spacer(
             flex: 1,
@@ -109,7 +109,7 @@ class QuizComboButton extends StatelessWidget {
 
     return FractionallySizedBox(
       widthFactor: .91,
-      child: ComboButtonScaffold(
+      child: _Scaffold(
         config: config,
         // Row + expanded to have the button span the column's whole width. A little hacky, can't use `Expanded` because of unbounded constraints
         leftButton: Row(
@@ -133,7 +133,7 @@ class QuizComboButton extends StatelessWidget {
             ),
           ],
         ),
-        rightButton: (config == ComboButtonConfig.standardWOnlyRemove)
+        rightButton: (config == ComboButtonConfig.standardWithoutDeckSelector)
             ? ChicletAnimatedButton(
                 buttonHeight: 4.0,
                 buttonType: ChicletButtonTypes.roundedRectangle,
@@ -180,90 +180,6 @@ class QuizComboButton extends StatelessWidget {
                   ),
                 ],
               ),
-      ),
-    );
-  }
-}
-
-/// And the one shown in the main menu.
-class MainMenuComboButton extends StatelessWidget {
-  final Function onPrimaryLeft;
-  final Function onPrimaryRight;
-  final Function onSecondaryLeft;
-  final Function onSecondaryRight;
-
-  const MainMenuComboButton({
-    Key? key,
-    required this.onPrimaryLeft,
-    required this.onPrimaryRight,
-    required this.onSecondaryLeft,
-    required this.onSecondaryRight,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const String textLeft = "Quiz";
-    const String textRight = "Review";
-
-    return ComboButtonScaffold(
-      config: ComboButtonConfig.standard,
-      leftButton: ChicletSegmentedButton(
-        height: getMainMenuComboButtonCompactMode(context) ? 40.0 : 50.0,
-        buttonHeight: 4.0,
-        backgroundColor: LightTheme.blue,
-        buttonColor: LightTheme.blueBorder,
-        children: [
-          Expanded(
-            child: ChicletButtonSegment(
-              onPressed: () => this.onPrimaryLeft.call(),
-              child: const Text(
-                textLeft,
-                style: TextStyle(
-                  fontSize: FontSizes.huge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          ChicletButtonSegment(
-            onPressed: () => this.onSecondaryLeft.call(),
-            padding: EdgeInsets.zero,
-            child: const Icon(
-              Icons.arrow_circle_up,
-              size: 24.0,
-            ),
-          ),
-        ],
-      ),
-      rightButton: ChicletSegmentedButton(
-        height: getMainMenuComboButtonCompactMode(context) ? 40.0 : 50.0,
-        buttonHeight: 4.0,
-        backgroundColor: LightTheme.orange,
-        foregroundColor: LightTheme.orangeTextAccent,
-        buttonColor: LightTheme.orangeBorder,
-        children: [
-          Expanded(
-            child: ChicletButtonSegment(
-              onPressed: () => this.onPrimaryRight.call(),
-              child: const Text(
-                textRight,
-                style: TextStyle(
-                  fontSize: FontSizes.huge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          ChicletButtonSegment(
-            onPressed: () => this.onSecondaryRight.call(),
-            padding: EdgeInsets.zero,
-            child: const Icon(
-              Icons.arrow_circle_up,
-              size: 24.0,
-              color: LightTheme.orangeTextAccent,
-            ),
-          ),
-        ],
       ),
     );
   }

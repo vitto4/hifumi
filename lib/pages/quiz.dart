@@ -7,7 +7,7 @@ import "package:hifumi/widgets/overlays/tray_dialog.dart" as tray;
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
 import "package:hifumi/pages/quiz/quiz_header.dart";
 import "package:hifumi/pages/quiz/card_pile/card_pile.dart";
-import "package:hifumi/widgets/combo_button.dart";
+import "package:hifumi/pages/quiz/quiz_combo_button.dart";
 import "package:url_launcher/url_launcher.dart";
 
 /// Probably the most important page of the app.
@@ -228,8 +228,8 @@ class _QuizPageState extends State<QuizPage> {
                     rightEnabled: deckButtonAddOrRemove,
                     config: (widget.review)
                         ? (widget.st.readReviewEndlessMode())
-                              ? ComboButtonConfig.onlyLeft
-                              : ComboButtonConfig.standardWOnlyRemove
+                              ? ComboButtonConfig.onlyJisho
+                              : ComboButtonConfig.standardWithoutDeckSelector
                         : ComboButtonConfig.standard,
                   ),
                   const SizedBox(height: 26.0),

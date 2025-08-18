@@ -7,6 +7,7 @@ import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_text_checkbox.dart";
 import "package:hifumi/pages/home/quiz_menu/quiz_menu.dart";
 import "package:hifumi/pages/home/lesson_grid/lesson_selection_state.dart";
+import "package:hifumi/pages/home/home_combo_button.dart";
 import "package:hifumi/widgets/overlays/tray_dialog.dart" as tray;
 import "package:hifumi/pages/home/home_header.dart";
 import "package:hifumi/widgets/seasoning/text_separator.dart";
@@ -14,7 +15,6 @@ import "package:hifumi/widgets/seasoning/snack_toast.dart";
 import "package:hifumi/pages/home/review_menu/review_menu.dart";
 import "package:hifumi/pages/home/lesson_grid/lesson_grid.dart";
 import "package:hifumi/pages/home/lesson_grid/lesson_tile.dart";
-import "package:hifumi/widgets/combo_button.dart";
 
 /// Called it home because that's what everyone does, but it is really more of a main menu.
 /// So please think `MainMenu` whenever you read [Home], thanks.
@@ -260,7 +260,7 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: (landscape ? 4 / 5 : 2 / 5) * delayHeight,
                 ),
-                MainMenuComboButton(
+                HomeComboButton(
                   onPrimaryLeft: onPrimaryLeft,
                   onPrimaryRight: onPrimaryRight,
                   onSecondaryLeft: onSecondaryLeft,

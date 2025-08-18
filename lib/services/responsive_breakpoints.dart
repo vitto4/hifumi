@@ -48,7 +48,7 @@ int getWordTilesCrossCount(BuildContext context) {
 }
 
 /// Should the `"Quiz"` and `"Review"` buttons be compact ?
-bool getMainMenuComboButtonCompactMode(BuildContext context) {
+bool getHomeComboButtonCompactMode(BuildContext context) {
   return (getScreenDimensions(context).width <= 600) ? true : false;
 }
 
