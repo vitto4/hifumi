@@ -1,8 +1,8 @@
-import "dart:math";
 import "dart:ui";
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/abstractions/ui/@screen_orientation.dart";
+import "package:hifumi/pages/home/selection_as_list.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_text_checkbox.dart";
 import "package:hifumi/pages/home/quiz_menu/quiz_menu.dart";
@@ -37,55 +37,55 @@ class _HomeState extends State<Home> {
   ///   * All (everything is selected)
   ///   * Misc (some are selected)
   ///   * None
-  late LessonSelectionState lessonSelectionButtonState;
+  late LessonSelectionState _lessonSelectionButtonState;
 
   /// List of selected lessons, will be updated as user interacts with the app.
   /// We could just [SPInterface.readSelectedLessons], but also having it stored in the state should be faster and safer.
   /// (source : tkt)
   ///
   /// Yes, yes, here's the [meaning](https://www.urbandictionary.com/define.php?term=tkt)
-  late List<LessonNumber> selection;
+  late List<LessonNumber> _selection;
 
   /// See [LessonGrid].
   /// We store this as a variable because we'll have to call some of its methods outside of the [build] function.
-  late final LessonGrid lessonTileList;
+  late final LessonGrid _lessonTileList;
 
   @override
   void initState() {
     super.initState();
 
-    selection = widget.st.readSelectedLessons();
+    _selection = widget.st.readSelectedLessons();
 
-    lessonSelectionButtonState = this.allSelected
+    _lessonSelectionButtonState = this._allSelected
         ? LessonSelectionState.all
-        : this.noneSelected
+        : this._noneSelected
         ? LessonSelectionState.none
         : LessonSelectionState.neutral;
 
-    lessonTileList = LessonGrid(
+    _lessonTileList = LessonGrid(
       ds: widget.ds,
       st: widget.st,
       selectionCallback: (LessonNumber number, bool newSelectionValue) {
         // Were we previously in a special state ? The query should be made before we change anything in [selection]
-        bool prevSpecialState = allSelected | noneSelected;
+        bool prevSpecialState = _allSelected | _noneSelected;
 
         // Reflect the new state in our local copy ([selection])
         setState(() {
-          (newSelectionValue) ? selection.add(number) : selection.remove(number);
+          (newSelectionValue) ? _selection.add(number) : _selection.remove(number);
         });
 
         // Update the lesson selection button accordingly. For a transition to occur, it should transition to or from a [prevSpecialState]
-        if (!prevSpecialState && allSelected) {
+        if (!prevSpecialState && _allSelected) {
           setState(() {
-            lessonSelectionButtonState = LessonSelectionState.all;
+            _lessonSelectionButtonState = LessonSelectionState.all;
           });
-        } else if (!prevSpecialState && noneSelected) {
+        } else if (!prevSpecialState && _noneSelected) {
           setState(() {
-            lessonSelectionButtonState = LessonSelectionState.none;
+            _lessonSelectionButtonState = LessonSelectionState.none;
           });
         } else if (prevSpecialState) {
           setState(() {
-            lessonSelectionButtonState = LessonSelectionState.neutral;
+            _lessonSelectionButtonState = LessonSelectionState.neutral;
           });
         }
       },
@@ -93,29 +93,29 @@ class _HomeState extends State<Home> {
   }
 
   /// Are all [LessonTile]s currently selected ?
-  bool get allSelected => (this.selection.length == widget.ds.lessonNumbers.length);
+  bool get _allSelected => (this._selection.length == widget.ds.lessonNumbers.length);
 
   /// Is the [LessonTile] selection currently empty ?
-  bool get noneSelected => this.selection.isEmpty;
+  bool get _noneSelected => this._selection.isEmpty;
 
-  void toggleLessonSelection() {
-    switch (lessonSelectionButtonState) {
+  void _toggleLessonSelection() {
+    switch (_lessonSelectionButtonState) {
       case LessonSelectionState.all:
-        lessonTileList.unselectAll();
+        _lessonTileList.unselectAll();
         break;
       case LessonSelectionState.none:
-        lessonTileList.selectAll();
+        _lessonTileList.selectAll();
         break;
       case LessonSelectionState.neutral:
-        lessonTileList.unselectAll();
+        _lessonTileList.unselectAll();
         break;
     }
   }
 
   /* ------------------------- [ComboButton] callbacks ------------------------ */
 
-  void onPrimaryLeft() {
-    if (selection.isNotEmpty) {
+  void _onPrimaryLeft() {
+    if (_selection.isNotEmpty) {
       Navigator.pushNamed(
         context,
         "/quiz",
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
         },
       ).then(
         (_) {
-          lessonTileList.updateScores.call();
+          _lessonTileList.updateScores.call();
         },
       );
     } else {
@@ -136,7 +136,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void onSecondaryLeft() {
+  void _onSecondaryLeft() {
     tray.showTrayDialog(
       context: context,
       backgroundColor: LightTheme.base,
@@ -147,7 +147,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void onPrimaryRight() {
+  void _onPrimaryRight() {
     final Deck targetDeck = widget.st.readTargetDeckReview();
 
     if (widget.st.readDeck(targetDeck).isNotEmpty) {
@@ -161,7 +161,7 @@ class _HomeState extends State<Home> {
         },
       ).then(
         (_) {
-          lessonTileList.updateScores.call();
+          _lessonTileList.updateScores.call();
         },
       );
     } else {
@@ -173,7 +173,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void onSecondaryRight() {
+  void _onSecondaryRight() {
     tray.showTrayDialog(
       context: context,
       backgroundColor: LightTheme.base,
@@ -203,15 +203,15 @@ class _HomeState extends State<Home> {
         ),
         const SizedBox(width: 15.0),
         IslandTextCheckbox(
-          checkState: lessonSelectionButtonState,
+          checkState: _lessonSelectionButtonState,
           variantWithLongestText: LessonSelectionState.neutral,
-          tapHandler: toggleLessonSelection,
+          tapHandler: _toggleLessonSelection,
           compact: true,
         ),
         if (getCurrentSelectionSingleLine(context)) ...[
           const SizedBox(width: 15.0),
           // Black magic ahead, constraints won't be passed down to `SelectionAsList` unless I use that `Flexible` widget.
-          Flexible(child: SelectionAsList(selection: selection)),
+          Flexible(child: SelectionAsList(selection: _selection)),
         ],
       ],
     );
@@ -261,10 +261,10 @@ class _HomeState extends State<Home> {
                   height: (landscape ? 4 / 5 : 2 / 5) * delayHeight,
                 ),
                 HomeComboButton(
-                  onPrimaryLeft: onPrimaryLeft,
-                  onPrimaryRight: onPrimaryRight,
-                  onSecondaryLeft: onSecondaryLeft,
-                  onSecondaryRight: onSecondaryRight,
+                  onPrimaryLeft: _onPrimaryLeft,
+                  onPrimaryRight: _onPrimaryRight,
+                  onSecondaryLeft: _onSecondaryLeft,
+                  onSecondaryRight: _onSecondaryRight,
                 ),
                 SizedBox(
                   height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
@@ -280,94 +280,15 @@ class _HomeState extends State<Home> {
                 selectionFeedback,
                 if (!getCurrentSelectionSingleLine(context)) ...[
                   const SizedBox(height: 6.0),
-                  SelectionAsList(selection: selection),
+                  SelectionAsList(selection: _selection),
                 ],
                 SizedBox(
                   height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
                 ),
-                lessonTileList,
+                _lessonTileList,
                 const SizedBox(
                   height: 50.0,
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Feedback on what's selected. Nothing more than a list of the [LessonNumber] of all selected lessons.
-class SelectionAsList extends StatelessWidget {
-  const SelectionAsList({
-    Key? key,
-    required this.selection,
-  }) : super(key: key);
-
-  final List<LessonNumber> selection;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(
-        milliseconds: 500,
-      ),
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: LightTheme.baseAccent,
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      height: 22.0,
-      padding: const EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 3.0),
-      child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          },
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DefaultTextStyle(
-            style: const TextStyle(
-              color: LightTheme.textColorDim,
-              fontFamily: "Varela Round",
-              fontSize: FontSizes.base,
-            ),
-            child: Row(
-              children: <Widget>[
-                if (selection.isEmpty)
-                  const Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: "無し",
-                          style: TextStyle(fontSize: FontSizes.small),
-                        ),
-                        TextSpan(text: "  ( "),
-                        TextSpan(
-                          text: "｡",
-                          style: TextStyle(fontSize: FontSizes.small),
-                        ),
-                        TextSpan(text: "- -"),
-                        TextSpan(
-                          text: "｡",
-                          style: TextStyle(fontSize: FontSizes.small),
-                        ),
-                        TextSpan(text: ")zzZZ"),
-                      ],
-                    ),
-                    style: TextStyle(textBaseline: TextBaseline.alphabetic),
-                  )
-                else
-                  for (var i in selection..sort())
-                    if (i == selection.reduce(max))
-                      Text(" ${(i.toString().length == 2) ? i : "0$i"}")
-                    else
-                      Text(
-                        " ${(i.toString().length == 2) ? i : "0$i"},",
-                      ),
               ],
             ),
           ),

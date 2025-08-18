@@ -20,7 +20,7 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  int step = 0;
+  int _step = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         final curvedAnimation = CurvedAnimation(parent: animation, curve: Curves.easeOutQuint);
         return ScaleTransition(scale: Tween<double>(begin: .7, end: 1.0).animate(curvedAnimation), child: child);
       },
-      child: switch (step) {
+      child: switch (_step) {
         1 => EditionPicker(
           key: UniqueKey(),
           st: this.widget.st,
@@ -46,7 +46,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ds: this.widget.ds,
           onDone: () {
             setState(() {
-              step = 1;
+              _step = 1;
             });
           },
         ),

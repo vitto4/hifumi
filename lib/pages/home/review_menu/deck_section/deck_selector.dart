@@ -30,12 +30,12 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
     _selectedDeck = widget.areWeDoingAQuizATM ? widget.st.readTargetDeckInsert() : widget.st.readTargetDeckReview();
   }
 
-  void selectionHandler(Deck deck) {
+  void _selectionHandler(Deck deck) {
     Function(Deck) func = widget.areWeDoingAQuizATM ? widget.st.writeTargetDeckInsert : widget.st.writeTargetDeckReview;
     func.call(deck);
   }
 
-  void resetHelper(BuildContext context, Deck deck) {
+  void _resetHelper(BuildContext context, Deck deck) {
     widget.st.clearDeck.call(deck);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -57,12 +57,12 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
         isSelected: _selectedDeck == Deck.one,
         showClearButton: !(widget.areWeDoingAQuizATM),
         onTapped: () {
-          selectionHandler(Deck.one);
+          _selectionHandler(Deck.one);
           setState(() {
             _selectedDeck = Deck.one;
           });
         },
-        onReset: () => resetHelper(context, Deck.one),
+        onReset: () => _resetHelper(context, Deck.one),
       ),
       two: DeckTile(
         deck: Deck.two,
@@ -73,12 +73,12 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
         isSelected: _selectedDeck == Deck.two,
         showClearButton: !(widget.areWeDoingAQuizATM),
         onTapped: () {
-          selectionHandler(Deck.two);
+          _selectionHandler(Deck.two);
           setState(() {
             _selectedDeck = Deck.two;
           });
         },
-        onReset: () => resetHelper(context, Deck.two),
+        onReset: () => _resetHelper(context, Deck.two),
       ),
       three: DeckTile(
         deck: Deck.three,
@@ -89,12 +89,12 @@ class _IslandDeckSelectorState extends State<IslandDeckSelector> {
         isSelected: _selectedDeck == Deck.three,
         showClearButton: !(widget.areWeDoingAQuizATM),
         onTapped: () {
-          selectionHandler(Deck.three);
+          _selectionHandler(Deck.three);
           setState(() {
             _selectedDeck = Deck.three;
           });
         },
-        onReset: () => resetHelper(context, Deck.three),
+        onReset: () => _resetHelper(context, Deck.three),
       ),
     );
   }

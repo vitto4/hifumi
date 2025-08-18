@@ -21,7 +21,7 @@ class PleaseScaleMe extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double scaleFactor = pleaseScaleMeExceptItsAFunctionAndReturnsACoefficient(context, constraints);
+        final double scaleFactor = _pleaseScaleMeExceptItsAFunctionAndReturnsACoefficient(context, constraints);
 
         /// I used to use a [Transform.scale] but it's wasn't a good idea.
         /// As the docs state for [Transform] : `A widget that applies a transformation before painting its child.`.
@@ -43,7 +43,7 @@ class PleaseScaleMe extends StatelessWidget {
 }
 
 /// Returns the scale factor for the child to be used in [PleaseScaleMe].
-double pleaseScaleMeExceptItsAFunctionAndReturnsACoefficient(BuildContext context, BoxConstraints constraints) {
+double _pleaseScaleMeExceptItsAFunctionAndReturnsACoefficient(BuildContext context, BoxConstraints constraints) {
   final Size screenSize = getScreenDimensions(context);
   final double horizontalPadding = .15 * screenSize.width;
   final double verticalPadding = .2 * screenSize.height;

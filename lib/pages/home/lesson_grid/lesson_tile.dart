@@ -36,23 +36,23 @@ class LessonTile extends StatefulWidget {
 
 class LessonTileState extends State<LessonTile> {
   /// Completion score of the lesson this widget represents.
-  late LessonScore lessonScore;
+  late LessonScore _lessonScore;
 
   /// Selection state. Is the tile selected ?
   late bool isSelected;
 
   /// Get lesson completion score as a percentage.
-  double get _completion => lessonScore[2];
+  double get _completion => _lessonScore[2];
 
   @override
   void initState() {
     super.initState();
     isSelected = widget.st.readSelectedLessons().contains(widget.lesson);
-    lessonScore = widget.st.singleLessonScore(widget.ds, widget.lesson);
+    _lessonScore = widget.st.singleLessonScore(widget.ds, widget.lesson);
   }
 
   /// Select this [LessonTile].
-  void select() {
+  void _select() {
     setState(() {
       isSelected = true;
     });
@@ -60,7 +60,7 @@ class LessonTileState extends State<LessonTile> {
   }
 
   /// Unselect this [LessonTile].
-  void unselect() {
+  void _unselect() {
     setState(() {
       isSelected = false;
     });
@@ -70,7 +70,7 @@ class LessonTileState extends State<LessonTile> {
   /// On tap, select or unselect accordingly. We shall not forget to propagate this event up the widget tree,
   /// by also calling [LessonTile.onTap].
   void onTap() {
-    isSelected ? unselect() : select();
+    isSelected ? _unselect() : _select();
     widget.onTap.call(isSelected);
   }
 
@@ -78,10 +78,10 @@ class LessonTileState extends State<LessonTile> {
   /// No worries, they won't get mad.
   void updateScore() {
     LessonScore perhapsNewScore = widget.st.singleLessonScore(widget.ds, widget.lesson);
-    !(perhapsNewScore[2] == lessonScore[2])
+    !(perhapsNewScore[2] == _lessonScore[2])
         ? setState(
             () {
-              lessonScore = perhapsNewScore;
+              _lessonScore = perhapsNewScore;
             },
           )
         : null;
@@ -89,7 +89,7 @@ class LessonTileState extends State<LessonTile> {
 
   /// Display the lesson contents page, and update the score when popped.
   /// (it may have changed if the user reset progress for this lesson)
-  void displayWordList() {
+  void _displayWordList() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -110,7 +110,7 @@ class LessonTileState extends State<LessonTile> {
       borderColor: (isSelected) ? LightTheme.green : LightTheme.baseAccent,
       offset: 4.0,
       onTap: onTap,
-      onLongPress: displayWordList,
+      onLongPress: _displayWordList,
       tapDuration: Duration(milliseconds: 30),
       child: Stack(
         children: <Widget>[
@@ -153,14 +153,14 @@ class LessonTileState extends State<LessonTile> {
                               backgroundColorLeft: (isSelected) ? LightTheme.greenLighter.grayScale : LightTheme.greenLighter,
                               backgroundColorRight: (isSelected) ? LightTheme.green.grayScale : LightTheme.green,
                               childLeft: Text(
-                                (lessonScore[0].floor().toString().length == 2) ? lessonScore[0].floor().toString() : "0${lessonScore[0].floor()}",
+                                (_lessonScore[0].floor().toString().length == 2) ? _lessonScore[0].floor().toString() : "0${_lessonScore[0].floor()}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: (isSelected) ? LightTheme.green.grayScale : LightTheme.green,
                                 ),
                               ),
                               childRight: Text(
-                                "${lessonScore[1].floor()}",
+                                "${_lessonScore[1].floor()}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: LightTheme.base,
@@ -180,7 +180,7 @@ class LessonTileState extends State<LessonTile> {
                                 ),
                               ),
                               childRight: Text(
-                                (lessonScore[0].floor().toString().length == 2) ? lessonScore[0].floor().toString() : "0${lessonScore[0].floor()}",
+                                (_lessonScore[0].floor().toString().length == 2) ? _lessonScore[0].floor().toString() : "0${_lessonScore[0].floor()}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: LightTheme.base,
@@ -201,7 +201,7 @@ class LessonTileState extends State<LessonTile> {
                                 ),
                               ),
                               childRight: Text(
-                                "${lessonScore[1].floor()}",
+                                "${_lessonScore[1].floor()}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: LightTheme.base,

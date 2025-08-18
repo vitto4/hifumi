@@ -17,14 +17,14 @@ class FunkyText extends StatefulWidget {
 }
 
 class _FunkyTextState extends State<FunkyText> {
-  int ticker = 0;
+  int _ticker = 0;
 
   late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 750), (Timer timer) => tick());
+    _timer = Timer.periodic(const Duration(milliseconds: 750), (Timer timer) => _tick());
   }
 
   @override
@@ -33,9 +33,9 @@ class _FunkyTextState extends State<FunkyText> {
     super.dispose();
   }
 
-  void tick() {
+  void _tick() {
     setState(() {
-      (ticker < widget.text.length) ? ticker += 1 : ticker = 0;
+      (_ticker < widget.text.length) ? _ticker += 1 : _ticker = 0;
     });
   }
 
@@ -46,19 +46,19 @@ class _FunkyTextState extends State<FunkyText> {
     color: LightTheme.textColorDimmer,
   );
 
-  List<Widget> builder() {
+  List<Widget> _builder() {
     List<Widget> output = [];
 
     for (int i = 0; i < widget.text.length; i++) {
       output.add(
         Column(
           children: [
-            !(ticker == i + 1) ? const Spacer(flex: 1) : Container(),
+            !(_ticker == i + 1) ? const Spacer(flex: 1) : Container(),
             Text(
               widget.text[i],
               style: _style,
             ),
-            ticker == i + 1 ? const Spacer(flex: 1) : Container(),
+            _ticker == i + 1 ? const Spacer(flex: 1) : Container(),
           ],
         ),
       );
@@ -73,7 +73,7 @@ class _FunkyTextState extends State<FunkyText> {
       child: SizedBox(
         height: FontSizes.medium + 10.0,
         child: Row(
-          children: builder(),
+          children: _builder(),
         ),
       ),
     );

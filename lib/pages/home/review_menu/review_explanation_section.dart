@@ -14,7 +14,7 @@ class ReviewWhatIsThis extends StatefulWidget {
 }
 
 class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
-  bool clicked = false;
+  bool _clicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +38,11 @@ class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
                 ),
                 const Spacer(),
                 IslandButton(
-                  backgroundColor: clicked ? LightTheme.blueLighter : LightTheme.base,
-                  borderColor: clicked ? LightTheme.blueLight : LightTheme.baseAccent,
+                  backgroundColor: _clicked ? LightTheme.blueLighter : LightTheme.base,
+                  borderColor: _clicked ? LightTheme.blueLight : LightTheme.baseAccent,
                   offset: 1.3,
                   onTap: () => setState(() {
-                    clicked = !clicked;
+                    _clicked = !_clicked;
                   }),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -51,13 +51,13 @@ class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
                     ),
                     child: Icon(
                       Icons.expand_more_rounded,
-                      color: clicked ? LightTheme.blue : LightTheme.darkAccent,
+                      color: _clicked ? LightTheme.blue : LightTheme.darkAccent,
                     ),
                   ),
                 ),
               ],
             ),
-            if (clicked) ...[
+            if (_clicked) ...[
               const SizedBox(
                 height: 10.0,
               ),

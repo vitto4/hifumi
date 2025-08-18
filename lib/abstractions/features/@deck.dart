@@ -1,4 +1,4 @@
-import "package:hifumi/abstractions/keyring.dart";
+import "package:hifumi/abstractions/sp_keyring.dart";
 
 /// There are three [Deck]s available to the user.
 enum Deck {

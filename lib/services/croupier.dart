@@ -8,7 +8,7 @@ import "package:hifumi/pages/quiz/card_pile/card_element.dart";
 ///
 /// Turns a word and its data into a collection of [CardElement].
 /// Two [List]s actually, one for the front of the flashcard, the second for the back.
-List<List<CardElement>> cardElementBuilder(DSInterface ds, UserPrefs userPreferences, Word word) {
+List<List<CardElement>> _cardElementBuilder(DSInterface ds, UserPrefs userPreferences, Word word) {
   List<List<CardElement>> output = [[], []];
 
   /// (Safety check, we know that the DS contains meanings for all supported languages)
@@ -110,7 +110,7 @@ List<Flashcard> dealCardsFromLessons(SPInterface st, DSInterface ds, List<Lesson
   List<Flashcard> output = [];
 
   for (Word word in wordPool) {
-    final List<List<CardElement>> elements = cardElementBuilder(ds, userPreferences, word);
+    final List<List<CardElement>> elements = _cardElementBuilder(ds, userPreferences, word);
     output.add(
       Flashcard(
         id: word.id,
@@ -125,7 +125,7 @@ List<Flashcard> dealCardsFromLessons(SPInterface st, DSInterface ds, List<Lesson
 }
 
 /// Removes all the [WordID] of words that have been mastered from a list of [WordID].
-List<WordID> pruneIDListToMistakes(SPInterface st, List<WordID> idList) {
+List<WordID> _pruneIDListToMistakes(SPInterface st, List<WordID> idList) {
   List<WordID> output = idList.toList();
   for (WordID id in idList) {
     if (st.readWordScore(id) >= D.WORD_SCORE_MAX) {
@@ -137,14 +137,14 @@ List<WordID> pruneIDListToMistakes(SPInterface st, List<WordID> idList) {
 }
 
 /// Build a set of [Flashcard] from a list of [WordID].
-List<Flashcard> dealCardsFromIDs(SPInterface st, DSInterface ds, List<WordID> idList, {bool shuffle = false}) {
+List<Flashcard> _dealCardsFromIDs(SPInterface st, DSInterface ds, List<WordID> idList, {bool shuffle = false}) {
   final random = Random();
   final UserPrefs userPreferences = st.readUserPrefs();
   final List<Word> wordPool = ds.bakeWordPoolFromID(idList);
   List<Flashcard> output = [];
 
   for (var word in wordPool) {
-    final List<List<CardElement>> elements = cardElementBuilder(ds, userPreferences, word);
+    final List<List<CardElement>> elements = _cardElementBuilder(ds, userPreferences, word);
     output.add(
       Flashcard(
         id: word.id,
@@ -167,13 +167,13 @@ List<Flashcard> dealCardsFromMistakes(SPInterface st, DSInterface ds, List<Lesso
   // When doing a quiz, we don't want words from other editions showing up, hence `pruneEdition: true`
   List<WordID> idList = ds.bakeWordIDListFromLessons(lessons, pruneEditions: true);
 
-  List<WordID> idListPruned = pruneIDListToMistakes(st, idList);
+  List<WordID> idListPruned = _pruneIDListToMistakes(st, idList);
 
   // [DSInterface.stirGentlyThenDice] is supposed to be used with a word pool, but since it's designed independently of the list type, it'll work just fine here.
   // Shuffles `idListPruned` and slices it if it contains more than `cardCount` IDs.
   List<WordID> idListPrunedSliced = DSInterface.stirGentlyThenDice(idListPruned, cardCount);
 
-  return dealCardsFromIDs(st, ds, idListPrunedSliced);
+  return _dealCardsFromIDs(st, ds, idListPrunedSliced);
 }
 
 /// Build a set of [Flashcard] from selected [deck].
@@ -181,7 +181,7 @@ List<Flashcard> dealCardsFromDeck(SPInterface st, DSInterface ds, Deck deck, {bo
   List<WordID> idList = st.readDeck(deck);
 
   // When doing a review, it's fine for words from other editions to show up if they're in a deck.
-  return dealCardsFromIDs(st, ds, idList, shuffle: shuffle);
+  return _dealCardsFromIDs(st, ds, idList, shuffle: shuffle);
 }
 
 /// Japanese symbols tend to be wider than latin ones.

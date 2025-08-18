@@ -1,9 +1,9 @@
 /// Shorter to write.
-typedef K = Keyring;
+typedef K = SPKeyring;
 
 /// Keys for [shared_preferences].
-class Keyring {
-  const Keyring._();
+class SPKeyring {
+  const SPKeyring._();
 
   static const String SCORE_PREFIX = "score.";
 

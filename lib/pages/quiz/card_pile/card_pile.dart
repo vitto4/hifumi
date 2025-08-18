@@ -67,13 +67,13 @@ class CardPile extends StatefulWidget {
 ///   a buffer [_syncedBuffer] is used.
 ///
 ///   * In normal mode, the [_cardBuffer] is just a sliding window [currentWindow] of [widget.cardList],
-///     that slides with [masterListCurrentIndex] as the user progresses through the pile.
+///     that slides with [_masterListCurrentIndex] as the user progresses through the pile.
 ///   * In endless mode, works by keeping a set [_cooledCardSet] of all possible flashcards (so initially just a copy of [widget.cardList]).
 ///     When a card is swiped away, it may or may not be removed from [_cooledCardSet] (this is user-controlled).
 ///     Either way, a new card is generated on the fly from [_cooledCardSet] and added to the end of the buffer.
 ///
 /// Example :
-///   When not in performance mode, [renderDepthStart] is `2` and [renderDepthEnd] is `3`.
+///   When not in performance mode, [_renderDepthStart] is `2` and [_renderDepthEnd] is `3`.
 ///   The [_cardBuffer] will look something like :
 ///     `[topCard (already discarded), topCard (already discarded), currentCard, nextCard, nextCard, nextCard]`
 ///
@@ -84,14 +84,14 @@ class CardPile extends StatefulWidget {
 ///   This widget newly handles the display properties of [Flashcard] as well (being [StyledFlashcard]).
 ///   They are generated on the fly ; this new approach ensures we can avoid back-to-back style repetitions.
 class _CardPileState extends State<CardPile> {
-  late final CorrectSide correctSide;
+  late final CorrectSide _correctSide;
 
   /// Only initialized when in endless mode.
-  late final bool autoRemove;
+  late final bool _autoRemove;
 
   /// Used to dimension [_cardBuffer] correctly
-  late final int renderDepthStart;
-  late final int renderDepthEnd;
+  late final int _renderDepthStart;
+  late final int _renderDepthEnd;
 
   /// Used exclusively in endless mode, to keep track of which cards are available to display on the fly as the user progresses through the review.
   late CooldownSet<Flashcard> _cooledCardSet;
@@ -114,62 +114,62 @@ class _CardPileState extends State<CardPile> {
   late final CircularBuffer<StyledFlashcard?> _cardBuffer;
 
   /// Used both as a way to check if we're in endless mode (`endlessDeck is Deck`), and when it's the case, to know what deck to remove cards from.
-  late final Deck? endlessDeck;
+  late final Deck? _endlessDeck;
 
   /// Keep track of how many cards have been discarded.
   /// Mostly useful to navigate [widget.cardList] when in normal mode.
-  int masterListCurrentIndex = 0;
+  int _masterListCurrentIndex = 0;
 
-  /// See [reset].
-  int resetCount = 0;
+  /// See [_reset].
+  int _resetCount = 0;
 
   /// See [_topCard].
-  bool thresholdCrossed = false;
+  bool _thresholdCrossed = false;
 
   /// Variable used to tell the [CardMask] what to display (correct or incorrect symbol) when a [Flashcard] is dragged past the discard threshold.
-  /// `true` when the threshold on the [correctSide] is crossed.
-  bool maskCorrect = false;
+  /// `true` when the threshold on the [_correctSide] is crossed.
+  bool _maskCorrect = false;
 
   @override
   void initState() {
     super.initState();
-    correctSide = widget.st.readCorrectSide();
-    renderDepthStart = widget.st.readPerformanceMode() ? D.RENDER_DEPTH_START_PERF : D.RENDER_DEPTH_START;
-    renderDepthEnd = widget.st.readPerformanceMode() ? D.RENDER_DEPTH_END_PERF : D.RENDER_DEPTH_END;
+    _correctSide = widget.st.readCorrectSide();
+    _renderDepthStart = widget.st.readPerformanceMode() ? D.RENDER_DEPTH_START_PERF : D.RENDER_DEPTH_START;
+    _renderDepthEnd = widget.st.readPerformanceMode() ? D.RENDER_DEPTH_END_PERF : D.RENDER_DEPTH_END;
 
     /// Assign [endlessDeck] if this is a review in endless mode. Else make it null.
     /// This is because when endless mode is enabled, we may have to remove cards from said deck.
-    endlessDeck = (widget.review && widget.st.readReviewEndlessMode()) ? widget.st.readTargetDeckReview() : null;
+    _endlessDeck = (widget.review && widget.st.readReviewEndlessMode()) ? widget.st.readTargetDeckReview() : null;
 
     _colorSet = CooldownSet((widget.st.readHighContrastMode() ? D.CARD_COLORS_HIGH_CONTRAST : D.CARD_COLORS), cooldown: 1);
     _angleSet = CooldownSet(D.CARD_ANGLES, cooldown: 1);
 
     // If we are in endless mode
-    if (endlessDeck is Deck) {
+    if (_endlessDeck is Deck) {
       // Initialise the card set with appropriate cooldown
-      _cooledCardSet = CooldownSet<Flashcard>(widget.cardList, cooldown: renderDepthEnd);
+      _cooledCardSet = CooldownSet<Flashcard>(widget.cardList, cooldown: _renderDepthEnd);
       // Set the fixed length of the buffer, and populate it with the first cards to be displayed
       _cardBuffer = CircularBuffer<StyledFlashcard?>.of(
-        _cooledCardSet.drawMultiple(renderDepthEnd + 1).map<StyledFlashcard?>((flashcard) => style(flashcard)).toList(),
-        renderDepthStart + renderDepthEnd + 1,
+        _cooledCardSet.drawMultiple(_renderDepthEnd + 1).map<StyledFlashcard?>((flashcard) => _style(flashcard)).toList(),
+        _renderDepthStart + _renderDepthEnd + 1,
       );
       // Check if auto-remove mode is enabled
-      autoRemove = widget.st.readEndlessAutoRemove();
+      _autoRemove = widget.st.readEndlessAutoRemove();
     } else {
       // Set the fixed length of the buffer, and populate it with the first cards to be displayed
       _cardBuffer = CircularBuffer<StyledFlashcard?>.of(
-        widget.cardList.window(0, renderDepthStart, renderDepthEnd).map<StyledFlashcard?>((flashcard) => style(flashcard)).toList(),
-        renderDepthStart + renderDepthEnd + 1,
+        widget.cardList.window(0, _renderDepthStart, _renderDepthEnd).map<StyledFlashcard?>((flashcard) => _style(flashcard)).toList(),
+        _renderDepthStart + _renderDepthEnd + 1,
       );
       // Make sure the initial length of [_cardBuffer] is the same as when in endless mode (i.e. active card + elements, either cards or null)
       // Will make the whole thing easier to work with
-      for (int i = 0; i < max(0, renderDepthEnd + 1 - widget.cardList.window(0, renderDepthStart, renderDepthEnd).length); i++) {
+      for (int i = 0; i < max(0, _renderDepthEnd + 1 - widget.cardList.window(0, _renderDepthStart, _renderDepthEnd).length); i++) {
         _cardBuffer.add(null);
       }
     }
 
     // Also generate the [_syncedBuffer], while keeping it of the same length as [_cardBuffer]
-    _syncedBuffer = CircularBuffer<int>.of(List.generate(_cardBuffer.length, (i) => i), renderDepthStart + renderDepthEnd + 1);
+    _syncedBuffer = CircularBuffer<int>.of(List.generate(_cardBuffer.length, (i) => i), _renderDepthStart + _renderDepthEnd + 1);
 
     // Ping the quiz page with the [currentCard] so it knows what's displayed
     WidgetsBinding.instance.addPostFrameCallback((_) => widget.onChange.call(currentCard, currentProgress));
@@ -178,17 +178,17 @@ class _CardPileState extends State<CardPile> {
   /// Index of the card displayed on top of the pile.
   /// It is constant, except when the [_cardBuffer] has yet to be filled.
   int get topCardIndex => (_cardBuffer.isFilled)
-      ? renderDepthStart
-      : max(0, _cardBuffer.length - renderDepthEnd - 1); // It shouldn't be negative anyway if we're in endless mode
+      ? _renderDepthStart
+      : max(0, _cardBuffer.length - _renderDepthEnd - 1); // It shouldn't be negative anyway if we're in endless mode
 
   /// In normal mode ; the window of [widget.cardList] containing all cards to be rendered at the moment.
-  List<Flashcard> get currentWindow => widget.cardList.window(masterListCurrentIndex, renderDepthStart, renderDepthEnd);
+  List<Flashcard> get currentWindow => widget.cardList.window(_masterListCurrentIndex, _renderDepthStart, _renderDepthEnd);
 
   /// In normal mode, peak one step to the right of the [currentWindow].
-  /// Is used to [generateNextCard] for the [_cardBuffer].
+  /// Is used to [_generateNextCard] for the [_cardBuffer].
   /// Will return [null] if the window steps outside of the master list.
-  Flashcard? get windowPeak => (masterListCurrentIndex < widget.cardList.length - renderDepthEnd - 1)
-      ? widget.cardList.window(masterListCurrentIndex, renderDepthStart, renderDepthEnd + 1).last
+  Flashcard? get windowPeak => (_masterListCurrentIndex < widget.cardList.length - _renderDepthEnd - 1)
+      ? widget.cardList.window(_masterListCurrentIndex, _renderDepthStart, _renderDepthEnd + 1).last
       : null;
 
   /// [Flashcard] currently displayed on top of the pile.
@@ -196,11 +196,11 @@ class _CardPileState extends State<CardPile> {
 
   /// For [widget.onChange] callback, reflects what the progress bar should display.
   double get currentProgress =>
-      (endlessDeck is! Deck) ? masterListCurrentIndex / widget.cardList.length : 1 - _cooledCardSet.length / widget.cardList.length;
+      (_endlessDeck is! Deck) ? _masterListCurrentIndex / widget.cardList.length : 1 - _cooledCardSet.length / widget.cardList.length;
 
   /// Clears matching cards from the buffer and regenerates new ones from a given starting index.
   /// Effectively shifts non-matching cards to the beginning and fills the remaining positions with randomly selected cards.
-  void clearAndReplace(CircularBuffer<StyledFlashcard?> buffer, Flashcard? toBeCleared, int startIndex) {
+  void _clearAndReplace(CircularBuffer<StyledFlashcard?> buffer, Flashcard? toBeCleared, int startIndex) {
     int totalLength = buffer.length - startIndex;
 
     // List from [startIndex] to end of buffer
@@ -217,7 +217,7 @@ class _CardPileState extends State<CardPile> {
 
     // Fill matched positions with new cards
     for (int i = writeIndex; i < totalLength; i++) {
-      result[i] = style(_cooledCardSet.draw());
+      result[i] = _style(_cooledCardSet.draw());
     }
 
     // Update buffer accordingly
@@ -225,7 +225,7 @@ class _CardPileState extends State<CardPile> {
   }
 
   /// Add style properties to a flashcard, turning it into a [StyledFlashcard].
-  StyledFlashcard? style(Flashcard? flashcard) {
+  StyledFlashcard? _style(Flashcard? flashcard) {
     return flashcard != null
         ? StyledFlashcard(
             flashcard: flashcard,
@@ -241,41 +241,41 @@ class _CardPileState extends State<CardPile> {
   ///   In that case, it stops being random when `_cardSet.length <= renderDepthEnd + 1`.
   ///   This is so that the user doesn't get the same card multiple times in a row.
   /// * In normal mode, the card is obtained from [widget.cardList] using [windowPeak].
-  void generateNextCard() {
-    if (endlessDeck is Deck) {
-      _cardBuffer.add(style(_cooledCardSet.draw()));
+  void _generateNextCard() {
+    if (_endlessDeck is Deck) {
+      _cardBuffer.add(_style(_cooledCardSet.draw()));
     } else {
-      _cardBuffer.add(style(windowPeak));
+      _cardBuffer.add(_style(windowPeak));
     }
 
     /// Keep the buffer in sync. We'll cheat a little bit and use [masterListCurrentIndex] to make sure we add the right [int].
     /// This works only because we fill the end of [_cardBuffer] over a length [renderDepthEnd] with [null] if necessary.
-    _syncedBuffer.add((masterListCurrentIndex + renderDepthEnd + 1) % (renderDepthStart + renderDepthEnd + 1));
+    _syncedBuffer.add((_masterListCurrentIndex + _renderDepthEnd + 1) % (_renderDepthStart + _renderDepthEnd + 1));
   }
 
   /// I don't think the way I implemented it is standard practice, but the gist is that I use a [ValueKey] unique to each element
-  /// of the pile (i.e. cards), and since it's a single-valued function that depends on [resetCount], it will force flutter to
-  /// build new widgets with new states each time [resetCount] changes.
+  /// of the pile (i.e. cards), and since it's a single-valued function that depends on [_resetCount], it will force flutter to
+  /// build new widgets with new states each time [_resetCount] changes.
   ///
   /// ! Shall not be used when in endless mode.
-  void reset() {
+  void _reset() {
     // Remove all cards currently being displayed
     _cardBuffer.clear();
 
     // Reset the position at which to read the master list ([widget.cardList])
-    masterListCurrentIndex = 0;
+    _masterListCurrentIndex = 0;
 
     // Since we know we're in normal mode, add the cards from [currentWindow] to the buffer
     for (Flashcard card in currentWindow) {
-      _cardBuffer.add(style(card));
+      _cardBuffer.add(_style(card));
     }
 
     // Also reset the sync buffer
-    _syncedBuffer = CircularBuffer<int>.of(List.generate(currentWindow.length, (i) => i), renderDepthStart + renderDepthEnd + 1);
+    _syncedBuffer = CircularBuffer<int>.of(List.generate(currentWindow.length, (i) => i), _renderDepthStart + _renderDepthEnd + 1);
 
     // Have all of these changes take effect
     setState(() {
-      resetCount += 1;
+      _resetCount += 1;
     });
 
     // And don't forget to report back to the quiz page
@@ -283,37 +283,37 @@ class _CardPileState extends State<CardPile> {
   }
 
   /// Discard the flashcard, for a correct answer.
-  void discardCorrect() {
-    if (endlessDeck is Deck) {
+  void _discardCorrect() {
+    if (_endlessDeck is Deck) {
       // If we're in endless mode, remove the card from [_cooledCardSet]
       _cooledCardSet.remove(currentCard);
       // Remove it from the deck as well if auto-remove is enabled
-      if (autoRemove)
+      if (_autoRemove)
         widget.st.removeFromDeck(
           currentCard?.id ?? [0, 0],
-          endlessDeck!,
+          _endlessDeck!,
         ); // Hacky fallback here but it should work and it feels nicer than plain old `!`
       // And remove all its (potential) copies currently rendered as [_nextCards]
-      clearAndReplace(_cardBuffer, currentCard, topCardIndex + 1);
+      _clearAndReplace(_cardBuffer, currentCard, topCardIndex + 1);
     } else {
       // If we're in normal mode, nothing more to do than update the card's score
       widget.st.writeWordScore(currentCard?.id ?? [0, 0], true);
     }
 
     // Insert the next card into the buffer
-    generateNextCard();
+    _generateNextCard();
 
     setState(() {
-      masterListCurrentIndex += 1;
-      maskCorrect = true;
-      thresholdCrossed = false;
+      _masterListCurrentIndex += 1;
+      _maskCorrect = true;
+      _thresholdCrossed = false;
     });
     widget.onChange.call(currentCard, currentProgress);
   }
 
   /// Discard the flashcard, for an incorrect answer.
-  void discardIncorrect() {
-    if (endlessDeck is Deck) {
+  void _discardIncorrect() {
+    if (_endlessDeck is Deck) {
       // Nothing is done as of right now.
       // I'll leave it like this for ̶f̶u̶t̶u̶r̶e̶ ̶u̶s̶e forever, hopefully it's optimized away by the compiler.
     } else {
@@ -321,67 +321,67 @@ class _CardPileState extends State<CardPile> {
     }
 
     // Insert the next card into the buffer
-    generateNextCard();
+    _generateNextCard();
 
     setState(() {
-      masterListCurrentIndex += 1;
-      maskCorrect = false;
-      thresholdCrossed = false;
+      _masterListCurrentIndex += 1;
+      _maskCorrect = false;
+      _thresholdCrossed = false;
     });
     widget.onChange.call(currentCard, currentProgress);
   }
 
   /// Exists only to make the code more concise.
-  void discardHandler(Side side) {
-    (correctSide == CorrectSide.r)
+  void _discardHandler(Side side) {
+    (_correctSide == CorrectSide.r)
         ? (side == Side.right)
-              ? discardCorrect()
-              : discardIncorrect()
+              ? _discardCorrect()
+              : _discardIncorrect()
         : (side == Side.left)
-        ? discardCorrect()
-        : discardIncorrect();
+        ? _discardCorrect()
+        : _discardIncorrect();
   }
 
   /// Could be named `onThresholdCorrectCrossed`.
-  void thresholdCorrect() {
+  void _thresholdCorrect() {
     HapticFeedback.lightImpact();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        maskCorrect = true;
-        thresholdCrossed = true;
+        _maskCorrect = true;
+        _thresholdCrossed = true;
       });
     });
   }
 
   /// Could be named `onThresholdIncorrectCrossed`.
-  void thresholdIncorrect() {
+  void _thresholdIncorrect() {
     HapticFeedback.lightImpact();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        maskCorrect = false;
-        thresholdCrossed = true;
+        _maskCorrect = false;
+        _thresholdCrossed = true;
       });
     });
   }
 
-  void thresholdBackInside() {
+  void _thresholdBackInside() {
     HapticFeedback.lightImpact();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        thresholdCrossed = false;
+        _thresholdCrossed = false;
       });
     });
   }
 
   /// Exists only to make the code more concise.
-  void thresholdHandler(Side side) {
-    (correctSide == CorrectSide.r)
+  void _thresholdHandler(Side side) {
+    (_correctSide == CorrectSide.r)
         ? (side == Side.right)
-              ? thresholdCorrect()
-              : thresholdIncorrect()
+              ? _thresholdCorrect()
+              : _thresholdIncorrect()
         : (side == Side.left)
-        ? thresholdCorrect()
-        : thresholdIncorrect();
+        ? _thresholdCorrect()
+        : _thresholdIncorrect();
   }
 
   /// Card that is currently displayed on top of the pile. Unlike the other ones, it is [Swipeable].
@@ -392,18 +392,18 @@ class _CardPileState extends State<CardPile> {
     /// See [reset].
     /// Also, this is required since we want to be able to identify each [Flashcard], or we may fail to rebuild them while preserving their state.
     /// The [_syncedBuffer] makes sure that the key is unique even if a [card] is present twice in the pile.
-    final GlobalValueKey<SwipeableState> currentKey = GlobalValueKey((resetCount, styledCard, _syncedBuffer[cardIndex]));
+    final GlobalValueKey<SwipeableState> currentKey = GlobalValueKey((_resetCount, styledCard, _syncedBuffer[cardIndex]));
 
     return Swipeable(
       key: currentKey,
       defaultAlignment: pileAlignment,
-      onLeftSwipeRelease: () => discardHandler.call(Side.left),
-      onRightSwipeRelease: () => discardHandler.call(Side.right),
-      onLeftSwipeKeyboard: () => discardHandler.call(Side.left),
-      onRightSwipeKeyboard: () => discardHandler.call(Side.right),
-      onLeftThresholdCrossed: () => thresholdHandler.call(Side.left),
-      onRightThresholdCrossed: () => thresholdHandler.call(Side.right),
-      onThresholdBackInside: () => thresholdBackInside.call(),
+      onLeftSwipeRelease: () => _discardHandler.call(Side.left),
+      onRightSwipeRelease: () => _discardHandler.call(Side.right),
+      onLeftSwipeKeyboard: () => _discardHandler.call(Side.left),
+      onRightSwipeKeyboard: () => _discardHandler.call(Side.right),
+      onLeftThresholdCrossed: () => _thresholdHandler.call(Side.left),
+      onRightThresholdCrossed: () => _thresholdHandler.call(Side.right),
+      onThresholdBackInside: () => _thresholdBackInside.call(),
       child: Transform.translate(
         offset: styledCard.positionOffset,
         child: Transform.rotate(
@@ -419,10 +419,10 @@ class _CardPileState extends State<CardPile> {
               ),
               IgnorePointer(
                 // Need the OR operator to keep the mask on when the discard animation is playing
-                child: (thresholdCrossed || !onTop)
+                child: (_thresholdCrossed || !onTop)
                     ? CardMask(
-                        correct: maskCorrect,
-                        correctWidget: (endlessDeck is Deck && autoRemove)
+                        correct: _maskCorrect,
+                        correctWidget: (_endlessDeck is Deck && _autoRemove)
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -443,7 +443,7 @@ class _CardPileState extends State<CardPile> {
                                 ],
                               )
                             : null,
-                        incorrectWidget: (endlessDeck is Deck && autoRemove)
+                        incorrectWidget: (_endlessDeck is Deck && _autoRemove)
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -525,18 +525,18 @@ class _CardPileState extends State<CardPile> {
           alignment: cardPileAlignment,
           child: PleaseScaleMe(
             child: QuizEndCard(
-              displaySecondButton: !widget.review || (endlessDeck is Deck && !autoRemove),
-              onSecondButton: (endlessDeck is Deck)
+              displaySecondButton: !widget.review || (_endlessDeck is Deck && !_autoRemove),
+              onSecondButton: (_endlessDeck is Deck)
                   ? () {
-                      widget.st.clearDeck(endlessDeck!);
+                      widget.st.clearDeck(_endlessDeck!);
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackToast.bar(text: "Deck ${endlessDeck!.display} cleared successfully", confused: false),
+                        SnackToast.bar(text: "Deck ${_endlessDeck!.display} cleared successfully", confused: false),
                       );
                     }
-                  : reset,
+                  : _reset,
               // Clear deck button is available only in endless mode.
-              secondButtonType: (endlessDeck is Deck) ? SecondButtonType.clearDeck : SecondButtonType.restart,
+              secondButtonType: (_endlessDeck is Deck) ? SecondButtonType.clearDeck : SecondButtonType.restart,
             ),
           ),
         ),

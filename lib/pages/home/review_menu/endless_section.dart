@@ -21,27 +21,27 @@ class EndlessModeSection extends StatefulWidget {
 }
 
 class _EndlessModeSectionState extends State<EndlessModeSection> {
-  late bool endlessMode;
-  late bool autoRemove;
+  late bool _endlessMode;
+  late bool _autoRemove;
 
   @override
   void initState() {
     super.initState();
-    endlessMode = widget.st.readReviewEndlessMode();
-    autoRemove = widget.st.readEndlessAutoRemove();
+    _endlessMode = widget.st.readReviewEndlessMode();
+    _autoRemove = widget.st.readEndlessAutoRemove();
   }
 
-  void onTapEndless() {
-    widget.st.writeReviewEndlessMode(!endlessMode);
+  void _onTapEndless() {
+    widget.st.writeReviewEndlessMode(!_endlessMode);
     setState(() {
-      endlessMode = !endlessMode;
+      _endlessMode = !_endlessMode;
     });
   }
 
-  void onTapAutoRemove() {
-    widget.st.writeEndlessAutoRemove(!autoRemove);
+  void _onTapAutoRemove() {
+    widget.st.writeEndlessAutoRemove(!_autoRemove);
     setState(() {
-      autoRemove = !autoRemove;
+      _autoRemove = !_autoRemove;
     });
   }
 
@@ -59,11 +59,11 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
               style: TextStyle(
                 fontSize: FontSizes.big,
                 fontWeight: FontWeight.bold,
-                color: endlessMode
-                    ? autoRemove
+                color: _endlessMode
+                    ? _autoRemove
                           ? LightTheme.blue
                           : LightTheme.textColorDim
-                    : autoRemove
+                    : _autoRemove
                     ? LightTheme.textColorDim.withAlpha(130)
                     : LightTheme.textColorDim.withAlpha(70),
               ),
@@ -76,11 +76,11 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: FontSizes.base,
-                color: endlessMode
-                    ? autoRemove
+                color: _endlessMode
+                    ? _autoRemove
                           ? LightTheme.blue
                           : LightTheme.textColorDimmer
-                    : autoRemove
+                    : _autoRemove
                     ? LightTheme.textColorDimmer.withAlpha(130)
                     : LightTheme.textColorDimmer.withAlpha(70),
               ),
@@ -160,9 +160,9 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
             _Scaffold(
               endless: IslandButton(
                 smartExpand: true,
-                backgroundColor: endlessMode ? LightTheme.blueLighter : LightTheme.base,
-                borderColor: endlessMode ? LightTheme.blueLight : LightTheme.baseAccent,
-                onTap: () => onTapEndless.call(),
+                backgroundColor: _endlessMode ? LightTheme.blueLighter : LightTheme.base,
+                borderColor: _endlessMode ? LightTheme.blueLight : LightTheme.baseAccent,
+                onTap: () => _onTapEndless.call(),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   child: SizedBox(
@@ -175,7 +175,7 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                           style: TextStyle(
                             fontSize: FontSizes.big,
                             fontWeight: FontWeight.bold,
-                            color: endlessMode ? LightTheme.blue : LightTheme.textColorDim,
+                            color: _endlessMode ? LightTheme.blue : LightTheme.textColorDim,
                           ),
                         ),
                         const SizedBox(
@@ -186,7 +186,7 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: FontSizes.base,
-                            color: endlessMode ? LightTheme.blue : LightTheme.textColorDimmer,
+                            color: _endlessMode ? LightTheme.blue : LightTheme.textColorDimmer,
                           ),
                         ),
                       ],
@@ -194,19 +194,19 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                   ),
                 ),
               ),
-              autoRemove: endlessMode
+              autoRemove: _endlessMode
                   ? IslandButton(
                       smartExpand: true,
-                      backgroundColor: autoRemove ? LightTheme.blueLighter : LightTheme.base,
-                      borderColor: autoRemove ? LightTheme.blueLight : LightTheme.baseAccent,
-                      onTap: () => onTapAutoRemove.call(),
+                      backgroundColor: _autoRemove ? LightTheme.blueLighter : LightTheme.base,
+                      borderColor: _autoRemove ? LightTheme.blueLight : LightTheme.baseAccent,
+                      onTap: () => _onTapAutoRemove.call(),
                       child: autoremoveButtonContents,
                     )
                   : IslandContainer(
                       smartExpand: true,
                       tapped: true,
-                      backgroundColor: autoRemove ? LightTheme.lightAccent : LightTheme.base,
-                      borderColor: autoRemove ? LightTheme.baseAccent : LightTheme.baseAccent.withAlpha(70),
+                      backgroundColor: _autoRemove ? LightTheme.lightAccent : LightTheme.base,
+                      borderColor: _autoRemove ? LightTheme.baseAccent : LightTheme.baseAccent.withAlpha(70),
                       child: autoremoveButtonContents,
                     ),
             ),

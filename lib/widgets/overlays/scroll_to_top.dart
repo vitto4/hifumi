@@ -3,10 +3,10 @@ import "package:hifumi/abstractions/ui/themes.dart";
 import "package:hifumi/widgets/seasoning/click_me.dart";
 
 /// Remember to be lazy, why scroll when you can have a button for this ?
-class ScrollToTopButton extends StatelessWidget {
+class _ScrollToTopButton extends StatelessWidget {
   final Function onTap;
 
-  const ScrollToTopButton({
+  const _ScrollToTopButton({
     Key? key,
     required this.onTap,
   }) : super(key: key);
@@ -55,7 +55,7 @@ class ScrollToTopButton extends StatelessWidget {
   }
 }
 
-/// The dev is also lazy, this is so that I don't have to manually implement the [ScrollToTopButton] each time.
+/// The dev is also lazy, this is so that I don't have to manually implement the [_ScrollToTopButton] each time.
 /// Will show the button when the user scrolls past offset `500.0` (pixels).
 class ScrollToTopView extends StatefulWidget {
   final Widget child;
@@ -123,7 +123,7 @@ class _ScrollToTopViewState extends State<ScrollToTopView> {
             duration: const Duration(milliseconds: 150),
             child: Align(
               alignment: Alignment.bottomRight,
-              child: ScrollToTopButton(
+              child: _ScrollToTopButton(
                 onTap: _scrollToTop,
               ),
             ),

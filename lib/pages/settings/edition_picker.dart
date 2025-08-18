@@ -26,14 +26,14 @@ class EditionPicker extends StatefulWidget {
 }
 
 class _EditionPickerState extends State<EditionPicker> {
-  late Edition selectedBookOne;
-  late Edition selectedBookTwo;
+  late Edition _selectedBookOne;
+  late Edition _selectedBookTwo;
 
   @override
   void initState() {
     super.initState();
-    selectedBookOne = widget.st.readEdition(Book.one);
-    selectedBookTwo = widget.st.readEdition(Book.two);
+    _selectedBookOne = widget.st.readEdition(Book.one);
+    _selectedBookTwo = widget.st.readEdition(Book.two);
   }
 
   @override
@@ -80,16 +80,16 @@ class _EditionPickerState extends State<EditionPicker> {
                                         children: <Widget>[
                                           _BookTile(
                                             book: Book.one,
-                                            selectedEdition: selectedBookOne,
+                                            selectedEdition: _selectedBookOne,
                                             onTap: () => setState(
-                                              () => selectedBookOne = (selectedBookOne == Edition.first) ? Edition.second : Edition.first,
+                                              () => _selectedBookOne = (_selectedBookOne == Edition.first) ? Edition.second : Edition.first,
                                             ),
                                           ),
                                           _BookTile(
                                             book: Book.two,
-                                            selectedEdition: selectedBookTwo,
+                                            selectedEdition: _selectedBookTwo,
                                             onTap: () => setState(
-                                              () => selectedBookTwo = (selectedBookTwo == Edition.first) ? Edition.second : Edition.first,
+                                              () => _selectedBookTwo = (_selectedBookTwo == Edition.first) ? Edition.second : Edition.first,
                                             ),
                                           ),
                                         ],
@@ -107,8 +107,8 @@ class _EditionPickerState extends State<EditionPicker> {
                           borderColor: LightTheme.greenBorder,
                           smartExpand: true,
                           onTap: () {
-                            widget.st.writeEdition(Book.one, selectedBookOne);
-                            widget.st.writeEdition(Book.two, selectedBookTwo);
+                            widget.st.writeEdition(Book.one, _selectedBookOne);
+                            widget.st.writeEdition(Book.two, _selectedBookTwo);
                             widget.onDone.call();
                           },
                           child: const Center(

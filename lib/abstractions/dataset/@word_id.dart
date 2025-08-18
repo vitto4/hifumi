@@ -1,4 +1,4 @@
-import "package:hifumi/abstractions/keyring.dart";
+import "package:hifumi/abstractions/sp_keyring.dart";
 
 /// Each word has a unique [WordID], being a list of two integers. E.g. `[2, 10]`.
 typedef WordID = List<int>;

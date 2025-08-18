@@ -96,7 +96,7 @@ class DSInterface {
   }
 
   /// Remove all [Word]s that aren't from selected [Edition]s in [wordList].
-  List<Word> pruneToEditions(List<Word> wordList) {
+  List<Word> _pruneToEditions(List<Word> wordList) {
     return wordList
         .where(
           (word) =>
@@ -117,7 +117,7 @@ class DSInterface {
           supportedLanguages: this.getSupportedLanguages,
         ),
     ];
-    if (pruneEditions) wordList = this.pruneToEditions(wordList);
+    if (pruneEditions) wordList = this._pruneToEditions(wordList);
 
     return wordList;
   }

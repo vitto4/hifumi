@@ -22,8 +22,8 @@ class Polyjuice extends StatefulWidget {
 class PolyjuiceState extends State<Polyjuice> {
   final GlobalKey<FlipCardState> _flipCardKey = GlobalKey<FlipCardState>();
 
-  CardSide currentSide = CardSide.FRONT;
-  bool animating = false;
+  CardSide _currentSide = CardSide.FRONT;
+  bool _animating = false;
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class PolyjuiceState extends State<Polyjuice> {
   void flip() {
     /// Drink the potion, start morphing into a [FlipCard].
     setState(() {
-      animating = true;
+      _animating = true;
     });
 
     /// We don't want to start animating before the widget has turned into a [FlipCard] (achieved in the above setState).
@@ -55,8 +55,8 @@ class PolyjuiceState extends State<Polyjuice> {
 
               // At that point the widget is flipped, we can safely turn it back into its original form, and remove the [FlipCard]
               setState(() {
-                currentSide = currentSide == CardSide.FRONT ? CardSide.BACK : CardSide.FRONT;
-                animating = false;
+                _currentSide = _currentSide == CardSide.FRONT ? CardSide.BACK : CardSide.FRONT;
+                _animating = false;
               });
             }
           },
@@ -72,15 +72,15 @@ class PolyjuiceState extends State<Polyjuice> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: flip,
-      child: (animating)
+      child: (_animating)
           ? FlipCard(
               key: _flipCardKey,
               front: widget.front,
               back: widget.back,
-              side: currentSide,
+              side: _currentSide,
               flipOnTouch: false,
             )
-          : currentSide == CardSide.FRONT
+          : _currentSide == CardSide.FRONT
           ? widget.front
           : widget.back,
     );

@@ -29,16 +29,16 @@ class LanguagePicker extends StatefulWidget {
 }
 
 class _LanguagePickerState extends State<LanguagePicker> {
-  late final List<DSLanguage> languages;
-  late final Word exampleWord;
-  late DSLanguage selectedLanguage;
+  late final List<DSLanguage> _languages;
+  late final Word _exampleWord;
+  late DSLanguage _selectedLanguage;
 
   @override
   void initState() {
     super.initState();
-    languages = widget.ds.getSupportedLanguages;
-    exampleWord = widget.ds.fetchWordByID([2, 10]);
-    selectedLanguage = widget.st.readLanguage();
+    _languages = widget.ds.getSupportedLanguages;
+    _exampleWord = widget.ds.fetchWordByID([2, 10]);
+    _selectedLanguage = widget.st.readLanguage();
   }
 
   @override
@@ -63,7 +63,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                         const Spacer(flex: 1),
                         SizedBox(
                           width: 300.0,
-                          child: _Demonstrator(exampleWord: exampleWord, selectedLanguage: selectedLanguage),
+                          child: _Demonstrator(exampleWord: _exampleWord, selectedLanguage: _selectedLanguage),
                         ),
                         const Spacer(flex: 1),
                         const _TitleAndDescription(),
@@ -83,12 +83,12 @@ class _LanguagePickerState extends State<LanguagePicker> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: <Widget>[
-                                          for (DSLanguage lang in languages) ...[
+                                          for (DSLanguage lang in _languages) ...[
                                             _LanguageTile(
-                                              isSelected: selectedLanguage == lang,
+                                              isSelected: _selectedLanguage == lang,
                                               language: lang,
                                               onTap: () => setState(
-                                                () => selectedLanguage = lang,
+                                                () => _selectedLanguage = lang,
                                               ),
                                             ),
                                           ],
@@ -107,7 +107,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                           borderColor: LightTheme.greenBorder,
                           smartExpand: true,
                           onTap: () {
-                            widget.st.writeLanguage(selectedLanguage);
+                            widget.st.writeLanguage(_selectedLanguage);
                             widget.onDone.call();
                           },
                           child: const Center(

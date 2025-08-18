@@ -25,14 +25,14 @@ class CorrectSidePicker extends StatefulWidget {
 }
 
 class _CorrectSidePickerState extends State<CorrectSidePicker> {
-  late final List<CorrectSide> sides;
-  late CorrectSide selectedSide;
+  late final List<CorrectSide> _sides;
+  late CorrectSide _selectedSide;
 
   @override
   void initState() {
     super.initState();
-    sides = [CorrectSide.r, CorrectSide.l];
-    selectedSide = widget.st.readCorrectSide();
+    _sides = [CorrectSide.r, CorrectSide.l];
+    _selectedSide = widget.st.readCorrectSide();
   }
 
   @override
@@ -57,7 +57,7 @@ class _CorrectSidePickerState extends State<CorrectSidePicker> {
                         const Spacer(flex: 1),
                         SizedBox(
                           width: 300.0,
-                          child: _Demonstrator(selectedSide: selectedSide),
+                          child: _Demonstrator(selectedSide: _selectedSide),
                         ),
                         const Spacer(flex: 1),
                         const _TitleAndDescription(),
@@ -77,12 +77,12 @@ class _CorrectSidePickerState extends State<CorrectSidePicker> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: <Widget>[
-                                          for (CorrectSide side in sides) ...[
+                                          for (CorrectSide side in _sides) ...[
                                             _CorrectSideTile(
-                                              isSelected: selectedSide == side,
+                                              isSelected: _selectedSide == side,
                                               side: side,
                                               onTap: () => setState(
-                                                () => selectedSide = side,
+                                                () => _selectedSide = side,
                                               ),
                                             ),
                                           ],
@@ -101,7 +101,7 @@ class _CorrectSidePickerState extends State<CorrectSidePicker> {
                           borderColor: LightTheme.greenBorder,
                           smartExpand: true,
                           onTap: () {
-                            widget.st.writeCorrectSide(selectedSide);
+                            widget.st.writeCorrectSide(_selectedSide);
                             widget.onDone.call();
                           },
                           child: const Center(

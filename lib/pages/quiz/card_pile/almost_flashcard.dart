@@ -208,8 +208,8 @@ class CardMask extends StatefulWidget {
 }
 
 class _CardMaskState extends State<CardMask> {
-  late final Widget correctWidget;
-  late final Widget incorrectWidget;
+  late final Widget _correctWidget;
+  late final Widget _incorrectWidget;
 
   // See `Yapping`
   late final bool _correct;
@@ -217,14 +217,14 @@ class _CardMaskState extends State<CardMask> {
   @override
   void initState() {
     super.initState();
-    correctWidget =
+    _correctWidget =
         widget.correctWidget ??
         const Icon(
           Icons.check,
           color: LightTheme.textColorSuperExtraLight,
           size: 85.0,
         );
-    incorrectWidget =
+    _incorrectWidget =
         widget.incorrectWidget ??
         const Icon(
           Icons.close,
@@ -236,7 +236,7 @@ class _CardMaskState extends State<CardMask> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget display = (_correct) ? correctWidget : incorrectWidget;
+    final Widget display = (_correct) ? _correctWidget : _incorrectWidget;
 
     return PleaseScaleMe(
       child: Container(

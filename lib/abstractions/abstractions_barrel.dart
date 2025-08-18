@@ -16,4 +16,4 @@ export 'package:hifumi/abstractions/ui/font_sizes.dart';
 export 'package:hifumi/abstractions/dataset/ds_keyring.dart';
 export 'package:hifumi/abstractions/app_info.dart';
 export 'package:hifumi/abstractions/defaults.dart';
-export 'package:hifumi/abstractions/keyring.dart';
+export 'package:hifumi/abstractions/sp_keyring.dart';
