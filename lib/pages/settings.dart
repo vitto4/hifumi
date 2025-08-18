@@ -15,7 +15,7 @@ import "package:url_launcher/url_launcher.dart";
 
 /// The settings page.
 class Settings extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   const Settings({
@@ -371,7 +371,7 @@ class _SettingsState extends State<Settings> {
 
 /// Special [SettingsTile] that changes color when tapped, and trigger if a second tap happens soon enough.
 class ResetSettingsTile extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const ResetSettingsTile({
     Key? key,

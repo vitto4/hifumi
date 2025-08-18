@@ -3,11 +3,11 @@ import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_container.dart";
 
 /// This one is a little underwhelming.
-class WordListTopBar extends StatelessWidget {
+class LessonContentsHeader extends StatelessWidget {
   final LessonNumber lesson;
   final Widget child;
 
-  const WordListTopBar({
+  const LessonContentsHeader({
     Key? key,
     required this.lesson,
     required this.child,

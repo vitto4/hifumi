@@ -33,7 +33,7 @@ extension Window<T> on List<T> {
 ///
 /// See also [_CardPileState].
 class CardPile extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   /// The actual list of [Flashcard]s to inclue in the pile.
   final List<Flashcard> cardList;

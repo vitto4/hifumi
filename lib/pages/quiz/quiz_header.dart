@@ -5,11 +5,11 @@ import "package:hifumi/widgets/seasoning/shiny_progressbar.dart";
 
 /// Looks pretty sleek–
 /// ̶l̶i̶k̶e̶ ̶t̶h̶i̶s̶ ̶s̶e̶g̶u̶e̶,̶ ̶t̶o̶ ̶o̶u̶r̶ ̶s̶p̶o̶n̶s̶o̶r̶.
-class QuizTopBar extends StatelessWidget {
+class QuizHeader extends StatelessWidget {
   final double percentage;
   final String source;
 
-  const QuizTopBar({
+  const QuizHeader({
     Key? key,
     required this.percentage,
     required this.source,

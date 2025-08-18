@@ -12,7 +12,7 @@ const double _BOOK_TILE_VERTICAL_PADDING = 5.0;
 ///   * A set of clickable [_BookTile]
 ///   * A [_Demonstrator] to illustrate the effects of language selection
 class EditionPicker extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final Function onDone;
 
   const EditionPicker({

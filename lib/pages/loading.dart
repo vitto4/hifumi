@@ -82,7 +82,7 @@ class _LoadingState extends State<Loading> {
     /* --------------------------- Shared preferences --------------------------- */
     _consoleKey.currentState?.printMessage("Loading user data");
 
-    final StorageInterface st = StorageInterface();
+    final SPInterface st = SPInterface();
     await st.init();
     st.writeDefaults();
 
@@ -117,7 +117,7 @@ class _LoadingState extends State<Loading> {
       future: _initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          (snapshot.data!["st"] as StorageInterface).readOnboarding()
+          (snapshot.data!["st"] as SPInterface).readOnboarding()
               ? WidgetsBinding.instance.addPostFrameCallback((_) {
                   Navigator.pushReplacementNamed(context, "/onboarding", arguments: snapshot.data);
                 })

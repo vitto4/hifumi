@@ -9,7 +9,7 @@ const double _FILTER_BUTTON_WIDTH = 180.0;
 
 /// Quick settings section to select the filter to use when drawing words for a quiz.
 class WordFilterSection extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const WordFilterSection({
     Key? key,

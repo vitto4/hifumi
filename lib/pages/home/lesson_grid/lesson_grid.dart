@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/dataset/@lesson_number.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/pages/home/lesson_tile.dart";
+import "package:hifumi/pages/home/lesson_grid/lesson_tile.dart";
 
 const double _LESSON_TILE_HEIGHT = 99.0;
 const double _LESSON_TILE_GRID_SPACING_HORIZONTAL = 10.0;
@@ -16,8 +16,8 @@ const double _LESSON_TILE_GRID_SPACING_VERTICAL = 10.0;
 ///   * [updateScores]
 ///
 /// This was unpleasant to make at best, I don't think I really get how state management is supposed to be done in flutter  ﹥∼﹤
-class LessonTilesGridView extends StatelessWidget {
-  final StorageInterface st;
+class LessonGrid extends StatelessWidget {
+  final SPInterface st;
   final DSInterface ds;
 
   /// Will be called with {[bool]: newSelectionState}. Should be used in the main menu to keep a local copy
@@ -30,7 +30,7 @@ class LessonTilesGridView extends StatelessWidget {
   /// A map of keys to use when generating all the [LessonTile]s. This allows us to access their states on the fly.
   late final Map<LessonNumber, GlobalKey<LessonTileState>> keyMap;
 
-  LessonTilesGridView({
+  LessonGrid({
     Key? key,
     required this.st,
     required this.ds,

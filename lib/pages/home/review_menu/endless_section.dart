@@ -9,7 +9,7 @@ const double _ENDLESS_SECTION_BUTTON_WIDTH = 190.0;
 /// Quick settings section for everything endless mode.
 /// This is another humdrum file, not much to see.
 class EndlessModeSection extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const EndlessModeSection({
     Key? key,

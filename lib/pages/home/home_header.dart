@@ -2,17 +2,17 @@ import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 import "package:hifumi/services/responsive_breakpoints.dart";
-import "package:hifumi/widgets/seasoning/scroll_to_top_button.dart";
+import "package:hifumi/widgets/overlays/scroll_to_top.dart";
 import "package:hifumi/widgets/seasoning/app_logo.dart";
 import "package:hifumi/widgets/seasoning/click_me.dart";
 
-/// Upmost piece of the main menu, provides a rock-solid shelter for lesson tiles.
+/// Upmost piece of the home menu, provides a rock-solid shelter for lesson tiles.
 /// Did I hear a rock and stone ??
-class MainMenuTopBar extends StatelessWidget {
+class HomeHeader extends StatelessWidget {
   final Function openSettings;
   final Widget child;
 
-  const MainMenuTopBar({
+  const HomeHeader({
     Key? key,
     required this.openSettings,
     required this.child,

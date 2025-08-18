@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
-import "package:hifumi/services/storage_interface.dart";
+import "package:hifumi/services/sp_interface.dart";
 import "package:hifumi/widgets/archipelago/island_container.dart";
-import "package:hifumi/pages/home/quick_settings_review/deck_section/deck_selector.dart";
+import "package:hifumi/pages/home/review_menu/deck_section/deck_selector.dart";
 
 /// Quick settings section to select what deck one wants to use for the next review.
 class DeckSection extends StatelessWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const DeckSection({
     Key? key,

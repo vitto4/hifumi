@@ -9,7 +9,7 @@ const double _ORDER_BUTTON_WIDTH = 190.0;
 
 /// Quick settings section that allows users to configure the order in which words will be drawn in a review.
 class DeckOrderSection extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const DeckOrderSection({
     Key? key,

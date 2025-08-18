@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
-import "package:hifumi/services/storage_interface.dart";
-import "package:hifumi/pages/home/quick_settings_review/endless_section.dart";
-import "package:hifumi/pages/home/quick_settings_review/review_explanation_section.dart";
-import "package:hifumi/pages/home/quick_settings_review/order_section.dart";
-import "package:hifumi/pages/home/quick_settings_review/deck_section.dart";
+import "package:hifumi/services/sp_interface.dart";
+import "package:hifumi/pages/home/review_menu/endless_section.dart";
+import "package:hifumi/pages/home/review_menu/review_explanation_section.dart";
+import "package:hifumi/pages/home/review_menu/order_section.dart";
+import "package:hifumi/pages/home/review_menu/deck_section/deck_section.dart";
 
 /// Quick settings section that can be accessed using the arrow button on the home screen.
-class ReviewQuickSettings extends StatelessWidget {
-  final StorageInterface st;
+class ReviewMenu extends StatelessWidget {
+  final SPInterface st;
 
-  const ReviewQuickSettings({
+  const ReviewMenu({
     Key? key,
     required this.st,
   }) : super(key: key);

@@ -4,8 +4,8 @@ import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/services/grayscale.dart";
 import "package:hifumi/widgets/seasoning/shiny_progressbar.dart";
 import "package:hifumi/widgets/archipelago/island_button.dart";
-import "package:hifumi/pages/home/colorful_badge.dart";
-import "package:hifumi/pages/lesson_detail.dart";
+import "package:hifumi/pages/home/lesson_grid/colorful_badge.dart";
+import "package:hifumi/pages/lesson_contents.dart";
 
 const Alignment _LESSON_TILE_PROGRESS_BAR_ALIGNMENT = Alignment(.0, .80);
 
@@ -14,7 +14,7 @@ const Alignment _LESSON_TILE_PROGRESS_BAR_ALIGNMENT = Alignment(.0, .80);
 /// Yes, the folder is called `roofing` because this is a tile.
 class LessonTile extends StatefulWidget {
   final DSInterface ds;
-  final StorageInterface st;
+  final SPInterface st;
 
   /// [LessonNumber] of the lesson this widget represents.
   final LessonNumber lesson;
@@ -87,13 +87,13 @@ class LessonTileState extends State<LessonTile> {
         : null;
   }
 
-  /// Display the lesson detail page, and update the score when popped.
+  /// Display the lesson contents page, and update the score when popped.
   /// (it may have changed if the user reset progress for this lesson)
   void displayWordList() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LessonDetail(lesson: widget.lesson, ds: widget.ds, st: widget.st),
+        builder: (context) => LessonContents(lesson: widget.lesson, ds: widget.ds, st: widget.st),
         barrierDismissible: true,
       ),
     ).then((_) {

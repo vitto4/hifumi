@@ -7,13 +7,13 @@ import "package:hifumi/widgets/seasoning/click_me.dart";
 /// I should probably be sleeping instead of writing silly comments.
 /// –anyway, why are `i` and `j` a good source of information ?
 
-const double WORD_TILE_HEIGHT = 100.0; // Not private because used in `lesson_detail.dart`
+const double WORD_TILE_HEIGHT = 100.0; // Not private because used in `lesson_contents.dart`
 const double _WORD_TILE_BORDER_RADIUS = 12.0;
 
 /// Tile widget displaying word information with interactive deck assignment buttons.
 class WordTile extends StatefulWidget {
   final Word word;
-  final StorageInterface st;
+  final SPInterface st;
 
   const WordTile({
     Key? key,
@@ -248,7 +248,7 @@ class _WordTileDeckButton extends StatefulWidget {
   final WordID id;
   final Deck deck;
   final _Position position;
-  final StorageInterface st;
+  final SPInterface st;
 
   const _WordTileDeckButton({
     Key? key,

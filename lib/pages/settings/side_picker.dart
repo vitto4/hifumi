@@ -11,7 +11,7 @@ const double _CORRECT_SIDE_TILE_VERTICAL_PADDING = 5.0;
 ///   * A set of clickable [_CorrectSideTile]
 ///   * A [_Demonstrator] to illustrate the effects of selecting a side
 class CorrectSidePicker extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final Function onDone;
 
   const CorrectSidePicker({

@@ -5,21 +5,21 @@ import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_text_checkbox.dart";
-import "package:hifumi/pages/home/quick_settings_quiz/quiz_quick_settings.dart";
-import "package:hifumi/pages/home/tristate_lesson_selection_state.dart";
-import "package:hifumi/widgets/tray_dialog.dart" as tray;
-import "package:hifumi/pages/home/main_menu_top_bar.dart";
+import "package:hifumi/pages/home/quiz_menu/quiz_menu.dart";
+import "package:hifumi/pages/home/lesson_grid/lesson_selection_state.dart";
+import "package:hifumi/widgets/overlays/tray_dialog.dart" as tray;
+import "package:hifumi/pages/home/home_header.dart";
 import "package:hifumi/widgets/seasoning/text_separator.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/pages/home/quick_settings_review/review_quick_settings.dart";
-import "package:hifumi/pages/home/lessons_grid_view.dart";
-import "package:hifumi/pages/home/lesson_tile.dart";
+import "package:hifumi/pages/home/review_menu/review_menu.dart";
+import "package:hifumi/pages/home/lesson_grid/lesson_grid.dart";
+import "package:hifumi/pages/home/lesson_grid/lesson_tile.dart";
 import "package:hifumi/widgets/combo_button.dart";
 
 /// Called it home because that's what everyone does, but it is really more of a main menu.
 /// So please think `MainMenu` whenever you read [Home], thanks.
 class Home extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   const Home({
@@ -37,18 +37,18 @@ class _HomeState extends State<Home> {
   ///   * All (everything is selected)
   ///   * Misc (some are selected)
   ///   * None
-  late TristateLessonSelectionState lessonSelectionButtonState;
+  late LessonSelectionState lessonSelectionButtonState;
 
   /// List of selected lessons, will be updated as user interacts with the app.
-  /// We could just [StorageInterface.readSelectedLessons], but also having it stored in the state should be faster and safer.
+  /// We could just [SPInterface.readSelectedLessons], but also having it stored in the state should be faster and safer.
   /// (source : tkt)
   ///
   /// Yes, yes, here's the [meaning](https://www.urbandictionary.com/define.php?term=tkt)
   late List<LessonNumber> selection;
 
-  /// See [LessonTilesGridView].
+  /// See [LessonGrid].
   /// We store this as a variable because we'll have to call some of its methods outside of the [build] function.
-  late final LessonTilesGridView lessonTileList;
+  late final LessonGrid lessonTileList;
 
   @override
   void initState() {
@@ -57,12 +57,12 @@ class _HomeState extends State<Home> {
     selection = widget.st.readSelectedLessons();
 
     lessonSelectionButtonState = this.allSelected
-        ? TristateLessonSelectionState.all
+        ? LessonSelectionState.all
         : this.noneSelected
-        ? TristateLessonSelectionState.none
-        : TristateLessonSelectionState.neutral;
+        ? LessonSelectionState.none
+        : LessonSelectionState.neutral;
 
-    lessonTileList = LessonTilesGridView(
+    lessonTileList = LessonGrid(
       ds: widget.ds,
       st: widget.st,
       selectionCallback: (LessonNumber number, bool newSelectionValue) {
@@ -77,15 +77,15 @@ class _HomeState extends State<Home> {
         // Update the lesson selection button accordingly. For a transition to occur, it should transition to or from a [prevSpecialState]
         if (!prevSpecialState && allSelected) {
           setState(() {
-            lessonSelectionButtonState = TristateLessonSelectionState.all;
+            lessonSelectionButtonState = LessonSelectionState.all;
           });
         } else if (!prevSpecialState && noneSelected) {
           setState(() {
-            lessonSelectionButtonState = TristateLessonSelectionState.none;
+            lessonSelectionButtonState = LessonSelectionState.none;
           });
         } else if (prevSpecialState) {
           setState(() {
-            lessonSelectionButtonState = TristateLessonSelectionState.neutral;
+            lessonSelectionButtonState = LessonSelectionState.neutral;
           });
         }
       },
@@ -100,13 +100,13 @@ class _HomeState extends State<Home> {
 
   void toggleLessonSelection() {
     switch (lessonSelectionButtonState) {
-      case TristateLessonSelectionState.all:
+      case LessonSelectionState.all:
         lessonTileList.unselectAll();
         break;
-      case TristateLessonSelectionState.none:
+      case LessonSelectionState.none:
         lessonTileList.selectAll();
         break;
-      case TristateLessonSelectionState.neutral:
+      case LessonSelectionState.neutral:
         lessonTileList.unselectAll();
         break;
     }
@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
       context: context,
       backgroundColor: LightTheme.base,
       pillColor: LightTheme.darkAccent,
-      child: QuizQuickSettings(
+      child: QuizMenu(
         st: widget.st,
       ),
     );
@@ -178,7 +178,7 @@ class _HomeState extends State<Home> {
       context: context,
       backgroundColor: LightTheme.base,
       pillColor: LightTheme.darkAccent,
-      child: ReviewQuickSettings(
+      child: ReviewMenu(
         st: widget.st,
       ),
     );
@@ -204,7 +204,7 @@ class _HomeState extends State<Home> {
         const SizedBox(width: 15.0),
         IslandTextCheckbox(
           checkState: lessonSelectionButtonState,
-          variantWithLongestText: TristateLessonSelectionState.neutral,
+          variantWithLongestText: LessonSelectionState.neutral,
           tapHandler: toggleLessonSelection,
           compact: true,
         ),
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       body: SafeArea(
-        child: MainMenuTopBar(
+        child: HomeHeader(
           openSettings: () {
             Navigator.pushNamed(
               context,

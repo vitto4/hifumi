@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
-import "package:hifumi/services/storage_interface.dart";
+import "package:hifumi/services/sp_interface.dart";
 import "package:hifumi/widgets/archipelago/island_container.dart";
-import "package:hifumi/pages/home/quick_settings_review/deck_section/deck_selector.dart";
+import "package:hifumi/pages/home/review_menu/deck_section/deck_selector.dart";
 
 /// Same thing as [DeckSection] except it's displayed when in a quiz, to select which deck to add words to.
 class DeckInsertSection extends StatelessWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   const DeckInsertSection({
     Key? key,

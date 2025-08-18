@@ -13,7 +13,7 @@ const double _LANGUAGE_TILE_VERTICAL_PADDING = 5.0;
 ///   * A set of clickable [_LanguageTile]
 ///   * A [_Demonstrator] to illustrate the effects of language selection
 class LanguagePicker extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
   final Function onDone;
 

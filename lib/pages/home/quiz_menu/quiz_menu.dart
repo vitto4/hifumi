@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hifumi/services/storage_interface.dart';
-import 'package:hifumi/pages/home/quick_settings_quiz/word_count_section.dart';
-import 'package:hifumi/pages/home/quick_settings_quiz/word_filter_section.dart';
+import 'package:hifumi/services/sp_interface.dart';
+import 'package:hifumi/pages/home/quiz_menu/word_count_section.dart';
+import 'package:hifumi/pages/home/quiz_menu/word_filter_section.dart';
 
-/// Quick settings section that can be accessed using the arrow button on the home screen.
-class QuizQuickSettings extends StatelessWidget {
-  final StorageInterface st;
+/// Quick settings menu that can be accessed using the arrow button on the home screen.
+class QuizMenu extends StatelessWidget {
+  final SPInterface st;
 
-  const QuizQuickSettings({
+  const QuizMenu({
     Key? key,
     required this.st,
   }) : super(key: key);

@@ -5,7 +5,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/ds_interface.dart";
-import "package:hifumi/pages/home/quick_settings_quiz/whole_selection_button_state.dart";
+import "package:hifumi/pages/home/quiz_menu/word_count_section.dart" show WholeSelectionButtonState;
 import "package:shared_preferences/shared_preferences.dart";
 import "package:file_picker/file_picker.dart";
 import "package:file_saver/file_saver.dart";
@@ -51,11 +51,11 @@ class UserPrefs {
 }
 
 /// Interfaces with [shared_preferences], used (all over the app) to store and retrieve user data.
-class StorageInterface {
+class SPInterface {
   /* ---------------------------------- Setup --------------------------------- */
   late final SharedPreferences _sp;
 
-  StorageInterface();
+  SPInterface();
 
   Future<void> init() async {
     this._sp = await SharedPreferences.getInstance();

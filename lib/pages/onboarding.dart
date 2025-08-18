@@ -6,7 +6,7 @@ import "package:hifumi/pages/settings/edition_picker.dart";
 /// As implied, show this to the user on the first run.
 /// For now it's only displaying a [LanguagePicker] and [EditionPicker].
 class OnboardingPage extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   const OnboardingPage({

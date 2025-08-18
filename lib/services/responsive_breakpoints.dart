@@ -9,7 +9,6 @@ import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 /// Get the orientation of the screen based on its dimensions.
 ScreenOrientation getOrientation(BuildContext context) {
   final Size dimensions = getScreenDimensions(context);
-
   return (dimensions.height > dimensions.width) ? ScreenOrientation.portrait : ScreenOrientation.landscape;
 }
 

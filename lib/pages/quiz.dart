@@ -3,10 +3,10 @@ import "package:flutter/services.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/pages/quiz/deck_insert_section.dart";
-import "package:hifumi/widgets/tray_dialog.dart" as tray;
+import "package:hifumi/widgets/overlays/tray_dialog.dart" as tray;
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/pages/quiz/quiz_top_bar.dart";
-import "package:hifumi/pages/quiz/card_pile.dart";
+import "package:hifumi/pages/quiz/quiz_header.dart";
+import "package:hifumi/pages/quiz/card_pile/card_pile.dart";
 import "package:hifumi/widgets/combo_button.dart";
 import "package:url_launcher/url_launcher.dart";
 
@@ -15,7 +15,7 @@ import "package:url_launcher/url_launcher.dart";
 ///
 /// * Note : Despite the name, this is also the page used for "reviews".
 class QuizPage extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   /// Are we displaying the page for a review ?
@@ -202,7 +202,7 @@ class _QuizPageState extends State<QuizPage> {
             SafeArea(
               child: Column(
                 children: <Widget>[
-                  QuizTopBar(percentage: quizProgress, source: quizSource),
+                  QuizHeader(percentage: quizProgress, source: quizSource),
                   Expanded(
                     child: Container(),
                   ),

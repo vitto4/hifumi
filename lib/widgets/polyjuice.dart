@@ -3,8 +3,8 @@ import "package:flip_card/flip_card.dart";
 
 /// For some reason animating widget that contains a [FlipCard] is really resource-intensive, and causes raster jank.
 ///
-/// This widget is only a [FlipCard] when flipping, and is the actual widget facing up the rest of the time.
-/// It dramatically improves frame time ! Hooray !
+/// A [Polyjuice] is only a [FlipCard] when flipping, and is the actual widget facing up the rest of the time.
+/// Dramatically improves frame time ! Hooray !
 class Polyjuice extends StatefulWidget {
   final Widget front;
   final Widget back;
@@ -81,8 +81,8 @@ class PolyjuiceState extends State<Polyjuice> {
               flipOnTouch: false,
             )
           : currentSide == CardSide.FRONT
-              ? widget.front
-              : widget.back,
+          ? widget.front
+          : widget.back,
     );
   }
 }

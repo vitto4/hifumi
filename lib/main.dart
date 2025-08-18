@@ -44,21 +44,21 @@ void main() => runApp(
         case '/onboarding':
           return MaterialPageRoute(
             builder: (context) => OnboardingPage(
-              st: (settings.arguments as Map)["st"] as StorageInterface,
+              st: (settings.arguments as Map)["st"] as SPInterface,
               ds: (settings.arguments as Map)["ds"] as DSInterface,
             ),
           );
         case '/home':
           return MaterialPageRoute(
             builder: (context) => Home(
-              st: (settings.arguments as Map)["st"] as StorageInterface,
+              st: (settings.arguments as Map)["st"] as SPInterface,
               ds: (settings.arguments as Map)["ds"] as DSInterface,
             ),
           );
         case '/quiz':
           return MaterialPageRoute(
             builder: (context) => QuizPage(
-              st: (settings.arguments as Map)["st"] as StorageInterface,
+              st: (settings.arguments as Map)["st"] as SPInterface,
               ds: (settings.arguments as Map)["ds"] as DSInterface,
               review: (settings.arguments as Map)["review"] as bool,
             ),
@@ -66,7 +66,7 @@ void main() => runApp(
         case '/settings':
           return MaterialPageRoute(
             builder: (context) => Settings(
-              st: (settings.arguments as Map)["st"] as StorageInterface,
+              st: (settings.arguments as Map)["st"] as SPInterface,
               ds: (settings.arguments as Map)["ds"] as DSInterface,
             ),
             // This page may be dismissed by pressing `Esc`

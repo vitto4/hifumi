@@ -1,27 +1,25 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/abstractions/ui/@screen_orientation.dart";
+import "package:hifumi/pages/lesson_contents/word_grid.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_double_tap_button.dart";
-import "package:hifumi/widgets/seasoning/scroll_to_top_button.dart";
+import "package:hifumi/widgets/overlays/scroll_to_top.dart";
 import "package:hifumi/widgets/seasoning/text_separator.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/pages/lesson_detail/word_list_top_bar.dart";
-import "package:hifumi/pages/lesson_detail/word_tile.dart";
-
-const double _WORD_TILE_GRID_MAIN_AXIS_SPACING = 7.0;
-const double _WORD_TILE_GRID_CROSS_AXIS_SPACING = 12.0;
+import "package:hifumi/pages/lesson_contents/lesson_contents_header.dart";
+import "package:hifumi/pages/lesson_contents/word_tile.dart";
 
 /// Gotta know what you'll be quizzed on ; also it's great to be able to access the vocab on the go.
 /// (or you could just ̶u̶s̶e̶ ̶P̶e̶t̶r̶u̶s bring your textbooks with you, has the same effect but is a little cumbersome)
-class LessonDetail extends StatelessWidget {
-  final StorageInterface st;
+class LessonContents extends StatelessWidget {
+  final SPInterface st;
   final DSInterface ds;
 
   /// The only thing we need to know is the lesson to build the word list for.
   final LessonNumber lesson;
 
-  const LessonDetail({
+  const LessonContents({
     Key? key,
     required this.st,
     required this.ds,
@@ -46,7 +44,7 @@ class LessonDetail extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ScrollToTopView(
-          child: WordListTopBar(
+          child: LessonContentsHeader(
             lesson: this.lesson,
             child: FractionallySizedBox(
               widthFactor: .93,
@@ -243,46 +241,15 @@ class AdaptiveWordListBuilder extends StatelessWidget {
     int crossAxisCount = getWordTilesCrossCount(context);
 
     if (orientation == ScreenOrientation.portrait) {
-      return WordTilesGridView(
+      return WordGrid(
         wordTileList: wordTileList,
         crossAxisCount: 1,
       );
     } else {
-      return WordTilesGridView(
+      return WordGrid(
         wordTileList: wordTileList,
         crossAxisCount: crossAxisCount,
       );
     }
-  }
-}
-
-/// Good job on scrolling down all the way here, this is the actual widget that displays all the [WordTile].
-class WordTilesGridView extends StatelessWidget {
-  final List<Widget> wordTileList;
-  final int crossAxisCount;
-
-  const WordTilesGridView({
-    Key? key,
-    required this.wordTileList,
-    required this.crossAxisCount,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = getScreenDimensions(context).width;
-    double aspectRatio =
-        screenWidth /
-        (crossAxisCount *
-            WORD_TILE_HEIGHT); // Super duper advanced math that will keep the height of the tiles constant no matter the crossAxisCount >:)
-
-    return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: _WORD_TILE_GRID_CROSS_AXIS_SPACING,
-      mainAxisSpacing: _WORD_TILE_GRID_MAIN_AXIS_SPACING,
-      shrinkWrap: true,
-      crossAxisCount: crossAxisCount,
-      childAspectRatio: aspectRatio,
-      children: wordTileList,
-    );
   }
 }

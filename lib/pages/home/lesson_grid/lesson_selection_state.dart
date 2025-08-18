@@ -4,12 +4,12 @@ import 'package:hifumi/widgets/archipelago/archipelago_barrel.dart';
 import 'package:hifumi/widgets/archipelago/island_text_checkbox.dart';
 
 /// Used in the main menu [Home] to select or unselect all [LessonTile].
-enum TristateLessonSelectionState with IslandTextCheckboxState {
+enum LessonSelectionState with IslandTextCheckboxState {
   all("All"),
   none("None"),
   neutral("Misc.");
 
-  const TristateLessonSelectionState(this.text);
+  const LessonSelectionState(this.text);
 
   @override
   final String text;
@@ -17,8 +17,8 @@ enum TristateLessonSelectionState with IslandTextCheckboxState {
   @override
   Color get backgroundColor {
     switch (this) {
-      case TristateLessonSelectionState.all:
-      case TristateLessonSelectionState.none:
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
         return LightTheme.blueLighter;
       default:
         return LightTheme.base;
@@ -28,8 +28,8 @@ enum TristateLessonSelectionState with IslandTextCheckboxState {
   @override
   Color get borderColor {
     switch (this) {
-      case TristateLessonSelectionState.all:
-      case TristateLessonSelectionState.none:
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
         return LightTheme.blueLight;
       default:
         return LightTheme.baseAccent;
@@ -39,8 +39,8 @@ enum TristateLessonSelectionState with IslandTextCheckboxState {
   @override
   Color get textColor {
     switch (this) {
-      case TristateLessonSelectionState.all:
-      case TristateLessonSelectionState.none:
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
         return LightTheme.blue;
       default:
         return LightTheme.textColorDimmer;

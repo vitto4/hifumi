@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
-import "package:hifumi/pages/home/quick_settings_review/deck_section/deck_tile.dart";
-import "package:hifumi/services/storage_interface.dart";
+import "package:hifumi/pages/home/review_menu/deck_section/deck_tile.dart";
+import "package:hifumi/services/sp_interface.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
 
 /// Used in the review quick settings and during quizzes.
 class IslandDeckSelector extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
 
   /// Are choosing a deck to add words to, or to use when reviewing ?
   final bool areWeDoingAQuizATM;
