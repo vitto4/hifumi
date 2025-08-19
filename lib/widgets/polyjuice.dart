@@ -3,8 +3,8 @@ import "package:flip_card/flip_card.dart";
 
 /// For some reason animating widget that contains a [FlipCard] is really resource-intensive, and causes raster jank.
 ///
-/// This widget is only a [FlipCard] when flipping, and is the actual widget facing up the rest of the time.
-/// It dramatically improves frame time ! Hooray !
+/// A [Polyjuice] is only a [FlipCard] when flipping, and is the actual widget facing up the rest of the time.
+/// Dramatically improves frame time ! Hooray !
 class Polyjuice extends StatefulWidget {
   final Widget front;
   final Widget back;
@@ -22,8 +22,8 @@ class Polyjuice extends StatefulWidget {
 class PolyjuiceState extends State<Polyjuice> {
   final GlobalKey<FlipCardState> _flipCardKey = GlobalKey<FlipCardState>();
 
-  CardSide currentSide = CardSide.FRONT;
-  bool animating = false;
+  CardSide _currentSide = CardSide.FRONT;
+  bool _animating = false;
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class PolyjuiceState extends State<Polyjuice> {
   void flip() {
     /// Drink the potion, start morphing into a [FlipCard].
     setState(() {
-      animating = true;
+      _animating = true;
     });
 
     /// We don't want to start animating before the widget has turned into a [FlipCard] (achieved in the above setState).
@@ -55,8 +55,8 @@ class PolyjuiceState extends State<Polyjuice> {
 
               // At that point the widget is flipped, we can safely turn it back into its original form, and remove the [FlipCard]
               setState(() {
-                currentSide = currentSide == CardSide.FRONT ? CardSide.BACK : CardSide.FRONT;
-                animating = false;
+                _currentSide = _currentSide == CardSide.FRONT ? CardSide.BACK : CardSide.FRONT;
+                _animating = false;
               });
             }
           },
@@ -72,17 +72,17 @@ class PolyjuiceState extends State<Polyjuice> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: flip,
-      child: (animating)
+      child: (_animating)
           ? FlipCard(
               key: _flipCardKey,
               front: widget.front,
               back: widget.back,
-              side: currentSide,
+              side: _currentSide,
               flipOnTouch: false,
             )
-          : currentSide == CardSide.FRONT
-              ? widget.front
-              : widget.back,
+          : _currentSide == CardSide.FRONT
+          ? widget.front
+          : widget.back,
     );
   }
 }

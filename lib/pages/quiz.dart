@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/widgets/drawer/deck_insert_section.dart";
-import "package:hifumi/widgets/drawer/tray_dialog.dart" as tray;
+import "package:hifumi/pages/quiz/deck_insert_section.dart";
+import "package:hifumi/widgets/overlays/tray_dialog.dart" as tray;
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/widgets/topping/quiz_top_bar.dart";
-import "package:hifumi/widgets/casino/card_pile.dart";
-import "package:hifumi/widgets/combo_button.dart";
+import "package:hifumi/pages/quiz/quiz_header.dart";
+import "package:hifumi/pages/quiz/card_pile/card_pile.dart";
+import "package:hifumi/pages/quiz/quiz_combo_button.dart";
 import "package:url_launcher/url_launcher.dart";
 
 /// Probably the most important page of the app.
@@ -15,7 +15,7 @@ import "package:url_launcher/url_launcher.dart";
 ///
 /// * Note : Despite the name, this is also the page used for "reviews".
 class QuizPage extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   /// Are we displaying the page for a review ?
@@ -35,18 +35,18 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   /// To be displayed in the top-right corner, indicates the source deck for a review, or `"Q"` for a regular quiz.
-  late final String quizSource;
+  late final String _quizSource;
 
   /// The list of flashcards to be displayed in the [CardPile].
   late List<Flashcard> _flashcards;
 
   /// `true` if the add to/remove from deck button should add the word the deck.
   /// `false` if the word is already in the deck and we want to remove it when the button is pressed.
-  late bool deckButtonAddOrRemove;
+  late bool _deckButtonAddOrRemove;
 
   /// You know the variable name is bad when even you can't remember what it's about haha
   /// Deck that is currently selected as receiving words when the user clicks on the add to deck button.
-  late Deck targetDeckInsert;
+  late Deck _targetDeckInsert;
 
   /// Keyboard focus.
   /// This used to be such a hassle, but then I found this [wonderful video](https://www.youtube.com/watch?v=JCDfh5bs1xc)
@@ -54,10 +54,10 @@ class _QuizPageState extends State<QuizPage> {
   late FocusNode _node;
 
   /// Completion percentage of the quiz.
-  double quizProgress = .0;
+  double _quizProgress = .0;
 
   /// The current [Flashcard] being displayed.
-  late Flashcard? currentCard;
+  late Flashcard? _currentCard;
 
   @override
   void initState() {
@@ -65,14 +65,14 @@ class _QuizPageState extends State<QuizPage> {
     _node = FocusNode(debugLabel: "cardToFlip");
 
     // If we're in a review, only allow to remove from said deck
-    targetDeckInsert = switch (widget.review) {
+    _targetDeckInsert = switch (widget.review) {
       true => widget.st.readTargetDeckReview(),
       false => widget.st.readTargetDeckInsert(),
     };
 
     // If we're dealing with a regular quiz
     if (!widget.review) {
-      quizSource = "Q";
+      _quizSource = "Q";
 
       // Does the user want to be quizzed on all the words `= 0`, or only a finite number `int <number>` of them ?
       int count = (widget.st.readQuizDrawWholeSelection().asBool) ? 0 : widget.st.readWordCountPerQuiz();
@@ -104,7 +104,7 @@ class _QuizPageState extends State<QuizPage> {
       final Deck deck = widget.st.readTargetDeckReview();
 
       // Update the text accordingly
-      quizSource = deck.display;
+      _quizSource = deck.display;
 
       // Should we have the croupier shuffle the cards ?
       final bool shuffle = (ReviewOrder.random == widget.st.readReviewOrder());
@@ -119,16 +119,16 @@ class _QuizPageState extends State<QuizPage> {
 
     /// For now we can't know what the current card is.
     /// (we may be in endless mode, in which case it probably won't be `_flashcards[0]`)
-    currentCard = null;
+    _currentCard = null;
 
-    deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
+    _deckButtonAddOrRemove = !_isInDeck(_targetDeckInsert);
   }
 
   /// Jisho FTW c:
-  void openJisho() async {
+  void _openJisho() async {
     // Safety check, do not attempt to open Jisho if we reached the end of the quiz
-    if (currentCard is Flashcard) {
-      final Uri url = Uri.parse(currentCard!.jishoURL);
+    if (_currentCard is Flashcard) {
+      final Uri url = Uri.parse(_currentCard!.jishoURL);
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       }
@@ -137,39 +137,39 @@ class _QuizPageState extends State<QuizPage> {
 
   /// Does the card currently on top of the deck represent a word that is in [deck] ?
   /// If yes, we may want to do something (turn the add to deck button red for example)
-  bool isInDeck(Deck deck) {
-    return (currentCard is Flashcard)
-        ? widget.st.isInDeck(currentCard!.id, deck)
+  bool _isInDeck(Deck deck) {
+    return (_currentCard is Flashcard)
+        ? widget.st.isInDeck(_currentCard!.id, deck)
         : false; // If we have already reached the end of the quiz, return false
   }
 
   /// This name is wayy too long, gives me VBA flashbacks ww
-  void updateDeckButtonAddOrRemove(Deck deck) {
-    if (currentCard is Flashcard && widget.st.isInDeck(currentCard!.id, deck)) {
+  void _updateDeckButtonAddOrRemove(Deck deck) {
+    if (_currentCard is Flashcard && widget.st.isInDeck(_currentCard!.id, deck)) {
       setState(() {
-        deckButtonAddOrRemove = false;
+        _deckButtonAddOrRemove = false;
       });
     } else {
       setState(() {
-        deckButtonAddOrRemove = true;
+        _deckButtonAddOrRemove = true;
       });
     }
   }
 
   /// What should happen when someone presses the add to/remove from deck button.
-  void handleDeckButton(Deck targetDeckInsert) {
-    if (currentCard is Flashcard) {
-      if (widget.st.isInDeck(currentCard!.id, targetDeckInsert)) {
+  void _handleDeckButton(Deck targetDeckInsert) {
+    if (_currentCard is Flashcard) {
+      if (widget.st.isInDeck(_currentCard!.id, targetDeckInsert)) {
         // If the word is in selected deck, remove it
-        widget.st.removeFromDeck(currentCard!.id, targetDeckInsert);
+        widget.st.removeFromDeck(_currentCard!.id, targetDeckInsert);
         setState(() {
-          deckButtonAddOrRemove = true;
+          _deckButtonAddOrRemove = true;
         });
       } else {
         // Else, add it to the deck
-        widget.st.addToDeck(currentCard!.id, targetDeckInsert);
+        widget.st.addToDeck(_currentCard!.id, targetDeckInsert);
         setState(() {
-          deckButtonAddOrRemove = false;
+          _deckButtonAddOrRemove = false;
         });
       }
     }
@@ -184,10 +184,10 @@ class _QuizPageState extends State<QuizPage> {
           switch (event.logicalKey) {
             case LogicalKeyboardKey.arrowUp:
               // Don't do anything if we're in endless mode
-              (widget.review && widget.st.readReviewEndlessMode()) ? null : handleDeckButton(targetDeckInsert);
+              (widget.review && widget.st.readReviewEndlessMode()) ? null : _handleDeckButton(_targetDeckInsert);
               return KeyEventResult.handled;
             case LogicalKeyboardKey.arrowDown:
-              openJisho();
+              _openJisho();
               return KeyEventResult.handled;
             case _:
               return KeyEventResult.ignored;
@@ -197,62 +197,63 @@ class _QuizPageState extends State<QuizPage> {
         }
       },
       child: Scaffold(
-          body: Stack(
-        children: <Widget>[
-          SafeArea(
-            child: Column(
-              children: <Widget>[
-                QuizTopBar(percentage: quizProgress, source: quizSource),
-                Expanded(
-                  child: Container(),
-                ),
-                QuizComboButton(
-                  onPrimaryLeft: () => openJisho(),
-                  onPrimaryRight: () => handleDeckButton(targetDeckInsert),
-                  onSecondaryRight: () => tray
-                      .showTrayDialog(
-                    context: context,
-                    backgroundColor: LightTheme.base,
-                    pillColor: LightTheme.darkAccent,
-                    child: DeckInsertSection(st: widget.st),
-                  )
-                      .then((_) {
-                    setState(
-                      () {
-                        targetDeckInsert = widget.st.readTargetDeckInsert();
-                      },
-                    );
-                    updateDeckButtonAddOrRemove(targetDeckInsert);
-                  }),
-                  selectedDeck: targetDeckInsert,
-                  rightEnabled: deckButtonAddOrRemove,
-                  config: (widget.review)
-                      ? (widget.st.readReviewEndlessMode())
-                          ? ComboButtonConfig.onlyLeft
-                          : ComboButtonConfig.standardWOnlyRemove
-                      : ComboButtonConfig.standard,
-                ),
-                const SizedBox(height: 26.0),
-              ],
+        body: Stack(
+          children: <Widget>[
+            SafeArea(
+              child: Column(
+                children: <Widget>[
+                  QuizHeader(percentage: _quizProgress, source: _quizSource),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  QuizComboButton(
+                    onPrimaryLeft: () => _openJisho(),
+                    onPrimaryRight: () => _handleDeckButton(_targetDeckInsert),
+                    onSecondaryRight: () => tray
+                        .showTrayDialog(
+                          context: context,
+                          backgroundColor: LightTheme.base,
+                          pillColor: LightTheme.darkAccent,
+                          child: DeckInsertSection(st: widget.st),
+                        )
+                        .then((_) {
+                          setState(
+                            () {
+                              _targetDeckInsert = widget.st.readTargetDeckInsert();
+                            },
+                          );
+                          _updateDeckButtonAddOrRemove(_targetDeckInsert);
+                        }),
+                    selectedDeck: _targetDeckInsert,
+                    rightEnabled: _deckButtonAddOrRemove,
+                    config: (widget.review)
+                        ? (widget.st.readReviewEndlessMode())
+                              ? ComboButtonConfig.onlyJisho
+                              : ComboButtonConfig.standardWithoutDeckSelector
+                        : ComboButtonConfig.standard,
+                  ),
+                  const SizedBox(height: 26.0),
+                ],
+              ),
             ),
-          ),
-          SafeArea(
-            child: CardPile(
-              st: widget.st,
-              cardList: _flashcards,
-              review: widget.review,
-              onChange: (card, progress) {
-                // Setting the state because we want the stateless progress bar to update.
-                setState(() {
-                  currentCard = card;
-                  quizProgress = progress;
-                  deckButtonAddOrRemove = !isInDeck(targetDeckInsert);
-                });
-              },
+            SafeArea(
+              child: CardPile(
+                st: widget.st,
+                cardList: _flashcards,
+                review: widget.review,
+                onChange: (card, progress) {
+                  // Setting the state because we want the stateless progress bar to update.
+                  setState(() {
+                    _currentCard = card;
+                    _quizProgress = progress;
+                    _deckButtonAddOrRemove = !_isInDeck(_targetDeckInsert);
+                  });
+                },
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 }

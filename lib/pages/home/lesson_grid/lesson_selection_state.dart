@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:hifumi/abstractions/abstractions_barrel.dart';
+import 'package:hifumi/widgets/archipelago/archipelago_barrel.dart';
+import 'package:hifumi/widgets/archipelago/island_text_checkbox.dart';
+
+/// Used in the main menu [Home] to select or unselect all [LessonTile].
+enum LessonSelectionState with IslandTextCheckboxState {
+  all("All"),
+  none("None"),
+  neutral("Misc.");
+
+  const LessonSelectionState(this.text);
+
+  @override
+  final String text;
+
+  @override
+  Color get backgroundColor {
+    switch (this) {
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
+        return LightTheme.blueLighter;
+      default:
+        return LightTheme.base;
+    }
+  }
+
+  @override
+  Color get borderColor {
+    switch (this) {
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
+        return LightTheme.blueLight;
+      default:
+        return LightTheme.baseAccent;
+    }
+  }
+
+  @override
+  Color get textColor {
+    switch (this) {
+      case LessonSelectionState.all:
+      case LessonSelectionState.none:
+        return LightTheme.blue;
+      default:
+        return LightTheme.textColorDimmer;
+    }
+  }
+}

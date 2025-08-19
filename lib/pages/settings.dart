@@ -1,13 +1,13 @@
 import "dart:async";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/seasoning/app_logo.dart";
-import "package:hifumi/widgets/settings/edition_picker.dart";
-import "package:hifumi/widgets/settings/language_picker.dart";
+import "package:hifumi/pages/settings/edition_picker.dart";
+import "package:hifumi/pages/settings/language_picker.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
-import "package:hifumi/widgets/settings/side_picker.dart";
+import "package:hifumi/pages/settings/side_picker.dart";
 import "package:hifumi/pages/credits.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:flutter_settings_ui/flutter_settings_ui.dart";
@@ -15,7 +15,7 @@ import "package:url_launcher/url_launcher.dart";
 
 /// The settings page.
 class Settings extends StatefulWidget {
-  final StorageInterface st;
+  final SPInterface st;
   final DSInterface ds;
 
   const Settings({
@@ -30,30 +30,26 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   late UserPrefs _settingsFields;
-  final Color? activeSwitchColor = LightTheme.blueBorder;
+  final Color _activeSwitchColor = LightTheme.blueBorder;
   // Used to preserve state without having to read the language from shared [shared_preferences] when the user stays on this page.
-  late DSLanguage selectedLanguage;
-  late Edition selectedEditionBookOne;
-  late Edition selectedEditionBookTwo;
-  late CorrectSide selectedCorrectSide;
-  late bool performance;
-  late bool contrast;
+  late DSLanguage _selectedLanguage;
+  late CorrectSide _selectedCorrectSide;
+  late bool _performance;
+  late bool _contrast;
 
   @override
   void initState() {
     super.initState();
     _settingsFields = widget.st.readUserPrefs();
-    selectedLanguage = _settingsFields.language;
-    selectedEditionBookOne = _settingsFields.editionBookOne;
-    selectedEditionBookTwo = _settingsFields.editionBookTwo;
-    selectedCorrectSide = _settingsFields.correctSide;
-    performance = _settingsFields.performance;
-    contrast = _settingsFields.contrast;
+    _selectedLanguage = _settingsFields.language;
+    _selectedCorrectSide = _settingsFields.correctSide;
+    _performance = _settingsFields.performance;
+    _contrast = _settingsFields.contrast;
   }
 
   /// Since we need two of these (for the front and backside of the cards) I put the code in a helper function.
   /// * Relevant Decoding Flutter : https://www.youtube.com/watch?v=IOyq-eTRhvo
-  SettingsSection flashcardsSettings(bool front) {
+  SettingsSection _flashcardsSettings(bool front) {
     return SettingsSection(
       title: Text(
         'Flashcards – ${front ? "Front" : "Back"}',
@@ -61,7 +57,7 @@ class _SettingsState extends State<Settings> {
       ),
       tiles: <SettingsTile>[
         SettingsTile.switchTile(
-          activeSwitchColor: activeSwitchColor,
+          activeSwitchColor: _activeSwitchColor,
           onToggle: (value) {
             widget.st.writeFlashcardPrefs(FlashcardElementType.kanji, front, value);
             setState(() {
@@ -83,7 +79,7 @@ class _SettingsState extends State<Settings> {
           title: const Text('Kanji', style: cmonApplyTheFontPlease),
         ),
         SettingsTile.switchTile(
-          activeSwitchColor: activeSwitchColor,
+          activeSwitchColor: _activeSwitchColor,
           onToggle: (value) {
             widget.st.writeFlashcardPrefs(FlashcardElementType.kana, front, value);
             setState(() {
@@ -105,7 +101,7 @@ class _SettingsState extends State<Settings> {
           title: const Text('Kana', style: cmonApplyTheFontPlease),
         ),
         SettingsTile.switchTile(
-          activeSwitchColor: activeSwitchColor,
+          activeSwitchColor: _activeSwitchColor,
           onToggle: (value) {
             widget.st.writeFlashcardPrefs(FlashcardElementType.romaji, front, value);
             setState(() {
@@ -119,7 +115,7 @@ class _SettingsState extends State<Settings> {
           title: const Text('Rōmaji', style: cmonApplyTheFontPlease),
         ),
         SettingsTile.switchTile(
-          activeSwitchColor: activeSwitchColor,
+          activeSwitchColor: _activeSwitchColor,
           onToggle: (value) {
             widget.st.writeFlashcardPrefs(FlashcardElementType.meaning, front, value);
             setState(() {
@@ -162,7 +158,7 @@ class _SettingsState extends State<Settings> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.language),
                 title: const Text('Language', style: cmonApplyTheFontPlease),
-                value: Text(selectedLanguage.displayTranslated),
+                value: Text(_selectedLanguage.displayTranslated),
                 onPressed: (context) {
                   Navigator.push(
                     context,
@@ -173,7 +169,7 @@ class _SettingsState extends State<Settings> {
                         onDone: () {
                           setState(
                             () {
-                              selectedLanguage = widget.st.readLanguage();
+                              _selectedLanguage = widget.st.readLanguage();
                             },
                           );
                           Navigator.of(context).pop();
@@ -187,7 +183,7 @@ class _SettingsState extends State<Settings> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.check_box_rounded),
                 title: const Text('Side', style: cmonApplyTheFontPlease),
-                value: Text(selectedCorrectSide.display, style: cmonApplyTheFontPlease),
+                value: Text(_selectedCorrectSide.display, style: cmonApplyTheFontPlease),
                 onPressed: (context) {
                   Navigator.push(
                     context,
@@ -197,7 +193,7 @@ class _SettingsState extends State<Settings> {
                         onDone: () {
                           setState(
                             () {
-                              selectedCorrectSide = widget.st.readCorrectSide();
+                              _selectedCorrectSide = widget.st.readCorrectSide();
                             },
                           );
                           Navigator.of(context).pop();
@@ -228,39 +224,39 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SettingsTile.switchTile(
-                activeSwitchColor: activeSwitchColor,
+                activeSwitchColor: _activeSwitchColor,
                 onToggle: (value) {
                   setState(
                     () {
                       widget.st.writePerformanceMode(value);
-                      performance = value;
+                      _performance = value;
                     },
                   );
                 },
-                initialValue: performance,
+                initialValue: _performance,
                 leading: Transform.scale(scale: 1.2, child: const Icon(Icons.bolt_rounded)),
                 title: const Text("Performance mode", style: cmonApplyTheFontPlease),
                 description: const Text("Reduce the number of flashcards rendered at once", style: cmonApplyTheFontPlease),
               ),
               SettingsTile.switchTile(
-                activeSwitchColor: activeSwitchColor,
+                activeSwitchColor: _activeSwitchColor,
                 onToggle: (value) {
                   setState(
                     () {
                       widget.st.writeHighContrastMode(value);
-                      contrast = value;
+                      _contrast = value;
                     },
                   );
                 },
-                initialValue: contrast,
+                initialValue: _contrast,
                 leading: const Icon(Icons.contrast),
                 title: const Text("High contrast", style: cmonApplyTheFontPlease),
                 description: const Text("Remove lower-contrast flashcard colors", style: cmonApplyTheFontPlease),
               ),
             ],
           ),
-          flashcardsSettings(true),
-          flashcardsSettings(false),
+          _flashcardsSettings(true),
+          _flashcardsSettings(false),
           SettingsSection(
             title: Text(
               'Data',
@@ -287,7 +283,7 @@ class _SettingsState extends State<Settings> {
                   widget.st.dumpToJSON();
                 },
               ),
-              CustomSettingsTile(child: ResetSettingsTile(st: widget.st)),
+              CustomSettingsTile(child: _ResetSettingsTile(st: widget.st)),
             ],
           ),
           SettingsSection(
@@ -297,7 +293,7 @@ class _SettingsState extends State<Settings> {
             ),
             tiles: <AbstractSettingsTile>[
               CustomSettingsTile(
-                child: VersionSettingsTile(),
+                child: _VersionSettingsTile(),
               ),
               SettingsTile.navigation(
                 leading: Transform.scale(scale: 1.25, child: const Icon(Icons.bug_report_rounded)),
@@ -362,7 +358,7 @@ class _SettingsState extends State<Settings> {
                 },
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -370,26 +366,26 @@ class _SettingsState extends State<Settings> {
 }
 
 /// Special [SettingsTile] that changes color when tapped, and trigger if a second tap happens soon enough.
-class ResetSettingsTile extends StatefulWidget {
-  final StorageInterface st;
+class _ResetSettingsTile extends StatefulWidget {
+  final SPInterface st;
 
-  const ResetSettingsTile({
+  const _ResetSettingsTile({
     Key? key,
     required this.st,
   }) : super(key: key);
 
   @override
-  State<ResetSettingsTile> createState() => _ResetSettingsTileState();
+  State<_ResetSettingsTile> createState() => _ResetSettingsTileState();
 }
 
-class _ResetSettingsTileState extends State<ResetSettingsTile> {
-  late int pressedHowManyTimes;
+class _ResetSettingsTileState extends State<_ResetSettingsTile> {
+  late int _pressedHowManyTimes;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    pressedHowManyTimes = 0;
+    _pressedHowManyTimes = 0;
   }
 
   @override
@@ -398,27 +394,27 @@ class _ResetSettingsTileState extends State<ResetSettingsTile> {
     super.dispose();
   }
 
-  void tapHandler() {
-    if (pressedHowManyTimes == 0) {
+  void _tapHandler() {
+    if (_pressedHowManyTimes == 0) {
       setState(() {
-        pressedHowManyTimes = 1;
+        _pressedHowManyTimes = 1;
       });
       // Timer duration can be changed here
       _timer = Timer(const Duration(seconds: 5), () {
         setState(() {
-          pressedHowManyTimes = 0;
+          _pressedHowManyTimes = 0;
         });
       });
-    } else if (pressedHowManyTimes == 1) {
-      onSecondTap.call();
+    } else if (_pressedHowManyTimes == 1) {
+      _onSecondTap.call();
       setState(() {
-        pressedHowManyTimes = 0;
+        _pressedHowManyTimes = 0;
       });
       _timer?.cancel();
     }
   }
 
-  void onSecondTap() {
+  void _onSecondTap() {
     widget.st.clearData();
     Navigator.of(context).pushNamedAndRemoveUntil(
       "/",
@@ -428,7 +424,7 @@ class _ResetSettingsTileState extends State<ResetSettingsTile> {
 
   @override
   Widget build(BuildContext context) {
-    final bool warn = pressedHowManyTimes == 1;
+    final bool warn = _pressedHowManyTimes == 1;
 
     return SettingsTile(
       leading: warn
@@ -459,23 +455,23 @@ class _ResetSettingsTileState extends State<ResetSettingsTile> {
             )
           : const Text("Reset your progress", style: cmonApplyTheFontPlease),
       backgroundColor: warn ? LightTheme.redLight : null,
-      onPressed: (_) => tapHandler.call(),
+      onPressed: (_) => _tapHandler.call(),
     );
   }
 }
 
 /// Special [SettingsTile] do display the version of the app.
 /// When moused over, will reveal the commit hash of the build.
-class VersionSettingsTile extends StatefulWidget {
-  const VersionSettingsTile({
+class _VersionSettingsTile extends StatefulWidget {
+  const _VersionSettingsTile({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<VersionSettingsTile> createState() => _VersionSettingsTileState();
+  State<_VersionSettingsTile> createState() => _VersionSettingsTileState();
 }
 
-class _VersionSettingsTileState extends State<VersionSettingsTile> {
+class _VersionSettingsTileState extends State<_VersionSettingsTile> {
   bool _dispAltText = false;
 
   @override

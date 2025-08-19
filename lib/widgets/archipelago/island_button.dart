@@ -52,11 +52,11 @@ class _IslandButtonState extends State<IslandButton> {
     _isTapped = false;
   }
 
-  void onTapDown() => _isTapped != true ? setState(() => _isTapped = true) : null;
+  void _onTapDown() => _isTapped != true ? setState(() => _isTapped = true) : null;
 
-  void onTapCancel() => _isTapped ? _resetTapState() : null;
+  void _onTapCancel() => _isTapped ? _resetTapState() : null;
 
-  void onTapUp() {
+  void _onTapUp() {
     widget.onTap.call();
     _isTapped ? _resetTapState() : null;
   }
@@ -91,9 +91,9 @@ class _IslandButtonState extends State<IslandButton> {
       onEnter: (event) => _mouseEnter(true),
       onExit: (event) => _mouseEnter(false),
       child: GestureDetector(
-        onTapDown: (_) => onTapDown.call(),
-        onTapUp: (_) => onTapUp.call(),
-        onTapCancel: () => onTapCancel.call(),
+        onTapDown: (_) => _onTapDown.call(),
+        onTapUp: (_) => _onTapUp.call(),
+        onTapCancel: () => _onTapCancel.call(),
         child: GestureDetector(
           onLongPress: () => widget.onLongPress?.call(),
           child: ClickMePrettyPlease(

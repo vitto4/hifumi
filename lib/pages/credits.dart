@@ -1,6 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:hifumi/entities/entities_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/pages/settings.dart";
 import "package:flutter_settings_ui/flutter_settings_ui.dart";
 import "package:url_launcher/url_launcher.dart";
@@ -42,7 +42,7 @@ class Credits extends StatelessWidget {
           const SettingsSection(
             tiles: [
               CustomSettingsTile(
-                child: Kudos(),
+                child: _Kudos(),
               ),
             ],
           ),
@@ -53,7 +53,7 @@ class Credits extends StatelessWidget {
             ),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: const CardsIcon(),
+                leading: const _CardsIcon(),
                 title: const Text("Flashcards", style: cmonApplyTheFontPlease),
                 value: const Text.rich(
                   TextSpan(
@@ -325,16 +325,16 @@ class Credits extends StatelessWidget {
   }
 }
 
-class Kudos extends StatefulWidget {
-  const Kudos({
+class _Kudos extends StatefulWidget {
+  const _Kudos({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Kudos> createState() => _KudosState();
+  State<_Kudos> createState() => _KudosState();
 }
 
-class _KudosState extends State<Kudos> {
+class _KudosState extends State<_Kudos> {
   bool _dispAltText = false;
 
   @override
@@ -390,8 +390,8 @@ class _KudosState extends State<Kudos> {
   }
 }
 
-class CardsIcon extends StatelessWidget {
-  const CardsIcon({Key? key}) : super(key: key);
+class _CardsIcon extends StatelessWidget {
+  const _CardsIcon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -42,14 +42,14 @@ class IslandDoubleTapButton extends StatefulWidget {
 }
 
 class _IslandDoubleTapButtonState extends State<IslandDoubleTapButton> {
-  late int tappedHowManyTimes;
+  late int _tappedHowManyTimes;
   late bool _isHovering;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    tappedHowManyTimes = 0;
+    _tappedHowManyTimes = 0;
     _isHovering = false;
   }
 
@@ -66,10 +66,10 @@ class _IslandDoubleTapButtonState extends State<IslandDoubleTapButton> {
     });
   }
 
-  void tapHandler() {
-    if (tappedHowManyTimes == 0) {
+  void _tapHandler() {
+    if (_tappedHowManyTimes == 0) {
       setState(() {
-        tappedHowManyTimes = 1;
+        _tappedHowManyTimes = 1;
       });
 
       // State will eventually reset if nothing happens
@@ -77,17 +77,17 @@ class _IslandDoubleTapButtonState extends State<IslandDoubleTapButton> {
         widget.timerDuration,
         () {
           setState(() {
-            tappedHowManyTimes = 0;
+            _tappedHowManyTimes = 0;
           });
         },
       );
-    } else if (tappedHowManyTimes == 1) {
+    } else if (_tappedHowManyTimes == 1) {
       // If the second tap occurs in time, run the callback function
       widget.onSecondTap.call();
 
       // And also reset the state
       setState(() {
-        tappedHowManyTimes = 0;
+        _tappedHowManyTimes = 0;
       });
       _timer?.cancel();
     }
@@ -99,19 +99,19 @@ class _IslandDoubleTapButtonState extends State<IslandDoubleTapButton> {
       onEnter: (event) => _mouseEnter(true),
       onExit: (event) => _mouseEnter(false),
       child: IslandButton(
-        backgroundColor: (tappedHowManyTimes == 0)
+        backgroundColor: (_tappedHowManyTimes == 0)
             ? _isHovering
-                ? widget.firstBackgroundColor.darken(.985)
-                : widget.firstBackgroundColor
+                  ? widget.firstBackgroundColor.darken(.985)
+                  : widget.firstBackgroundColor
             : _isHovering
-                ? widget.secondBackgroundColor.darken(.985)
-                : widget.secondBackgroundColor,
-        borderColor: (tappedHowManyTimes == 0) ? widget.firstBorderColor : widget.secondBorderColor,
-        onTap: tapHandler,
+            ? widget.secondBackgroundColor.darken(.985)
+            : widget.secondBackgroundColor,
+        borderColor: (_tappedHowManyTimes == 0) ? widget.firstBorderColor : widget.secondBorderColor,
+        onTap: _tapHandler,
         offset: widget.offset,
         reactOnHover: false, // We don't want to double react, we're already implementing our own version in this file
         animationDuration: widget.animationDuration,
-        child: (tappedHowManyTimes == 0) ? widget.firstChild : widget.secondChild,
+        child: (_tappedHowManyTimes == 0) ? widget.firstChild : widget.secondChild,
       ),
     );
   }

@@ -1,11 +1,11 @@
 import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:hifumi/entities/@edition.dart";
+import "package:hifumi/abstractions/dataset/@edition.dart";
 import "package:hifumi/services/services_barrel.dart";
-import "package:hifumi/widgets/seasoning/funky_text.dart";
+import "package:hifumi/pages/loading/funky_text.dart";
 import "package:hifumi/widgets/seasoning/app_logo.dart";
-import "package:hifumi/widgets/seasoning/console.dart";
+import "package:hifumi/pages/loading/console.dart";
 
 /// Loading screen.
 /// Its purpose is to load up both the word dataset and user data (from [shared_preferences]) before launching the app.
@@ -82,7 +82,7 @@ class _LoadingState extends State<Loading> {
     /* --------------------------- Shared preferences --------------------------- */
     _consoleKey.currentState?.printMessage("Loading user data");
 
-    final StorageInterface st = StorageInterface();
+    final SPInterface st = SPInterface();
     await st.init();
     st.writeDefaults();
 
@@ -117,7 +117,7 @@ class _LoadingState extends State<Loading> {
       future: _initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          (snapshot.data!["st"] as StorageInterface).readOnboarding()
+          (snapshot.data!["st"] as SPInterface).readOnboarding()
               ? WidgetsBinding.instance.addPostFrameCallback((_) {
                   Navigator.pushReplacementNamed(context, "/onboarding", arguments: snapshot.data);
                 })
@@ -127,38 +127,40 @@ class _LoadingState extends State<Loading> {
         }
         return Scaffold(
           body: Center(
-            child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              return FittedBox(
-                fit: BoxFit.scaleDown,
-                child: SizedBox(
-                  height: getLoadingShrink(context) ? 400.0 : constraints.maxHeight,
-                  width: constraints.maxWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      const Spacer(flex: 2),
-                      const AppLogo(),
-                      const Spacer(flex: 5),
-                      ConsoleWidget(
-                        key: _consoleKey,
-                        initialMessage: "Starting up",
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      const Row(
-                        children: <Widget>[
-                          Spacer(),
-                          FunkyText(text: "言葉準備中..."),
-                          SizedBox(width: 3.0),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                    ],
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: SizedBox(
+                    height: getLoadingShrink(context) ? 400.0 : constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        const Spacer(flex: 2),
+                        const AppLogo(),
+                        const Spacer(flex: 5),
+                        ConsoleWidget(
+                          key: _consoleKey,
+                          initialMessage: "Starting up",
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        const Row(
+                          children: <Widget>[
+                            Spacer(),
+                            FunkyText(text: "言葉準備中..."),
+                            SizedBox(width: 3.0),
+                          ],
+                        ),
+                        const SizedBox(height: 5.0),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              },
+            ),
           ),
         );
       },

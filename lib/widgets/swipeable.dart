@@ -65,10 +65,10 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
   late Offset _dragOffset;
 
   /// Safety check to prevent a [Swipeable] from being discarded multiple times.
-  bool isDiscarded = false;
+  bool _isDiscarded = false;
 
   /// Threshold detection.
-  bool hasCrossedThreshold = false;
+  bool _hasCrossedThreshold = false;
 
   /// The damned keyboard focus. >:(
   late final FocusNode _node;
@@ -182,11 +182,11 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
   }
 
   /// Routine to be run when the child widget is swiped away.
-  /// Handles the animation, the event function call, and reflects the state change in [isDiscarded].
-  void discard(Size screenSize, Side side, bool keyboard) {
+  /// Handles the animation, the event function call, and reflects the state change in [_isDiscarded].
+  void _discard(Size screenSize, Side side, bool keyboard) {
     // Change this before running the animations since it is (also) used to discard pointer events while animating.
     // (We don't want a mischievous user to interfere with our animation, do we ?)
-    isDiscarded = true;
+    _isDiscarded = true;
 
     switch (side) {
       case Side.left:
@@ -223,19 +223,19 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
     final bool absorbTap = (_distance(_defaultOffset, _dragOffset) > 5.0) ? _controller.isAnimating : false;
 
     // Detecting when the widget crosses the threshold
-    if (!isDiscarded) {
+    if (!_isDiscarded) {
       if ((_dragOffset.dx <= _defaultOffset.dx - discardThreshold)) {
-        if (!hasCrossedThreshold) {
-          hasCrossedThreshold = true;
+        if (!_hasCrossedThreshold) {
+          _hasCrossedThreshold = true;
           widget.onLeftThresholdCrossed?.call();
         }
       } else if ((_dragOffset.dx >= _defaultOffset.dx + discardThreshold)) {
-        if (!hasCrossedThreshold) {
-          hasCrossedThreshold = true;
+        if (!_hasCrossedThreshold) {
+          _hasCrossedThreshold = true;
           widget.onRightThresholdCrossed?.call();
         }
-      } else if (hasCrossedThreshold) {
-        hasCrossedThreshold = false;
+      } else if (_hasCrossedThreshold) {
+        _hasCrossedThreshold = false;
         widget.onThresholdBackInside?.call();
       }
     }
@@ -252,13 +252,13 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
       focusNode: _node,
       onKeyEvent: (node, event) {
         // If the key press is valid and not repeated, match it with the arrow keys, else ignore.
-        if (!isDiscarded && event is KeyDownEvent && event is! KeyRepeatEvent) {
+        if (!_isDiscarded && event is KeyDownEvent && event is! KeyRepeatEvent) {
           switch (event.logicalKey) {
             case LogicalKeyboardKey.arrowLeft:
-              discard(screenSize, Side.left, true);
+              _discard(screenSize, Side.left, true);
               return KeyEventResult.handled;
             case LogicalKeyboardKey.arrowRight:
-              discard(screenSize, Side.right, true);
+              _discard(screenSize, Side.right, true);
               return KeyEventResult.handled;
             case _:
               return KeyEventResult.ignored;
@@ -278,25 +278,25 @@ class SwipeableState extends State<Swipeable> with SingleTickerProviderStateMixi
         },
         // Stop animating back to center when the user swipes but don't stop if the child was, in fact, leaving.
         onPanDown: (details) {
-          if (!isDiscarded) {
+          if (!_isDiscarded) {
             _controller.stop();
           }
         },
         // Logic to detect where the user has released the widget
         // If it is far enough on either side, the leaving animation will trigger, else the widget is animated back to the center of the screen
         onPanEnd: (details) {
-          if (_dragOffset.dx >= _defaultOffset.dx + discardThreshold && !isDiscarded) {
-            discard(screenSize, Side.right, false);
-          } else if (_dragOffset.dx <= _defaultOffset.dx - discardThreshold && !isDiscarded) {
-            discard(screenSize, Side.left, false);
-          } else if (!isDiscarded) {
+          if (_dragOffset.dx >= _defaultOffset.dx + discardThreshold && !_isDiscarded) {
+            _discard(screenSize, Side.right, false);
+          } else if (_dragOffset.dx <= _defaultOffset.dx - discardThreshold && !_isDiscarded) {
+            _discard(screenSize, Side.left, false);
+          } else if (!_isDiscarded) {
             _runSpringAnimation(details.velocity.pixelsPerSecond, screenSize);
           }
         },
         // If an animation is running, do not allow interaction (it may stop the the animation for some reason).
         // If animating back to center, absorb to let user pick the swiping back up even when the animation is running.
         // Also, if the leaving animation is running, ignore to let user interact with whatever other widget there may be.
-        child: (isDiscarded)
+        child: (_isDiscarded)
             ? IgnorePointer(
                 ignoring: absorbTap,
                 child: Stack(
