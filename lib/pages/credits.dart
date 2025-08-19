@@ -14,6 +14,7 @@ final Uri _notoSansDisplay = Uri.parse("https://fonts.google.com/noto/specimen/N
 final Uri _notoSansJP = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Sans+JP");
 final Uri _notoSerifJP = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Serif+JP");
 final Uri _newTegomin = Uri.parse("https://fonts.google.com/specimen/New+Tegomin");
+final Uri _notoSansSymbols2 = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2");
 final Uri _minnaNoFlashcards = Uri.parse("https://play.google.com/store/apps/details?id=com.factory201.minnanoflashcards");
 // I know `Minna No Flashcards` has been pulled from the play store, but I can't find any other relevant link, so I'll leave it like this
 
@@ -280,6 +281,26 @@ class Credits extends StatelessWidget {
                 onPressed: (context) async {
                   if (await canLaunchUrl(_newTegomin)) {
                     await launchUrl(_newTegomin);
+                  }
+                },
+              ),
+              SettingsTile.navigation(
+                leading: SizedBox(
+                  height: 24.0,
+                  width: 24.0,
+                  child: const Text(
+                    "\u2663",
+                    style: TextStyle(
+                      color: LightTheme.textColorDim,
+                      fontSize: 20,
+                      fontFamily: "NotoSansSymbols2",
+                    ),
+                  ),
+                ),
+                title: const Text("Noto Sans Symbols 2", style: cmonApplyTheFontPlease),
+                onPressed: (context) async {
+                  if (await canLaunchUrl(_notoSansSymbols2)) {
+                    await launchUrl(_notoSansSymbols2);
                   }
                 },
               ),

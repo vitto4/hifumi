@@ -119,6 +119,9 @@ flutter:
     - family: NewTegomin
       fonts:
         - asset: fonts/NewTegomin-Regular.subset.ttf
+    - family: NotoSansSymbols2
+      fonts:
+        - asset: fonts/NotoSansSymbols2-Regular.subset.ttf
 
 flutter_launcher_icons:
   image_path: "assets/icon.png"

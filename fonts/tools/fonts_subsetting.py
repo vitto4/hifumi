@@ -66,6 +66,7 @@ unique_characters_list = sorted(unique_characters)
 noto_sans_JP = "".join(unique_characters_list)  # Contains all the characters used in the dataset
 noto_serif_JP = "あ"
 new_tegomin = "あ字言葉準備中."
+noto_sans_symbols_2 = "\u2663\u2660\u2666"      # ♣, ♠ and ♦
 
 
 # ---------------------------------------------------------------------------- #
@@ -126,4 +127,9 @@ make_subset(
     "fonts/tools/originals/NewTegomin-Regular.original.ttf",
     "fonts/NewTegomin-Regular.subset.ttf",
     new_tegomin,
+)
+make_subset(
+    "fonts/tools/originals/NotoSansSymbols2-Regular.original.ttf",
+    "fonts/NotoSansSymbols2-Regular.subset.ttf",
+    noto_sans_symbols_2,
 )
