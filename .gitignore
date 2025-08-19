@@ -141,3 +141,4 @@ app.*.symbols
 
 # Custom
 *.code-workspace
+devtools_options.yaml
