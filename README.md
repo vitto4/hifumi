@@ -159,11 +159,11 @@ The result should resemble a somewhat frankensteined [folder by feature](https:/
   - <ins>Noto Sans Japanese</ins> to whatever [`noto_sans_JP`](./fonts/tools/fonts_subsetting.py#L66) ends up being.
 
   See also [`fonts_subsetting.py`](./fonts/tools/fonts_subsetting.py) and [`fonts-subsetting.yml`](./.github/workflows/fonts-subsetting.yml).
-- Some widgets should be easy to reuse standalone in another app. These include [`swipeable.dart`](./lib/widgets/swipeable.dart) and [`island_container.dart`](./lib/widgets/archipelago/island_container.dart). If these sound like they could be useful for your project, be sure to take a look !
+- Among the widgets are some that are just asking to be reused standalone in another app ! This includes [`swipeable.dart`](./lib/widgets/swipeable.dart) and [`island_container.dart`](./lib/widgets/archipelago/island_container.dart). If these sound like they could be useful for your project, be sure to take a look !
 
 ## 🧩 Contributing
 
 You're very welcome to pitch in ! <br>
-That being said, as I'm still pretty new to everything flutter and app development, the code can be a bit all over the place ; so proceed at your own risks (:
+That being said, as I'm still pretty new to everything flutter and app development, the code can be a bit all over the place ; so proceed at your own risk (:
 
 Also I probably won't devote much time to this project in the near future, so please bear with me if I'm slow on the reply ^-^
