@@ -61,38 +61,38 @@ class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
               const SizedBox(
                 height: 10.0,
               ),
-              const Text.rich(
+              Text.rich(
                 TextSpan(
                   style: TextStyle(color: LightTheme.textColor),
                   children: <InlineSpan>[
-                    TextSpan(
+                    const TextSpan(
                       text: "Reviews",
                       style: TextStyle(fontWeight: FontWeight.bold, color: LightTheme.blue),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: " function like regular quizzes, but use words from decks (namely ",
                     ),
                     TextSpan(
-                      text: "一 ",
+                      text: Deck.one.display,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(
-                      text: ", ",
+                    const TextSpan(
+                      text: " , ",
                     ),
                     TextSpan(
-                      text: "二",
+                      text: Deck.two.display,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: " and ",
                     ),
                     TextSpan(
-                      text: "三",
+                      text: Deck.three.display,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text:
-                          " ) instead of lessons. You can add words to these during a quiz, or select some individually in each lesson's detail page.",
+                          " ) instead of lessons. You can add words to these during a quiz, or select some individually in each lesson's contents page.",
                     ),
                   ],
                 ),

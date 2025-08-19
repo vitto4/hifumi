@@ -111,21 +111,14 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
             ),
             const Text.rich(
               TextSpan(
-                text: "Each word from the deck is ",
+                text: "Keeps the review going so long as each word from the deck hasn't been answered correctly. Incorrect answers ",
                 style: TextStyle(color: LightTheme.textColor),
                 children: <InlineSpan>[
                   TextSpan(
-                    text: "endlessly",
+                    text: "do not",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: " presented until a correct answer is given. Incorrect answers "),
-                  TextSpan(
-                    text: "does not",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text: " decrease the word's score.\n",
-                  ),
+                  TextSpan(text: " decrease words' scores.\n"),
                   TextSpan(
                     text: "Auto-remove",
                     style: TextStyle(
@@ -134,13 +127,13 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                     ),
                   ),
                   TextSpan(
-                    text: " will automatically remove (",
+                    text: ": remove (",
                   ),
                   WidgetSpan(
                     child: Icon(Icons.layers_clear_rounded, color: LightTheme.textColorDim, size: FontSizes.medium),
                   ),
                   TextSpan(
-                    text: ") words from the deck when answered correctly. An incorrect answer leaves the deck unchanged (",
+                    text: ") words from the deck when answered correctly. Incorrect answers leave the deck unchanged (",
                   ),
                   WidgetSpan(
                     child: Padding(
