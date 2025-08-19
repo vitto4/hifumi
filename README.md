@@ -105,7 +105,8 @@ A couple of things I may get to someday
 
 #### 🧱 Structure
 
-I might have got a little carried away when deciding on folder names, so here's a much-needed file structure overview !
+I might have got a little carried away when deciding on filenames and folders, so here's a much-needed file structure overview ! <br>
+The result should resemble a somewhat frankensteined [folder by feature](https://www.hungrimind.com/articles/folder-structure-for-large-projects#folder-by-feature) arrangement.
 
 <div align="center">
 <details>
@@ -115,26 +116,21 @@ I might have got a little carried away when deciding on folder names, so here's 
   ```
   .
   lib/
-  ├── entities/             # Definitions, defaults, concepts and building blocks for the rest of the code.
+  ├── abstractions/         # Mix of abstractions on concepts and building blocks for the rest of the code, as well as data classes.
+  │                         # Abstractions on APIs/packages are instead located in `services/`.
   │
-  ├── pages/                # Pages of the app.
+  ├── pages/                # Pages of the app and related widgets.
   │
   ├── services/             # Utility services for the app, including interfacing with the dataset, data storage, layout management, and more.
   │
-  ├── widgets/
+  ├── widgets/              # Shared widgets.
+  │    │
   │    ├── archipelago/     # Home for island-style widgets, including containers, buttons, segmented selectors, etc.
   │    │
-  │    ├── casino/          # (Flash)cards related widgets.
-  │    │
-  │    ├── drawer/          # Widgets related to sheet dialogs (and thus to quick-settings menus).
-  │    │       
-  │    ├── roofing/         # Tile widgets. (word-, lesson-)
+  │    ├── overlays/
   │    │
   │    ├── seasoning/       # Catch-all for miscellaneous widgets sprinkled throughout the app.
-  │    │
-  │    ├── settings/        # Settings-specific widgets.
-  │    │
-  │    ├── topping/         # Widgets placed at the top of various pages.
+  │    │                    # Their purpose is purely to make the app look better, hence `seasoning`s.
   │    │
   │    └── *.dart           # Various widgets that didn't fit in categories described above.
   │
@@ -154,8 +150,9 @@ I might have got a little carried away when deciding on folder names, so here's 
 
   (fancy reaching out ? claim your [Free OSINT Technique™](https://cheatsheet.haax.fr/open-source-intelligence-osint/platforms-hunting/github/#finding-user-e-mail))
 - The *dataset* from which all words are sourced lives on GitHub as a separate project : [`MinnaNoDS`](https://github.com/vitto4/MinnaNoDS).
-- Files starting with an `@` symbol are definitions of basic concepts and building blocks for the app.
-  I wanted them grouped together. It may not be pretty, but it works c:
+- Some of the files are prefixed with `@`.
+  I wanted them grouped together. It may not be pretty, but it works c: <br>
+  Looking back, I believe these could have been categorised as *models* or *data classes*.
 - To save on asset size, fonts have been subsetted.
   - <ins>Noto Serif Japanese</ins> to `あ`
   - <ins>New Tegomin</ins> to `あ字言葉準備中.`
