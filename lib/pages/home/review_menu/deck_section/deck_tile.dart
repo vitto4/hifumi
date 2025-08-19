@@ -3,7 +3,7 @@ import 'package:hifumi/abstractions/abstractions_barrel.dart';
 import "package:hifumi/widgets/archipelago/archipelago_barrel.dart";
 
 /// Tile used to select a deck. Includes a reset button that requires double-tap confirmation.
-class DeckTile extends StatefulWidget {
+class DeckTile extends StatelessWidget {
   final Deck deck;
   final int wordCount;
 
@@ -30,17 +30,12 @@ class DeckTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DeckTile> createState() => _DeckTileState();
-}
-
-class _DeckTileState extends State<DeckTile> {
-  @override
   Widget build(BuildContext context) {
     return IslandButton(
       smartExpand: true,
-      onTap: () => widget.onTapped.call(),
-      backgroundColor: widget.isSelected ? widget.selectedBackgroundColor : LightTheme.base,
-      borderColor: widget.isSelected ? widget.selectedBorderColor : LightTheme.baseAccent,
+      onTap: () => onTapped.call(),
+      backgroundColor: isSelected ? selectedBackgroundColor : LightTheme.base,
+      borderColor: isSelected ? selectedBorderColor : LightTheme.baseAccent,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, .0, 20.0, .0),
         child: Row(
@@ -49,29 +44,29 @@ class _DeckTileState extends State<DeckTile> {
               height: 50.0,
             ),
             Text(
-              widget.deck.display,
+              deck.display,
               style: TextStyle(
                 fontSize: FontSizes.huge,
                 fontWeight: FontWeight.bold,
-                color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer,
+                color: isSelected ? selectedTextColor : LightTheme.textColorDimmer,
               ),
             ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(top: 3.0),
               child: Text(
-                widget.wordCount.toString(),
+                wordCount.toString(),
                 style: TextStyle(
                   fontSize: FontSizes.base,
                   fontWeight: FontWeight.bold,
-                  color: widget.isSelected ? widget.selectedTextColor : LightTheme.textColorDimmer,
+                  color: isSelected ? selectedTextColor : LightTheme.textColorDimmer,
                 ),
               ),
             ),
             SizedBox(
               width: 15.0,
             ),
-            if (widget.showClearButton)
+            if (showClearButton)
               IslandDoubleTapButton(
                 timerDuration: const Duration(seconds: 3),
                 offset: .0,
@@ -80,7 +75,7 @@ class _DeckTileState extends State<DeckTile> {
                 firstBorderColor: Colors.transparent,
                 secondBackgroundColor: Colors.transparent,
                 secondBorderColor: Colors.transparent,
-                onSecondTap: () => widget.onReset.call(),
+                onSecondTap: () => onReset.call(),
                 firstChild: Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 3.0, 10.0, .0),
 
@@ -95,7 +90,7 @@ class _DeckTileState extends State<DeckTile> {
                   child: Text(
                     "CLEAR",
                     style: TextStyle(
-                      color: widget.isSelected ? LightTheme.blue : LightTheme.red,
+                      color: isSelected ? LightTheme.blue : LightTheme.red,
                       fontWeight: FontWeight.bold,
                       fontSize: FontSizes.smallNitpick,
                       letterSpacing: .4,
@@ -110,7 +105,7 @@ class _DeckTileState extends State<DeckTile> {
                         TextSpan(
                           text: "(；'-' )",
                           style: TextStyle(
-                            color: widget.isSelected ? LightTheme.blue.withValues(alpha: .4) : LightTheme.red.withValues(alpha: .55),
+                            color: isSelected ? LightTheme.blue.withValues(alpha: .4) : LightTheme.red.withValues(alpha: .55),
                             fontWeight: FontWeight.bold,
                             fontSize: FontSizes.big,
                           ),
@@ -125,7 +120,7 @@ class _DeckTileState extends State<DeckTile> {
                           style: TextStyle(
                             fontSize: FontSizes.nitpick,
                             fontWeight: FontWeight.bold,
-                            color: widget.isSelected ? LightTheme.blue : LightTheme.red,
+                            color: isSelected ? LightTheme.blue : LightTheme.red,
                           ),
                         ),
                       ],

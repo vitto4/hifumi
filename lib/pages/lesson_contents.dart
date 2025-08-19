@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:hifumi/abstractions/abstractions_barrel.dart";
-import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 import "package:hifumi/pages/lesson_contents/word_grid.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_double_tap_button.dart";
@@ -208,7 +207,7 @@ class LessonContents extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 1.5 * delayHeight),
-                  AdaptiveWordListBuilder(
+                  WordGrid(
                     wordTileList: wordTileList,
                   ),
                   const SizedBox(
@@ -221,35 +220,5 @@ class LessonContents extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// Fancy way of writing :
-///   * Orientation is portrait ? One tile per line
-///   * Orientation is landscape ? do whatever [getWordTilesCrossCount] says
-class AdaptiveWordListBuilder extends StatelessWidget {
-  final List<Widget> wordTileList;
-
-  const AdaptiveWordListBuilder({
-    Key? key,
-    required this.wordTileList,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenOrientation orientation = getOrientation(context);
-    int crossAxisCount = getWordTilesCrossCount(context);
-
-    if (orientation == ScreenOrientation.portrait) {
-      return WordGrid(
-        wordTileList: wordTileList,
-        crossAxisCount: 1,
-      );
-    } else {
-      return WordGrid(
-        wordTileList: wordTileList,
-        crossAxisCount: crossAxisCount,
-      );
-    }
   }
 }
