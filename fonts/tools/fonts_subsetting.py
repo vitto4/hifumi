@@ -66,7 +66,7 @@ unique_characters_list = sorted(unique_characters)
 noto_sans_JP = "".join(unique_characters_list)  # Contains all the characters used in the dataset
 noto_serif_JP = "あ"
 new_tegomin = "あ字言葉準備中."
-noto_sans_symbols_2 = "\u2663\u2660\u2666"      # ♣, ♠ and ♦
+noto_emoji = "\u2663\u2660\u2666"      # ♣, ♠ and ♦
 
 
 # ---------------------------------------------------------------------------- #
@@ -114,22 +114,22 @@ def make_subset(file_source: str, file_dest: str, subset_str: str):
 
 
 make_subset(
-    "fonts/tools/originals/NotoSansJP.original.ttf",
+    "fonts/tools/_originals/NotoSansJP.original.ttf",
     "fonts/NotoSansJP.subset.ttf",
     noto_sans_JP,
 )
 make_subset(
-    "fonts/tools/originals/NotoSerifJP.original.ttf",
+    "fonts/tools/_originals/NotoSerifJP.original.ttf",
     "fonts/NotoSerifJP.subset.ttf",
     noto_serif_JP,
 )
 make_subset(
-    "fonts/tools/originals/NewTegomin-Regular.original.ttf",
+    "fonts/tools/_originals/NewTegomin-Regular.original.ttf",
     "fonts/NewTegomin-Regular.subset.ttf",
     new_tegomin,
 )
 make_subset(
-    "fonts/tools/originals/NotoSansSymbols2-Regular.original.ttf",
-    "fonts/NotoSansSymbols2-Regular.subset.ttf",
-    noto_sans_symbols_2,
+    "fonts/tools/_originals/NotoEmoji-VariableFont_wght.original.ttf",
+    "fonts/NotoEmoji.subset.ttf",
+    noto_emoji,
 )

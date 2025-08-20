@@ -14,7 +14,7 @@ final Uri _notoSansDisplay = Uri.parse("https://fonts.google.com/noto/specimen/N
 final Uri _notoSansJP = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Sans+JP");
 final Uri _notoSerifJP = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Serif+JP");
 final Uri _newTegomin = Uri.parse("https://fonts.google.com/specimen/New+Tegomin");
-final Uri _notoSansSymbols2 = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2");
+final Uri _notoEmoji = Uri.parse("https://fonts.google.com/noto/specimen/Noto+Emoji");
 final Uri _minnaNoFlashcards = Uri.parse("https://play.google.com/store/apps/details?id=com.factory201.minnanoflashcards");
 // I know `Minna No Flashcards` has been pulled from the play store, but I can't find any other relevant link, so I'll leave it like this
 
@@ -303,25 +303,22 @@ class Credits extends StatelessWidget {
                 },
               ),
               SettingsTile.navigation(
-                leading: const Padding(
-                  padding: EdgeInsets.only(left: 3.0, bottom: 2.0, right: .0),
-                  child: SizedBox(
-                    height: 21.0,
-                    width: 21.0,
-                    child: Text(
-                      "\u2663",
-                      style: TextStyle(
-                        color: LightTheme.textColorDim,
-                        fontSize: 19,
-                        fontFamily: "NotoSansSymbols2",
-                      ),
+                leading: const SizedBox(
+                  height: 23.5,
+                  width: 23.5,
+                  child: Text(
+                    "\u2663",
+                    style: TextStyle(
+                      color: LightTheme.textColorDim,
+                      fontSize: 16,
+                      fontFamily: "NotoEmoji",
                     ),
                   ),
                 ),
-                title: const Text("Noto Sans Symbols 2", style: cmonApplyTheFontPlease),
+                title: const Text("Noto Emoji", style: cmonApplyTheFontPlease),
                 onPressed: (context) async {
-                  if (await canLaunchUrl(_notoSansSymbols2)) {
-                    await launchUrl(_notoSansSymbols2);
+                  if (await canLaunchUrl(_notoEmoji)) {
+                    await launchUrl(_notoEmoji);
                   }
                 },
               ),
