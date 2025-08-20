@@ -4,15 +4,15 @@ import "package:hifumi/abstractions/sp_keyring.dart";
 enum Deck {
   one(
     key: K.DECK_ONE_CONTENTS,
-    display: "一",
+    display: "\u2663", // ♣︎
   ),
   two(
     key: K.DECK_TWO_CONTENTS,
-    display: "二",
+    display: "\u2660", // ♠
   ),
   three(
     key: K.DECK_THREE_CONTENTS,
-    display: "三",
+    display: "\u2666", // ♦︎
   );
 
   const Deck({

@@ -325,12 +325,14 @@ class _WordTileDeckButtonState extends State<_WordTileDeckButton> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 2.0),
+                padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 2.0),
                 child: Text(
                   widget.deck.display,
                   style: TextStyle(
                     color: _enabled ? textColor : LightTheme.textColorDimmer,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: "NotoEmoji",
+                    fontFamilyFallback: ["Varela Round"],
                     fontSize: 14.0,
                   ),
                 ),

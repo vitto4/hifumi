@@ -27,7 +27,11 @@ class SnackToast {
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(color: LightTheme.base),
+            style: const TextStyle(
+              color: LightTheme.base,
+              fontFamily: "NotoEmoji",
+              fontFamilyFallback: ["Varela Round"],
+            ),
           ),
         ),
       ],

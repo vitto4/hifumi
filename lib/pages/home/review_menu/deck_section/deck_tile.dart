@@ -46,8 +46,9 @@ class DeckTile extends StatelessWidget {
             Text(
               deck.display,
               style: TextStyle(
-                fontSize: FontSizes.huge,
-                fontWeight: FontWeight.bold,
+                fontSize: FontSizes.big,
+                fontFamily: "NotoEmoji",
+                fontFamilyFallback: ["Varela Round"],
                 color: isSelected ? selectedTextColor : LightTheme.textColorDimmer,
               ),
             ),

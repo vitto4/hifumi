@@ -169,12 +169,14 @@ class QuizComboButton extends StatelessWidget {
                   ),
                   ChicletButtonSegment(
                     onPressed: () => this.onSecondaryRight.call(),
-                    padding: EdgeInsets.zero,
+                    padding: EdgeInsets.only(right: 3.5),
                     child: Text(
                       this.selectedDeck.display,
                       style: const TextStyle(
                         fontSize: FontSizes.huge,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: "NotoEmoji",
+                        fontFamilyFallback: ["Varela Round"],
                       ),
                     ),
                   ),

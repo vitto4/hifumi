@@ -63,7 +63,11 @@ class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
               ),
               Text.rich(
                 TextSpan(
-                  style: TextStyle(color: LightTheme.textColor),
+                  style: TextStyle(
+                    color: LightTheme.textColor,
+                    fontFamily: "NotoEmoji",
+                    fontFamilyFallback: ["Varela Round"],
+                  ),
                   children: <InlineSpan>[
                     const TextSpan(
                       text: "Reviews",
@@ -74,25 +78,34 @@ class _ReviewWhatIsThisState extends State<ReviewWhatIsThis> {
                     ),
                     TextSpan(
                       text: Deck.one.display,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: LightTheme.textColorDim,
+                      ),
                     ),
                     const TextSpan(
-                      text: " , ",
+                      text: ", ",
                     ),
                     TextSpan(
                       text: Deck.two.display,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: LightTheme.textColorDim,
+                      ),
                     ),
                     const TextSpan(
                       text: " and ",
                     ),
                     TextSpan(
                       text: Deck.three.display,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: LightTheme.textColorDim,
+                      ),
                     ),
                     const TextSpan(
                       text:
-                          " ) instead of lessons. You can add words to these during a quiz, or select some individually in each lesson's contents page.",
+                          ") instead of lessons. You can add words to these during a quiz, or select some individually in each lesson's contents page.",
                     ),
                   ],
                 ),

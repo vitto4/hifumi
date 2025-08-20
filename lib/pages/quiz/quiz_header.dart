@@ -48,6 +48,8 @@ class QuizHeader extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: FontSizes.base,
                   fontWeight: FontWeight.bold,
+                  fontFamily: "NotoEmoji",
+                  fontFamilyFallback: ["Varela Round"],
                   color: LightTheme.purple,
                 ),
               ),
