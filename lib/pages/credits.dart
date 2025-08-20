@@ -192,15 +192,18 @@ class Credits extends StatelessWidget {
             ),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: const SizedBox(
-                  height: 24.0,
-                  width: 24.0,
-                  child: Text(
-                    "Aa",
-                    style: TextStyle(
-                      color: LightTheme.textColorDim,
-                      fontSize: 19,
-                      fontFamily: "Valera Round",
+                leading: Padding(
+                  padding: EdgeInsets.only(left: .5, bottom: 4.0),
+                  child: const SizedBox(
+                    height: 23.5,
+                    width: 23.5,
+                    child: Text(
+                      "Aa",
+                      style: TextStyle(
+                        color: LightTheme.textColorDim,
+                        fontSize: 19,
+                        fontFamily: "Valera Round",
+                      ),
                     ),
                   ),
                 ),
@@ -212,15 +215,18 @@ class Credits extends StatelessWidget {
                 },
               ),
               SettingsTile.navigation(
-                leading: const SizedBox(
-                  height: 24.0,
-                  width: 24.0,
-                  child: Text(
-                    "Aa",
-                    style: TextStyle(
-                      color: LightTheme.textColorDim,
-                      fontSize: 19,
-                      fontFamily: "NotoSansDisplay",
+                leading: Padding(
+                  padding: EdgeInsets.only(left: .5, bottom: 4.0),
+                  child: const SizedBox(
+                    height: 23.5,
+                    width: 23.0,
+                    child: Text(
+                      "Aa",
+                      style: TextStyle(
+                        color: LightTheme.textColorDim,
+                        fontSize: 19,
+                        fontFamily: "NotoSansDisplay",
+                      ),
                     ),
                   ),
                 ),
@@ -237,11 +243,14 @@ class Credits extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: LightTheme.textColorDim,
-                    fontSize: 23,
+                    fontSize: 22,
                     fontFamily: "NotoSansJP",
                   ),
                 ),
-                title: const Text("Noto Sans JP", style: cmonApplyTheFontPlease),
+                title: const Padding(
+                  padding: EdgeInsets.only(left: 1.0),
+                  child: Text("Noto Sans JP", style: cmonApplyTheFontPlease),
+                ),
                 onPressed: (context) async {
                   if (await canLaunchUrl(_notoSansJP)) {
                     await launchUrl(_notoSansJP);
@@ -254,11 +263,14 @@ class Credits extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: LightTheme.textColorDim,
-                    fontSize: 23,
+                    fontSize: 22,
                     fontFamily: "NotoSerifJP",
                   ),
                 ),
-                title: const Text("Noto Serif JP", style: cmonApplyTheFontPlease),
+                title: const Padding(
+                  padding: EdgeInsets.only(left: 1.5),
+                  child: Text("Noto Serif JP", style: cmonApplyTheFontPlease),
+                ),
                 onPressed: (context) async {
                   if (await canLaunchUrl(_notoSerifJP)) {
                     await launchUrl(_notoSerifJP);
@@ -267,17 +279,23 @@ class Credits extends StatelessWidget {
               ),
               SettingsTile.navigation(
                 leading: Transform.scale(
-                  scale: 1.20,
-                  child: const Text(
-                    "あ",
-                    style: TextStyle(
-                      color: LightTheme.textColorDim,
-                      fontSize: 23,
-                      fontFamily: "NewTegomin",
+                  scale: 1.15,
+                  child: Transform.translate(
+                    offset: Offset(.0, -1.2),
+                    child: const Text(
+                      "あ",
+                      style: TextStyle(
+                        color: LightTheme.textColorDim,
+                        fontSize: 23,
+                        fontFamily: "NewTegomin",
+                      ),
                     ),
                   ),
                 ),
-                title: const Text("New Tegomin", style: cmonApplyTheFontPlease),
+                title: const Padding(
+                  padding: EdgeInsets.only(right: 1.5),
+                  child: Text("New Tegomin", style: cmonApplyTheFontPlease),
+                ),
                 onPressed: (context) async {
                   if (await canLaunchUrl(_newTegomin)) {
                     await launchUrl(_newTegomin);
@@ -285,15 +303,18 @@ class Credits extends StatelessWidget {
                 },
               ),
               SettingsTile.navigation(
-                leading: SizedBox(
-                  height: 24.0,
-                  width: 24.0,
-                  child: const Text(
-                    "\u2663",
-                    style: TextStyle(
-                      color: LightTheme.textColorDim,
-                      fontSize: 20,
-                      fontFamily: "NotoSansSymbols2",
+                leading: const Padding(
+                  padding: EdgeInsets.only(left: 3.0, bottom: 2.0, right: .0),
+                  child: SizedBox(
+                    height: 21.0,
+                    width: 21.0,
+                    child: Text(
+                      "\u2663",
+                      style: TextStyle(
+                        color: LightTheme.textColorDim,
+                        fontSize: 19,
+                        fontFamily: "NotoSansSymbols2",
+                      ),
                     ),
                   ),
                 ),
