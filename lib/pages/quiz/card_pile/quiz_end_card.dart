@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:hifumi/abstractions/ui/themes.dart";
 import "package:hifumi/abstractions/ui/font_sizes.dart";
 import "package:hifumi/widgets/archipelago/island_container.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
 enum SecondButtonType { restart, clearDeck }
 
@@ -74,16 +75,20 @@ class QuizEndCard extends StatelessWidget {
                         padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0)),
                       ),
                       icon: Icon(
-                        (secondButtonType == SecondButtonType.restart) ? Icons.restart_alt : Icons.delete,
+                        (secondButtonType == SecondButtonType.restart) ? Icons.play_circle : Icons.delete,
                         color: LightTheme.textColorDimmer,
+                        size: 17.0,
                       ),
-                      label: Text(
-                        (secondButtonType == SecondButtonType.restart) ? "RESTART" : "CLEAR DECK",
-                        style: TextStyle(
-                          color: LightTheme.textColorDimmer,
-                          fontWeight: FontWeight.bold,
-                          fontSize: FontSizes.small,
-                          letterSpacing: .5,
+                      label: Padding(
+                        padding: const EdgeInsets.only(left: .0),
+                        child: Text(
+                          (secondButtonType == SecondButtonType.restart) ? "REPLAY QUIZ" : "CLEAR DECK",
+                          style: TextStyle(
+                            color: LightTheme.textColorDimmer,
+                            fontWeight: FontWeight.bold,
+                            fontSize: FontSizes.small,
+                            letterSpacing: .5,
+                          ),
                         ),
                       ),
                       onPressed: () {
@@ -98,17 +103,21 @@ class QuizEndCard extends StatelessWidget {
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0)),
                 ),
-                icon: const Icon(
-                  Icons.arrow_back_ios,
+                icon: const FaIcon(
+                  FontAwesomeIcons.houseChimney,
                   color: LightTheme.textColorDimmer,
+                  size: 15.0,
                 ),
-                label: const Text(
-                  "MAIN MENU",
-                  style: TextStyle(
-                    color: LightTheme.textColorDimmer,
-                    fontWeight: FontWeight.bold,
-                    fontSize: FontSizes.small,
-                    letterSpacing: .5,
+                label: const Padding(
+                  padding: EdgeInsets.only(left: 2.5, right: 4.0),
+                  child: Text(
+                    "MAIN MENU",
+                    style: TextStyle(
+                      color: LightTheme.textColorDimmer,
+                      fontWeight: FontWeight.bold,
+                      fontSize: FontSizes.small,
+                      letterSpacing: .5,
+                    ),
                   ),
                 ),
                 onPressed: () {
