@@ -25,6 +25,7 @@ class QuizHeader extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(
               Icons.arrow_back_ios,
+              size: FontSizes.huge,
               color: LightTheme.darkAccent,
             ),
           ),

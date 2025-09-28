@@ -23,7 +23,7 @@ class LightTheme {
   static const Color textColor                  = Color.fromARGB(255, 75, 75, 75);    // Duolingo `eel`
   static const Color textColorDim               = Color.fromARGB(255, 119, 119, 119); // Duolingo `wolf`
   static const Color textColorDimmer            = Color.fromARGB(255, 175, 175, 175); // Duolingo `hare`
-  static const Color textColorSuperExtraLight   = Color.fromARGB(255, 243, 248, 252); //  Homemade. /!\ Bright, use parsimoniously.
+  static const Color textColorSuperExtraLight   = Color.fromARGB(255, 243, 248, 252); // Homemade. /!\ Bright, use parsimoniously.
 
   /* ----------------------------- (MAIN) ACCENTS ----------------------------- */
 
@@ -50,6 +50,8 @@ class LightTheme {
   static const Color purpleLight                = Color.fromARGB(255, 240, 218, 255); // Duolingo, from the SVG XP bottle
 
   static const Color brownLight                 = Color.fromARGB(255, 224, 140, 19);  // Duolingo, from the SVG december 23 badge
+
+  static const Color blueishGrey                = Color.fromARGB(255, 243, 241, 248); // Homemade. Yes it is very slight
 
   static const Color forestGreen                = Color.fromARGB(255, 1, 134, 106);   // Duolingo, from the SVG august 24 badge
   static const Color forestGreenLight           = Color.fromARGB(255, 0, 181, 147);   // Duolingo, from the SVG august 24 badge
