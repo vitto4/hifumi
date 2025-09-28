@@ -39,8 +39,9 @@ class CardElement extends StatelessWidget {
           style: TextStyle(
             fontSize: fontSize,
             color: textColor.withValues(alpha: .8),
+            fontVariations: (symbols == Symbols.japanese) ? [FontVariation('wght', 350.0)] : null,
             fontFamily: (symbols == Symbols.japanese) ? "NotoSansJP" : null,
-            fontWeight: (symbols == Symbols.japanese) ? FontWeight.bold : null,
+            fontWeight: (symbols == Symbols.japanese) ? FontWeight.normal : null,
           ),
           textAlign: TextAlign.center,
         ),

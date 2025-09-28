@@ -57,8 +57,9 @@ class QuizEndCard extends StatelessWidget {
               child: Text(
                 "お疲れ様です～",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: LightTheme.textColorDimmer,
+                  fontWeight: FontWeight.normal,
+                  fontVariations: [FontVariation('wght', 450.0)],
+                  color: LightTheme.baseAccent,
                   fontSize: 21.0,
                   fontFamily: "NotoSansJP",
                   letterSpacing: 3.0,
