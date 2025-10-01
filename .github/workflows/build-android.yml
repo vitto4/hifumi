@@ -55,11 +55,11 @@ jobs:
       - name: Get short commit hash
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      # 9 : Write extracted version and commit hash to `lib/entities/app_info.dart`
+      # 9 : Write extracted version and commit hash to `lib/abstractions/app_info.dart`
       - name: Write version & commit
         run: |
-          sed -i "s/missing-version/${{ env.VERSION }}/" lib/entities/app_info.dart
-          sed -i "s/missing-commit/${{ env.COMMIT_HASH }}/" lib/entities/app_info.dart
+          sed -i "s/missing-version/${{ env.VERSION }}/" lib/abstractions/app_info.dart
+          sed -i "s/missing-commit/${{ env.COMMIT_HASH }}/" lib/abstractions/app_info.dart
 
       # 10 : Decode keystore
       - name: Decode keystore
