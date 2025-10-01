@@ -3,7 +3,6 @@ import "package:hifumi/abstractions/abstractions_barrel.dart";
 import "package:hifumi/pages/lesson_contents/word_grid.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/island_double_tap_button.dart";
-import "package:hifumi/widgets/overlays/scroll_to_top.dart";
 import "package:hifumi/widgets/seasoning/text_separator.dart";
 import "package:hifumi/widgets/seasoning/snack_toast.dart";
 import "package:hifumi/pages/lesson_contents/lesson_contents_header.dart";
