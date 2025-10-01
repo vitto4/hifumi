@@ -9,4 +9,5 @@ class FontSizes {
   static const double big = 18.0;
   static const double separator = 19.0;
   static const double huge = 20.0;
+  static const double colossal = 22.0;
 }

@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:hifumi/abstractions/ui/themes.dart";
-import "package:hifumi/services/services_barrel.dart";
+import "package:hifumi/abstractions/abstractions_barrel.dart" show LightTheme, FontSizes;
+import "package:hifumi/services/services_barrel.dart" show SPInterface, DSInterface;
 import "package:hifumi/pages/pages_barrel.dart";
 
 /// Hello there ! Looks like you've decided to read through the code for this app, so let me be your guide on this journey.
@@ -25,6 +25,19 @@ void main() => runApp(
           ),
         ),
       ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: LightTheme.base,
+        titleTextStyle: TextStyle(
+          color: LightTheme.textColorDim,
+          fontWeight: FontWeight.bold,
+          fontSize: FontSizes.colossal,
+          fontFamily: "Varela Round",
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      // For the flutter built-in `LicensePage`
+      cardColor: LightTheme.base,
     ),
     initialRoute: "/",
     onGenerateRoute: (settings) {

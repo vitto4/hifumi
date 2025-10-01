@@ -136,13 +136,9 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: LightTheme.base,
         title: const Text(
           "Settings",
-          style: TextStyle(color: LightTheme.textColorDim, fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
-        elevation: 0,
       ),
       body: SettingsList(
         platform: DevicePlatform.android,
