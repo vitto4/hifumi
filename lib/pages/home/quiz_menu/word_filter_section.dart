@@ -64,7 +64,7 @@ class _WordFilterSectionState extends State<WordFilterSection> {
                     ),
                   ),
                   TextSpan(
-                    text: "Note —",
+                    text: "Hint —",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: LightTheme.blue,

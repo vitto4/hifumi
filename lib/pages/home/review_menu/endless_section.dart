@@ -211,7 +211,7 @@ class _EndlessModeSectionState extends State<EndlessModeSection> {
                 style: TextStyle(color: LightTheme.textColor),
                 children: <InlineSpan>[
                   TextSpan(
-                    text: "Note —",
+                    text: "Hint —",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: LightTheme.blue,
