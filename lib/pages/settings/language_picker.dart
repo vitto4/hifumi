@@ -16,12 +16,14 @@ class LanguagePicker extends StatefulWidget {
   final SPInterface st;
   final DSInterface ds;
   final Function onDone;
+  final String buttonText;
 
   const LanguagePicker({
     Key? key,
     required this.st,
     required this.ds,
     required this.onDone,
+    this.buttonText = "Done",
   }) : super(key: key);
 
   @override
@@ -110,12 +112,12 @@ class _LanguagePickerState extends State<LanguagePicker> {
                             widget.st.writeLanguage(_selectedLanguage);
                             widget.onDone.call();
                           },
-                          child: const Center(
+                          child: Center(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.0),
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
                               child: Text(
-                                "Done",
-                                style: TextStyle(
+                                widget.buttonText,
+                                style: const TextStyle(
                                   fontSize: FontSizes.huge,
                                   fontWeight: FontWeight.bold,
                                   color: LightTheme.base,
