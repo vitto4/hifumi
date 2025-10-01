@@ -35,7 +35,14 @@ class _LoadingState extends State<Loading> {
   /// Groundwork, load the DS and user data.
   Future<Map<String, dynamic>> _initialize() async {
     // Set the status bar theme to dark, otherwise icons won't be visible
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
+    // Set the navigation bar color to white
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
 
     // Only start the loading process when the loading screen has finished initializing
     // This is done so that we can display everything in the console, though it may add a slight delay
@@ -46,38 +53,6 @@ class _LoadingState extends State<Loading> {
     /// This is an attempt to solve the problem.
     ///
     /// ! We don't do that anymore : https://github.com/flutter/flutter/issues/160185
-
-    // _consoleKey.currentState?.printMessage("Loading fonts");
-
-    // final fontLoaderValera = FontLoader('Varela Round')
-    //   ..addFont(
-    //     rootBundle.load("fonts/VarelaRound-Regular.ttf"),
-    //   );
-    // await fontLoaderValera.load();
-
-    // final fontLoaderNotoSansDisplay = FontLoader('NotoSansDisplay')
-    //   ..addFont(
-    //     rootBundle.load("fonts/NotoSansDisplay-Regular.ttf"),
-    //   );
-    // await fontLoaderNotoSansDisplay.load();
-
-    // final fontLoaderNotoSansJP = FontLoader('NotoSansJP')
-    //   ..addFont(
-    //     rootBundle.load("fonts/NotoSansJP.ttf"),
-    //   );
-    // await fontLoaderNotoSansJP.load();
-
-    // final fontLoaderNotoSerifJP = FontLoader('NotoSerifJP')
-    //   ..addFont(
-    //     rootBundle.load("fonts/NotoSerifJP.ttf"),
-    //   );
-    // await fontLoaderNotoSerifJP.load();
-
-    // final fontLoaderNewTegomin = FontLoader('NewTegomin')
-    //   ..addFont(
-    //     rootBundle.load("fonts/NewTegomin-Regular.ttf"),
-    //   );
-    // await fontLoaderNewTegomin.load();
 
     /* --------------------------- Shared preferences --------------------------- */
     _consoleKey.currentState?.printMessage("Loading user data");
