@@ -4,8 +4,10 @@ import "package:hifumi/abstractions/ui/@screen_orientation.dart";
 import "package:hifumi/services/services_barrel.dart";
 import "package:hifumi/widgets/archipelago/archipelago_barrel.dart";
 import "package:hifumi/pages/quiz/card_pile/card_element.dart";
+import "package:url_launcher/url_launcher.dart";
 
 const double _BOOK_TILE_VERTICAL_PADDING = 5.0;
+final Uri _editionsReadme = Uri.parse("https://github.com/vitto4/MinnaNoDS/blob/4e43824b719fb9747570b93c6d0f13257bee2510/README.md#-bibliography");
 
 /// The [EditionPicker] is made of :
 ///   * [_TitleAndDescription]
@@ -146,23 +148,47 @@ class _TitleAndDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Align(
           alignment: Alignment.center,
-          child: Text(
-            "Edition selection",
-            style: TextStyle(
+          child: Text.rich(
+            TextSpan(
+              children: <InlineSpan>[
+                const TextSpan(
+                  text: "Edition selection ",
+                ),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: IslandButton(
+                    backgroundColor: LightTheme.base,
+                    borderColor: LightTheme.base,
+                    offset: .0,
+                    onTap: () async {
+                      if (await canLaunchUrl(_editionsReadme)) {
+                        await launchUrl(_editionsReadme);
+                      }
+                    },
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      size: FontSizes.big,
+                      color: LightTheme.textColorDim,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            style: const TextStyle(
               color: LightTheme.textColorDim,
               fontSize: FontSizes.huge,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        SizedBox(height: 15.0),
-        Text(
+        const SizedBox(height: 15.0),
+        const Text(
           "Select your preferred edition for each book. The second edition should be suitable for most users.",
           textAlign: TextAlign.center,
           style: TextStyle(
