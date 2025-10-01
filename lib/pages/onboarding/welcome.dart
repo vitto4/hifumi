@@ -22,12 +22,12 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
-  late int index;
+  late int _index;
 
   @override
   void initState() {
     super.initState();
-    index = 0;
+    _index = 0;
   }
 
   @override
@@ -69,8 +69,8 @@ class _WelcomeState extends State<Welcome> {
                                       // We need to do that otherwise the AnimatedSwitcher won't play when we switch
                                       // to a second widget that's the same type as the first
                                       child: KeyedSubtree(
-                                        key: ValueKey<int>(index),
-                                        child: _DIALOG_ELEMENTS.elementAt(index),
+                                        key: ValueKey<int>(_index),
+                                        child: _DIALOG_ELEMENTS.elementAt(_index),
                                       ),
                                     ),
                                   ),
@@ -82,16 +82,16 @@ class _WelcomeState extends State<Welcome> {
                               backgroundColor: LightTheme.green,
                               borderColor: LightTheme.greenBorder,
                               smartExpand: true,
-                              onTap: (index < _DIALOG_ELEMENTS.length - 1)
+                              onTap: (_index < _DIALOG_ELEMENTS.length - 1)
                                   ? () => setState(() {
-                                      index += 1;
+                                      _index += 1;
                                     })
                                   : widget.onDone,
                               child: Center(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 5.0),
                                   child: Text(
-                                    _BUTTON_TEXT.elementAt(index),
+                                    _BUTTON_TEXT.elementAt(_index),
                                     style: TextStyle(
                                       fontSize: FontSizes.huge,
                                       fontWeight: FontWeight.bold,

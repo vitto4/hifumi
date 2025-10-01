@@ -83,7 +83,7 @@ class QuizEndCard extends StatelessWidget {
                         padding: const EdgeInsets.only(left: .0),
                         child: Text(
                           (secondButtonType == SecondButtonType.restart) ? "REPLAY QUIZ" : "CLEAR DECK",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: LightTheme.textColorDimmer,
                             fontWeight: FontWeight.bold,
                             fontSize: FontSizes.small,

@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:hifumi/pages/onboarding/welcome.dart";
 import "package:hifumi/pages/settings/language_picker.dart";
 import "package:hifumi/pages/settings/edition_picker.dart";
-import "package:hifumi/services/services_barrel.dart";
+import "package:hifumi/services/services_barrel.dart" show SPInterface, DSInterface;
 
 /// As implied, show this to the user on the first run.
 /// For now it's only displaying a [LanguagePicker] and [EditionPicker].
