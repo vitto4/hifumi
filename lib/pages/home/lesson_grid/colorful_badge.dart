@@ -13,55 +13,45 @@ class ColorfulBadge extends StatelessWidget {
   final Color backgroundColorLeft;
   final Color backgroundColorRight;
 
-  /// This is unused, but working.
-  final Function? onTap;
-
   const ColorfulBadge({
     Key? key,
     required this.childLeft,
     required this.childRight,
     required this.backgroundColorLeft,
     required this.backgroundColorRight,
-    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget badge = IntrinsicWidth(
-      child: Row(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(_BADGE_BORDER_RADIUS),
-                bottomLeft: Radius.circular(_BADGE_BORDER_RADIUS),
-              ),
-              color: backgroundColorLeft,
+    return Row(
+      children: <Widget>[
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(_BADGE_BORDER_RADIUS),
+              bottomLeft: Radius.circular(_BADGE_BORDER_RADIUS),
             ),
-            clipBehavior: Clip.hardEdge,
-            child: Padding(
-              padding: _BADGE_PADDING.copyWith(right: _BADGE_FRONTIER_PADDING),
-              child: childLeft,
-            ),
+            color: backgroundColorLeft,
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(_BADGE_BORDER_RADIUS),
-                bottomRight: Radius.circular(_BADGE_BORDER_RADIUS),
-              ),
-              color: backgroundColorRight,
-            ),
-            clipBehavior: Clip.hardEdge,
-            child: Padding(
-              padding: _BADGE_PADDING.copyWith(left: _BADGE_FRONTIER_PADDING),
-              child: childRight,
-            ),
+          child: Padding(
+            padding: _BADGE_PADDING.copyWith(right: _BADGE_FRONTIER_PADDING),
+            child: childLeft,
           ),
-        ],
-      ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(_BADGE_BORDER_RADIUS),
+              bottomRight: Radius.circular(_BADGE_BORDER_RADIUS),
+            ),
+            color: backgroundColorRight,
+          ),
+          child: Padding(
+            padding: _BADGE_PADDING.copyWith(left: _BADGE_FRONTIER_PADDING),
+            child: childRight,
+          ),
+        ),
+      ],
     );
-
-    return (onTap is Function) ? GestureDetector(onTap: () => onTap?.call(), child: badge) : badge;
   }
 }
