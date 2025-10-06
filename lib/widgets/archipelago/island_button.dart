@@ -19,7 +19,7 @@ class IslandButton extends StatefulWidget {
   final bool reactOnHover;
 
   /// Artificial lag duration added to the animation to make sure it registers.
-  final Duration? tapDuration;
+  final Duration tapDuration;
 
   const IslandButton({
     Key? key,
@@ -31,7 +31,7 @@ class IslandButton extends StatefulWidget {
     this.offset = 2.05,
     this.smartExpand = false,
     this.reactOnHover = true,
-    this.tapDuration,
+    this.tapDuration = const Duration(milliseconds: 50),
   }) : super(key: key);
 
   @override
@@ -62,7 +62,7 @@ class _IslandButtonState extends State<IslandButton> {
   /// [_tapTimer] is only there to make sure the [_isTapped] animation registers, even when the tap doesn't last long enough.
   void _resetTapState() {
     _tapTimer?.cancel();
-    _tapTimer = Timer(widget.tapDuration ?? const Duration(milliseconds: 50), () {
+    _tapTimer = Timer(widget.tapDuration, () {
       setState(() => _isTapped = false);
     });
   }
