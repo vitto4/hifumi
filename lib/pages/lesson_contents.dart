@@ -110,7 +110,6 @@ class LessonContents extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IslandDoubleTapButton(
-                      animationDuration: Duration.zero,
                       timerDuration: const Duration(seconds: 3),
                       firstBackgroundColor: Colors.transparent,
                       firstBorderColor: Colors.transparent,

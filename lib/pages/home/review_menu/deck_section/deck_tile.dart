@@ -71,7 +71,6 @@ class DeckTile extends StatelessWidget {
               IslandDoubleTapButton(
                 timerDuration: const Duration(seconds: 3),
                 offset: .0,
-                animationDuration: Duration.zero,
                 firstBackgroundColor: Colors.transparent,
                 firstBorderColor: Colors.transparent,
                 secondBackgroundColor: Colors.transparent,

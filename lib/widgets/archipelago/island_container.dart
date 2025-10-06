@@ -25,9 +25,6 @@ class IslandContainer extends StatelessWidget {
   /// Use this instead of wrapping the widget in an [Expanded].
   final bool smartExpand;
 
-  /// I ended up never using this, but it's there if needed !
-  final Duration? animationDuration;
-
   const IslandContainer({
     Key? key,
     required this.backgroundColor,
@@ -36,50 +33,29 @@ class IslandContainer extends StatelessWidget {
     required this.child,
     this.offset = 2.05,
     this.smartExpand = false,
-    this.animationDuration,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Yeah this [LayoutBuilder] construct is a little hacky, but it makes up for my lack of understanding of flutter layout and constraints.
     // I couldn't get [IslandContainer]s to properly expand when placed in [Expanded] widgets so I just built my own version.
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      double? maxHeight = constraints.maxHeight == double.infinity ? null : constraints.maxHeight;
-      double? maxWidth = constraints.maxWidth == double.infinity ? null : constraints.maxWidth;
-      return Padding(
-        /// Padding : Trick to maintain coherent layout constraints despite `Transform` acting after the layout has been painted.
-        /// In concrete terms, include the thick border that mimics z-axis height in the reported (y-axis) height of the widget.
-        /// (otherwise an [IslandContainer] may visually exceed the height of its parent)
-        padding: EdgeInsets.fromLTRB(
-          .0,
-          .0,
-          .0,
-          this.offset,
-        ),
-        child: Stack(
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        double? maxHeight = constraints.maxHeight == double.infinity ? null : constraints.maxHeight;
+        double? maxWidth = constraints.maxWidth == double.infinity ? null : constraints.maxWidth;
+        return Stack(
           children: <Widget>[
-            Transform.translate(
-              offset: Offset(.0, this.offset),
+            // Outer container responsible for the "elevated" effect (bottom border)
+            // But no border is actually used on the bottom, only the background color of this outer container + padding
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(_ISLAND_CONTAINER_BORDER_RADIUS)),
+                color: borderColor,
+              ),
+              // Play with padding and margin to move the inner container around, mimicking 3D button presses
+              padding: tapped ? EdgeInsets.zero : EdgeInsets.only(bottom: this.offset),
+              margin: tapped ? EdgeInsets.only(top: this.offset) : EdgeInsets.zero,
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: borderColor, width: _ISLAND_CONTAINER_BORDER_THICKNESS),
-                  borderRadius: BorderRadius.circular(_ISLAND_CONTAINER_BORDER_RADIUS),
-                  color: borderColor,
-                ),
-                height: smartExpand ? maxHeight : null,
-                width: smartExpand ? maxWidth : null,
-                clipBehavior: Clip.hardEdge,
-                // FIXME This is to make sure this container doesn't expand beyond what's needed, but there must be a better way of doing it.
-                child: Opacity(opacity: .0, child: child),
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(
-                .0,
-                (tapped) ? this.offset : .0,
-              ),
-              child: AnimatedContainer(
-                duration: this.animationDuration ?? Duration.zero,
                 decoration: BoxDecoration(
                   border: Border.all(color: borderColor, width: _ISLAND_CONTAINER_BORDER_THICKNESS),
                   borderRadius: BorderRadius.circular(_ISLAND_CONTAINER_BORDER_RADIUS),
@@ -87,14 +63,13 @@ class IslandContainer extends StatelessWidget {
                 ),
                 height: smartExpand ? maxHeight : null,
                 width: smartExpand ? maxWidth : null,
-                clipBehavior: Clip.hardEdge,
                 child: child,
               ),
             ),
           ],
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -121,7 +96,6 @@ class FlatIslandContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(_FLAT_ISLAND_CONTAINER_BORDER_RADIUS),
         color: backgroundColor,
       ),
-      clipBehavior: Clip.hardEdge,
       child: child,
     );
   }

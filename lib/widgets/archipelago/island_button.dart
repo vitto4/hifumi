@@ -17,7 +17,6 @@ class IslandButton extends StatefulWidget {
   final double offset;
   final bool smartExpand;
   final bool reactOnHover;
-  final Duration? animationDuration;
 
   /// Artificial lag duration added to the animation to make sure it registers.
   final Duration? tapDuration;
@@ -32,7 +31,6 @@ class IslandButton extends StatefulWidget {
     this.offset = 2.05,
     this.smartExpand = false,
     this.reactOnHover = true,
-    this.animationDuration,
     this.tapDuration,
   }) : super(key: key);
 
@@ -103,7 +101,6 @@ class _IslandButtonState extends State<IslandButton> {
               offset: widget.offset,
               smartExpand: widget.smartExpand,
               tapped: _isTapped,
-              animationDuration: widget.animationDuration,
               child: widget.child,
             ),
           ),

@@ -20,7 +20,6 @@ class IslandDoubleTapButton extends StatefulWidget {
   final Widget firstChild;
   final Widget secondChild;
 
-  final Duration animationDuration;
   final double offset;
 
   const IslandDoubleTapButton({
@@ -33,7 +32,6 @@ class IslandDoubleTapButton extends StatefulWidget {
     required this.onSecondTap,
     required this.firstChild,
     required this.secondChild,
-    this.animationDuration = const Duration(milliseconds: 150),
     this.offset = 2.05,
   }) : super(key: key);
 
@@ -110,7 +108,6 @@ class _IslandDoubleTapButtonState extends State<IslandDoubleTapButton> {
         onTap: _tapHandler,
         offset: widget.offset,
         reactOnHover: false, // We don't want to double react, we're already implementing our own version in this file
-        animationDuration: widget.animationDuration,
         child: (_tappedHowManyTimes == 0) ? widget.firstChild : widget.secondChild,
       ),
     );
