@@ -76,7 +76,6 @@ class _WordTileState extends State<WordTile> {
                 ),
                 color: LightTheme.base,
               ),
-              clipBehavior: Clip.hardEdge,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 7.0, 10.0),
                 child: Column(
@@ -108,28 +107,23 @@ class _WordTileState extends State<WordTile> {
                       ),
                     ),
                     // Meaning section
-                    IntrinsicWidth(
-                      child: Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          color: LightTheme.baseAccent,
-                          borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all(
-                            color: Colors.transparent,
-                          ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: LightTheme.baseAccent,
+                        borderRadius: BorderRadius.circular(5.0),
+                        border: Border.all(
+                          color: Colors.transparent,
                         ),
-                        height: 23.0,
-                        padding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 2.0),
-                        child: Center(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              widget.word.meaning[widget.st.readLanguage()]!,
-                              style: const TextStyle(
-                                fontSize: FontSizes.small,
-                                color: LightTheme.textColor,
-                              ),
-                            ),
+                      ),
+                      height: 23.0,
+                      padding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 2.0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          widget.word.meaning[widget.st.readLanguage()]!,
+                          style: const TextStyle(
+                            fontSize: FontSizes.small,
+                            color: LightTheme.textColor,
                           ),
                         ),
                       ),
@@ -140,94 +134,79 @@ class _WordTileState extends State<WordTile> {
             ),
           ),
           // Everything to the right side of the tile
-          Row(
+          Column(
             children: <Widget>[
-              IntrinsicWidth(
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: LightTheme.lightAccent,
-                          border: Border(
-                            left: BorderSide(color: LightTheme.baseAccent),
-                            top: BorderSide(color: LightTheme.baseAccent),
-                          ),
-                        ),
-                        child: const RotatedBox(
-                          quarterTurns: 1,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                              child: Text(
-                                "Score",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: LightTheme.textColorDimmer,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: LightTheme.lightAccent,
+                    border: Border(
+                      left: BorderSide(color: LightTheme.baseAccent),
+                      top: BorderSide(color: LightTheme.baseAccent),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: scoreColor,
-                        border: const Border(
-                          bottom: BorderSide(color: LightTheme.baseAccent),
-                          left: BorderSide(color: LightTheme.baseAccent),
-                        ),
-                      ),
+                  ),
+                  child: const RotatedBox(
+                    quarterTurns: 1,
+                    child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                        padding: EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
                         child: Text(
-                          _scoreState.toString(),
+                          "Score",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: scoreTextColor,
+                            color: LightTheme.textColorDimmer,
                           ),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
               Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                    bottomRight: Radius.circular(12.0),
+                decoration: BoxDecoration(
+                  color: scoreColor,
+                  border: const Border(
+                    bottom: BorderSide(color: LightTheme.baseAccent),
+                    left: BorderSide(color: LightTheme.baseAccent),
                   ),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: _WordTileDeckButton(
-                        deck: Deck.one,
-                        id: widget.word.id,
-                        position: _Position.top,
-                        st: widget.st,
-                      ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                  child: Text(
+                    _scoreState.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: scoreTextColor,
                     ),
-                    Expanded(
-                      child: _WordTileDeckButton(
-                        deck: Deck.two,
-                        id: widget.word.id,
-                        position: _Position.middle,
-                        st: widget.st,
-                      ),
-                    ),
-                    Expanded(
-                      child: _WordTileDeckButton(
-                        deck: Deck.three,
-                        id: widget.word.id,
-                        position: _Position.bottom,
-                        st: widget.st,
-                      ),
-                    ),
-                  ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: _WordTileDeckButton(
+                  deck: Deck.one,
+                  id: widget.word.id,
+                  position: _Position.top,
+                  st: widget.st,
+                ),
+              ),
+              Expanded(
+                child: _WordTileDeckButton(
+                  deck: Deck.two,
+                  id: widget.word.id,
+                  position: _Position.middle,
+                  st: widget.st,
+                ),
+              ),
+              Expanded(
+                child: _WordTileDeckButton(
+                  deck: Deck.three,
+                  id: widget.word.id,
+                  position: _Position.bottom,
+                  st: widget.st,
                 ),
               ),
             ],
@@ -295,7 +274,7 @@ class _WordTileDeckButtonState extends State<_WordTileDeckButton> {
         onExit: (event) => _mouseEnter(false),
         // Since the geometry of these buttons is a bit complex, the mouse hover effect is produced using a [ColorFilter] instead of our usual [Color.darken]
         child: ColorFiltered(
-          colorFilter: _isHovering ? ColorFilter.matrix(darkenHoverMatrix) : ColorFilter.matrix(identityMatrix),
+          colorFilter: _isHovering ? const ColorFilter.matrix(darkenHoverMatrix) : const ColorFilter.matrix(identityMatrix),
           child: GestureDetector(
             onTap: () {
               if (_enabled) {
