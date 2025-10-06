@@ -105,7 +105,6 @@ class AlmostFlashcardButOnlyHalfOfIt extends StatelessWidget {
     return Container(
       height: D.CARD_RENDER_HEIGHT,
       width: D.CARD_RENDER_WIDTH,
-      clipBehavior: Clip.hardEdge,
       padding: const EdgeInsets.symmetric(horizontal: .1 * D.CARD_RENDER_WIDTH, vertical: .1 * D.CARD_RENDER_HEIGHT),
       decoration: BoxDecoration(
         color: this.color,

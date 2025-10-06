@@ -28,7 +28,6 @@ Future<T> showTrayDialog<T>({
             constraints: BoxConstraints(maxHeight: maxHeight),
             child: Material(
               color: backgroundColor,
-              clipBehavior: Clip.antiAlias,
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
               child: child,
             ),

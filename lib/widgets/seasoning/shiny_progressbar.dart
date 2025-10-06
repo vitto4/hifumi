@@ -31,7 +31,6 @@ class ShinyProgressBar extends StatelessWidget {
         builder: (context, constraints) {
           final double width = constraints.maxWidth;
           return Container(
-            clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               color: LightTheme.baseAccent,
               borderRadius: BorderRadius.circular(_PROGRESS_BAR_RADIUS),

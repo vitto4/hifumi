@@ -14,11 +14,7 @@ class SelectionAsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(
-        milliseconds: 500,
-      ),
-      clipBehavior: Clip.hardEdge,
+    return Container(
       decoration: BoxDecoration(
         color: LightTheme.baseAccent,
         borderRadius: BorderRadius.circular(5.0),
