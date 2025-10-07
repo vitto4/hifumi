@@ -392,6 +392,7 @@ class _CardPileState extends State<CardPile> {
     /// See [reset].
     /// Also, this is required since we want to be able to identify each [Flashcard], or we may fail to rebuild them while preserving their state.
     /// The [_syncedBuffer] makes sure that the key is unique even if a [card] is present twice in the pile.
+    /// FIXME Because of that [_syncedBuffer], I believe the inclusion of [styledCard] isn't necessary to identify the card anymore.
     final GlobalValueKey<SwipeableState> currentKey = GlobalValueKey((_resetCount, styledCard, _syncedBuffer[cardIndex]));
 
     return Swipeable(
