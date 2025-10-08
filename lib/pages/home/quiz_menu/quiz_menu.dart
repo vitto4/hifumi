@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifumi/pages/home/quiz_menu/quiz_explanation_section.dart';
 import 'package:hifumi/services/sp_interface.dart';
 import 'package:hifumi/pages/home/quiz_menu/word_count_section.dart';
 import 'package:hifumi/pages/home/quiz_menu/word_filter_section.dart';
@@ -17,8 +18,11 @@ class QuizMenu extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        QuizWhatIsThis(
+          st: st,
+        ),
         const SizedBox(
-          height: 10.0,
+          height: 20.0,
         ),
         WordCountSection(
           st: st,
