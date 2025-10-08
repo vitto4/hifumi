@@ -17,13 +17,14 @@ List<List<CardElement>> _cardElementBuilder(DSInterface ds, UserPrefs userPrefer
   /* ------------------------------- CARD FRONT ------------------------------- */
 
   if (userPreferences.cardFrontKanji) {
+    final bool displayKanji = word.hasKanji || !(userPreferences.cardFrontKana || userPreferences.cardFrontRomaji);
     output[0].add(
       CardElement(
         title: "Kanji",
-        text: (word.hasKanji) ? word.withKanji : "∅",
+        text: displayKanji ? word.withKanji : "∅",
         fontSize: fontSizeHandler(Symbols.japanese, word.withKanji.length),
         symbols: Symbols.japanese,
-        fadeText: !word.hasKanji,
+        fadeText: !displayKanji,
       ),
     );
   }
@@ -60,13 +61,14 @@ List<List<CardElement>> _cardElementBuilder(DSInterface ds, UserPrefs userPrefer
   /* -------------------------------- CARD BACK ------------------------------- */
 
   if (userPreferences.cardBackKanji) {
+    final bool displayKanji = word.hasKanji || !(userPreferences.cardBackKana || userPreferences.cardBackRomaji);
     output[1].add(
       CardElement(
         title: "Kanji",
-        text: (word.hasKanji) ? word.withKanji : "∅",
+        text: displayKanji ? word.withKanji : "∅",
         fontSize: fontSizeHandler(Symbols.japanese, word.withKanji.length),
         symbols: Symbols.japanese,
-        fadeText: !word.hasKanji,
+        fadeText: !displayKanji,
       ),
     );
   }
