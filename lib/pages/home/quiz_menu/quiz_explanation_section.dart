@@ -94,7 +94,45 @@ class _QuizWhatIsThisState extends State<QuizWhatIsThis> {
                       ),
                     ),
                     const TextSpan(
-                      text: " when you don't. Change this behaviour in the settings and edit what appears on each side of the card.",
+                      text: " when you don't. Change this behaviour in the settings and edit what appears on each side of the card.\n",
+                    ),
+                    const WidgetSpan(
+                      child: SizedBox(
+                        height: 2 * FontSizes.base,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: "Hint —",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: LightTheme.blue,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: " Try using the ",
+                      style: TextStyle(
+                        color: LightTheme.textColorDim,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: "arrow keys",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: LightTheme.textColor,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: " and the ",
+                    ),
+                    const TextSpan(
+                      text: "spacebar",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: LightTheme.textColor,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: " to control the cards.",
                     ),
                   ],
                 ),
