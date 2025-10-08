@@ -87,7 +87,8 @@ class _WordTileState extends State<WordTile> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          (widget.word.needsFurigana)
+                          // Do we need to display furigana ?
+                          (widget.word.hasKanji)
                               ? Text(
                                   widget.word.kana,
                                   style: const TextStyle(
@@ -97,7 +98,7 @@ class _WordTileState extends State<WordTile> {
                                 )
                               : Container(height: 6.0),
                           Text(
-                            widget.word.kanji,
+                            widget.word.withKanji,
                             style: const TextStyle(
                               color: LightTheme.textColor,
                               fontSize: 16.0,

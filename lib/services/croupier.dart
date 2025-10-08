@@ -20,9 +20,10 @@ List<List<CardElement>> _cardElementBuilder(DSInterface ds, UserPrefs userPrefer
     output[0].add(
       CardElement(
         title: "Kanji",
-        text: word.kanji,
-        fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
+        text: (word.hasKanji) ? word.withKanji : "∅",
+        fontSize: fontSizeHandler(Symbols.japanese, word.withKanji.length),
         symbols: Symbols.japanese,
+        fadeText: !word.hasKanji,
       ),
     );
   }
@@ -62,9 +63,10 @@ List<List<CardElement>> _cardElementBuilder(DSInterface ds, UserPrefs userPrefer
     output[1].add(
       CardElement(
         title: "Kanji",
-        text: word.kanji,
-        fontSize: fontSizeHandler(Symbols.japanese, word.kanji.length),
+        text: (word.hasKanji) ? word.withKanji : "∅",
+        fontSize: fontSizeHandler(Symbols.japanese, word.withKanji.length),
         symbols: Symbols.japanese,
+        fadeText: !word.hasKanji,
       ),
     );
   }
@@ -114,7 +116,7 @@ List<Flashcard> dealCardsFromLessons(SPInterface st, DSInterface ds, List<Lesson
     output.add(
       Flashcard(
         id: word.id,
-        jishoURL: "https://jisho.org/search/${word.kanji}",
+        jishoURL: "https://jisho.org/search/${word.withKanji}",
         frontContent: elements[0],
         backContent: elements[1],
       ),
@@ -148,7 +150,7 @@ List<Flashcard> _dealCardsFromIDs(SPInterface st, DSInterface ds, List<WordID> i
     output.add(
       Flashcard(
         id: word.id,
-        jishoURL: "https://jisho.org/search/${word.kanji}",
+        jishoURL: "https://jisho.org/search/${word.withKanji}",
         frontContent: elements[0],
         backContent: elements[1],
       ),

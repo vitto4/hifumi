@@ -10,6 +10,7 @@ class CardElement extends StatelessWidget {
 
   final double fontSize;
   final Color textColor;
+  final bool fadeText;
 
   /// Writing system of [text]
   final Symbols symbols;
@@ -21,6 +22,7 @@ class CardElement extends StatelessWidget {
     this.fontSize = 26.0,
     this.textColor = Colors.white,
     this.symbols = Symbols.latin,
+    this.fadeText = false,
   }) : super(key: key);
 
   @override
@@ -38,7 +40,7 @@ class CardElement extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: fontSize,
-            color: textColor.withValues(alpha: .8),
+            color: textColor.withValues(alpha: fadeText ? .5 : .8),
             fontVariations: (symbols == Symbols.japanese) ? [FontVariation('wght', 350.0)] : null,
             fontFamily: (symbols == Symbols.japanese) ? "NotoSansJP" : null,
             fontWeight: (symbols == Symbols.japanese) ? FontWeight.normal : null,

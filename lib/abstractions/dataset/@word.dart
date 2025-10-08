@@ -10,11 +10,11 @@ typedef WordYAML = Map<String, dynamic>;
 class Word {
   late final WordID id;
   late final List<Edition> edition;
-  late final String kanji;
+  late final String withKanji;
   late final String kana;
   late final String romaji;
   late final Map<DSLanguage, String> meaning;
-  late final bool needsFurigana;
+  late final bool hasKanji;
 
   Word({
     required WordYAML wordYAML,
@@ -22,16 +22,17 @@ class Word {
   }) {
     this.id = (wordYAML[DSKeyring.WORD_ID] as List<dynamic>).map((e) => e as int).toList();
     this.edition = (wordYAML[DSKeyring.WORD_EDITION] as List<dynamic>).map((e) => Edition.fromCode((e as int))).toList();
-    this.kanji = wordYAML[DSKeyring.WORD_KANJI] ?? wordYAML[DSKeyring.WORD_KANA];
+    // Defaults to the kana version
+    this.withKanji = wordYAML[DSKeyring.WORD_KANJI] ?? wordYAML[DSKeyring.WORD_KANA];
     this.kana = wordYAML[DSKeyring.WORD_KANA];
     this.romaji = wordYAML[DSKeyring.WORD_ROMAJI];
     // Map a meaning to each supported language. Retrieval of `[DSKeyring.WORD_MEANING][lang.name]` shouldn't fail because we (kinda) fetched [supportedLanguages] straight from the DS.
     this.meaning = {for (DSLanguage lang in supportedLanguages) lang: wordYAML[DSKeyring.WORD_MEANING][lang.name] ?? "placeholder"};
-    this.needsFurigana = wordYAML[DSKeyring.WORD_KANJI] is String;
+    this.hasKanji = wordYAML[DSKeyring.WORD_KANJI] is String;
   }
 
   @override
   String toString() {
-    return "Word{id: $id, kanji: $kanji, kana: $kana, romaji: $romaji, meaning: $meaning}";
+    return "Word{id: $id, kanji: $withKanji, kana: $kana, romaji: $romaji, meaning: $meaning}";
   }
 }

@@ -208,7 +208,7 @@ class _Demonstrator extends StatelessWidget {
                 scale: .8,
                 child: CardElement(
                   title: "Kanji",
-                  text: this.exampleWord.kanji,
+                  text: this.exampleWord.withKanji,
                   symbols: Symbols.japanese,
                   textColor: LightTheme.textColor,
                 ),
