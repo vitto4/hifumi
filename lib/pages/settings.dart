@@ -291,6 +291,17 @@ class _SettingsState extends State<Settings> {
               CustomSettingsTile(
                 child: _VersionSettingsTile(),
               ),
+              if (kIsWeb)
+                SettingsTile.navigation(
+                  leading: const FaIcon(FontAwesomeIcons.android),
+                  title: const Text("Android", style: cmonApplyTheFontPlease),
+                  value: const Text("Download the APKs", style: cmonApplyTheFontPlease),
+                  onPressed: (context) async {
+                    if (await canLaunchUrl(AppInfo.ghReleasesUrl)) {
+                      await launchUrl(AppInfo.ghReleasesUrl);
+                    }
+                  },
+                ),
               SettingsTile.navigation(
                 leading: Transform.scale(scale: 1.25, child: const Icon(Icons.bug_report_rounded)),
                 title: const Text("Bugs", style: cmonApplyTheFontPlease),
