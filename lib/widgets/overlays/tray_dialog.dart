@@ -12,7 +12,7 @@ Future<T> showTrayDialog<T>({
   required Color pillColor,
   required Color backgroundColor,
   Duration transitionDuration = const Duration(milliseconds: 200),
-  double heightPercentage = 5 / 7,
+  double heightPercentage = .76,
 }) async {
   return await showCustomModalBottomSheet(
     context: context,
@@ -21,16 +21,14 @@ Future<T> showTrayDialog<T>({
       Size dimensions = getScreenDimensions(context);
       double paddingLR = (dimensions.width - getTrayDialogWidth(context)) / 2;
       double maxHeight = dimensions.height * heightPercentage;
-      return SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: paddingLR),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: maxHeight),
-            child: Material(
-              color: backgroundColor,
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
-              child: child,
-            ),
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: paddingLR),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxHeight),
+          child: Material(
+            color: backgroundColor,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
+            child: child,
           ),
         ),
       );
@@ -52,13 +50,19 @@ Future<T> showTrayDialog<T>({
           child: Container(
             padding: const EdgeInsets.fromLTRB(20.0, .0, 20.0, .0),
             child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  child,
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                ],
+              child: SafeArea(
+                top: false,
+                left: false,
+                right: false,
+                bottom: true,
+                child: Column(
+                  children: <Widget>[
+                    child,
+                    const SizedBox(
+                      height: 3.5,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

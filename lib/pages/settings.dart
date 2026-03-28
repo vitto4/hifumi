@@ -364,6 +364,12 @@ class _SettingsState extends State<Settings> {
                   );
                 },
               ),
+              // Correct behaviour for edge-to-edge (system navigation bar overlap)
+              CustomSettingsTile(
+                child: SizedBox(
+                  height: MediaQuery.of(context).padding.bottom,
+                ),
+              ),
             ],
           ),
         ],

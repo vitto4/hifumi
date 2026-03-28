@@ -29,6 +29,10 @@ class StickyHeader extends StatelessWidget {
     return Scaffold(
       backgroundColor: this.color,
       body: SafeArea(
+        top: true,
+        left: false,
+        right: false,
+        bottom: false,
         child: NestedScrollView(
           // Needed to make `floating: true` work after having scrolled down for a while
           floatHeaderSlivers: true,
@@ -61,8 +65,15 @@ class StickyHeader extends StatelessWidget {
                 // Restore the app-wide theme
                 child: Theme(
                   data: appTheme,
-                  // Material needed here for some reason, otherwise the restored theme doesn't work
-                  child: Material(child: this.child),
+                  child: Material(
+                    child: SafeArea(
+                      top: false,
+                      left: false,
+                      right: false,
+                      bottom: true,
+                      child: this.child,
+                    ),
+                  ),
                 ),
               ),
             ),

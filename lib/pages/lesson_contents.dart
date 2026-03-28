@@ -208,7 +208,7 @@ class LessonContents extends StatelessWidget {
                 wordTileList: wordTileList,
               ),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
             ],
           ),

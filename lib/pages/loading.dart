@@ -38,11 +38,17 @@ class _LoadingState extends State<Loading> {
     // Set the navigation bar color to white
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(
+        // These will apparently be ignored when in edge-to-edge
+        // Still, they are applied on older Android versions, so I'm keeping them
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
+
+    // This is the new default, also enforce it for older Android versions
+    // * See : https://docs.flutter.dev/release/breaking-changes/default-systemuimode-edge-to-edge
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     // Only start the loading process when the loading screen has finished initializing
     // This is done so that we can display everything in the console, though it may add a slight delay
@@ -100,41 +106,47 @@ class _LoadingState extends State<Loading> {
                   Navigator.pushReplacementNamed(context, "/home", arguments: snapshot.data);
                 });
         }
-        return Scaffold(
-          body: Center(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: SizedBox(
-                    height: getLoadingShrink(context) ? 400.0 : constraints.maxHeight,
-                    width: constraints.maxWidth,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        const Spacer(flex: 2),
-                        const AppLogo(),
-                        const Spacer(flex: 5),
-                        ConsoleWidget(
-                          key: _consoleKey,
-                          initialMessage: "Starting up",
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        const Row(
-                          children: <Widget>[
-                            Spacer(),
-                            FunkyText(text: "言葉準備中..."),
-                            SizedBox(width: 3.0),
-                          ],
-                        ),
-                        const SizedBox(height: 5.0),
-                      ],
+        return SafeArea(
+          top: false,
+          left: false,
+          right: false,
+          bottom: true,
+          child: Scaffold(
+            body: Center(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: SizedBox(
+                      height: getLoadingShrink(context) ? 400.0 : constraints.maxHeight,
+                      width: constraints.maxWidth,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          const Spacer(flex: 2),
+                          const AppLogo(),
+                          const Spacer(flex: 5),
+                          ConsoleWidget(
+                            key: _consoleKey,
+                            initialMessage: "Starting up",
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          const Row(
+                            children: <Widget>[
+                              Spacer(),
+                              FunkyText(text: "言葉準備中..."),
+                              SizedBox(width: 3.0),
+                            ],
+                          ),
+                          const SizedBox(height: 5.0),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );

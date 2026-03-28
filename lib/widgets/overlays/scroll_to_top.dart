@@ -114,17 +114,19 @@ class _ScrollToTopViewState extends State<ScrollToTopView> {
         SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.vertical,
-          child: widget.child,
+          child: SafeArea(child: widget.child),
         ),
-        IgnorePointer(
-          ignoring: !_showFloatingButton,
-          child: AnimatedOpacity(
-            opacity: _showFloatingButton ? 1.0 : .0,
-            duration: const Duration(milliseconds: 150),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: _ScrollToTopButton(
-                onTap: _scrollToTop,
+        SafeArea(
+          child: IgnorePointer(
+            ignoring: !_showFloatingButton,
+            child: AnimatedOpacity(
+              opacity: _showFloatingButton ? 1.0 : .0,
+              duration: const Duration(milliseconds: 150),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: _ScrollToTopButton(
+                  onTap: _scrollToTop,
+                ),
               ),
             ),
           ),

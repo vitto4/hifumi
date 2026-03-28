@@ -325,7 +325,7 @@ class Credits extends StatelessWidget {
               'Other',
               style: cmonApplyTheFontPlease.copyWith(color: LightTheme.blue, fontWeight: FontWeight.bold),
             ),
-            tiles: <SettingsTile>[
+            tiles: <AbstractSettingsTile>[
               SettingsTile.navigation(
                 leading: const Icon(Icons.light_rounded),
                 title: const Text("Concept", style: cmonApplyTheFontPlease),
@@ -351,6 +351,12 @@ class Credits extends StatelessWidget {
                     await launchUrl(_minnaNoFlashcards);
                   }
                 },
+              ),
+              // Correct behaviour for edge-to-edge (system navigation bar overlap)
+              CustomSettingsTile(
+                child: SizedBox(
+                  height: MediaQuery.of(context).padding.bottom,
+                ),
               ),
             ],
           ),

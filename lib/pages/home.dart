@@ -239,57 +239,55 @@ class _HomeState extends State<Home> {
     /* ------------------------------------ . ----------------------------------- */
 
     return Scaffold(
-      body: SafeArea(
-        child: HomeHeader(
-          openSettings: () {
-            Navigator.pushNamed(
-              context,
-              "/settings",
-              arguments: {
-                "st": widget.st,
-                "ds": widget.ds,
-              },
-            );
-          },
-          child: FractionallySizedBox(
-            widthFactor: .91,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: (landscape ? 4 / 5 : 2 / 5) * delayHeight,
-                ),
-                HomeComboButton(
-                  onPrimaryLeft: _onPrimaryLeft,
-                  onPrimaryRight: _onPrimaryRight,
-                  onSecondaryLeft: _onSecondaryLeft,
-                  onSecondaryRight: _onSecondaryRight,
-                ),
-                SizedBox(
-                  height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
-                ),
-                const TextSeparator(text: "Lessons"),
-                SizedBox(
-                  height: (landscape ? 1 / 5 : 2 / 5) * delayHeight,
-                ),
-                explanation,
-                const SizedBox(
-                  height: 20.0,
-                ),
-                selectionFeedback,
-                if (!getCurrentSelectionSingleLine(context)) ...[
-                  const SizedBox(height: 6.0),
-                  SelectionAsList(selection: _selection),
-                ],
-                SizedBox(
-                  height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
-                ),
-                _lessonTileList,
-                const SizedBox(
-                  height: 50.0,
-                ),
+      body: HomeHeader(
+        openSettings: () {
+          Navigator.pushNamed(
+            context,
+            "/settings",
+            arguments: {
+              "st": widget.st,
+              "ds": widget.ds,
+            },
+          );
+        },
+        child: FractionallySizedBox(
+          widthFactor: .91,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: (landscape ? 4 / 5 : 2 / 5) * delayHeight,
+              ),
+              HomeComboButton(
+                onPrimaryLeft: _onPrimaryLeft,
+                onPrimaryRight: _onPrimaryRight,
+                onSecondaryLeft: _onSecondaryLeft,
+                onSecondaryRight: _onSecondaryRight,
+              ),
+              SizedBox(
+                height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
+              ),
+              const TextSeparator(text: "Lessons"),
+              SizedBox(
+                height: (landscape ? 1 / 5 : 2 / 5) * delayHeight,
+              ),
+              explanation,
+              const SizedBox(
+                height: 20.0,
+              ),
+              selectionFeedback,
+              if (!getCurrentSelectionSingleLine(context)) ...[
+                const SizedBox(height: 6.0),
+                SelectionAsList(selection: _selection),
               ],
-            ),
+              SizedBox(
+                height: (landscape ? 2 / 5 : 3 / 5) * delayHeight,
+              ),
+              _lessonTileList,
+              const SizedBox(
+                height: 10.0,
+              ),
+            ],
           ),
         ),
       ),
