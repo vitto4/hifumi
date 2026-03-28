@@ -43,8 +43,8 @@ dependencies:
   flip_card: ^0.7.0                   # Flashcards flip animation
   modal_bottom_sheet: ^3.0.0          # Sheet dialogs
   flutter_settings_ui: ^3.0.0         # Settings menu
-  font_awesome_flutter: ^10.7.0       # GitHub icon
-  assorted_layout_widgets: ^11.0.0    # GlobalValueKey
+  font_awesome_flutter: ^11.0.0       # GitHub icon
+  assorted_layout_widgets: ^12.0.0    # GlobalValueKey
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
