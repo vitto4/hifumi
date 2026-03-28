@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hifumi/abstractions/ui/@screen_orientation.dart';
 import 'package:hifumi/abstractions/ui/font_sizes.dart';
 import 'package:hifumi/abstractions/ui/themes.dart';
+import 'package:hifumi/abstractions/app_info.dart';
 import 'package:hifumi/services/services_barrel.dart';
 import 'package:hifumi/widgets/archipelago/island_button.dart';
 import 'package:hifumi/widgets/archipelago/island_container.dart';
 import 'package:hifumi/widgets/seasoning/app_logo.dart';
+import "package:url_launcher/url_launcher.dart";
 
 class Welcome extends StatefulWidget {
   final SPInterface st;
@@ -77,7 +80,41 @@ class _WelcomeState extends State<Welcome> {
                                 ),
                               ),
                             ),
-                            const Spacer(flex: 3),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                children: <Widget>[
+                                  const Spacer(),
+
+                                  if (_index == 0 && kIsWeb)
+                                    IslandButton(
+                                      backgroundColor: LightTheme.base,
+                                      borderColor: LightTheme.baseAccent,
+                                      smartExpand: true,
+                                      onTap: () async {
+                                        if (await canLaunchUrl(AppInfo.ghReleasesUrl)) {
+                                          await launchUrl(AppInfo.ghReleasesUrl);
+                                        }
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Text(
+                                            "I use Android, btw",
+                                            style: TextStyle(
+                                              fontSize: FontSizes.huge,
+                                              fontWeight: FontWeight.bold,
+                                              color: LightTheme.textColorDim.withAlpha(200),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  if (_index == 0) SizedBox(height: 10.0),
+                                ],
+                              ),
+                            ),
                             IslandButton(
                               backgroundColor: LightTheme.green,
                               borderColor: LightTheme.greenBorder,

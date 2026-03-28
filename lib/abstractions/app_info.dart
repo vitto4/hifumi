@@ -12,6 +12,7 @@ class AppInfo {
 
   static final Uri repoUrl = Uri.parse(_repo);
   static final Uri bugReportsUrl = Uri.parse("$_repo/issues");
+  static final Uri ghReleasesUrl = Uri.parse("$_repo/releases");
 
   static final Uri dsUrl = Uri.parse("https://github.com/vitto4/MinnaNoDS");
 
