@@ -148,7 +148,7 @@ The result should resemble a somewhat frankensteined [folder by feature](https:/
   > Please don't come for me, I did my lesson today, and if the borrowing isn't fine I'll happily comply ! <br>
   > Thankies :3
 
-  (fancy reaching out ? claim your [Free OSINT Technique™](https://cheatsheet.haax.fr/open-source-intelligence-osint/platforms-hunting/github/#finding-user-e-mail))
+  (fancy reaching out ? claim your [Free OSINT Technique™](https://web.archive.org/web/20250528231613if_/https://cheatsheet.haax.fr/open-source-intelligence-osint/platforms-hunting/github/#finding-user-e-mail))
 - The *dataset* from which all words are sourced lives on GitHub as a separate project : [`MinnaNoDS`](https://github.com/vitto4/MinnaNoDS).
 - Some of the files are prefixed with `@`.
   I wanted them grouped together. It may not be pretty, but it works c: <br>
